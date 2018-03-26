@@ -1,6 +1,12 @@
 # HKUST COMP3111 Software Engineering (Spring 2018)
 
-This is the modified README for the cherry branch
+Team Name: <NULL>
+
+Team Members:
+Chan Wing Kin, wkchanaj, Team Leader
+Chung Yuen Ting, ytchung
+Frost Michael, mffrost
+
 
 Quick reference links:
 
