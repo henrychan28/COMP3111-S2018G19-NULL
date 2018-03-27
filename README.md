@@ -1,6 +1,11 @@
 # HKUST COMP3111 Software Engineering (Spring 2018)
 
-- This is the GIT branch for Michael's DEV
+Team Name: NULL
+
+Team Members:
+- Chan, Wing Kin [wkchanaj@ust.hk](mailto:wkchanaj@ust.hk): Team Leader
+- Chung, Yuen Ting [ytchung@ust.hk](mailto:ytchung@ust.hk): Team Member
+- Frost, Michael [mffrost@ust.hk](mailto:mffrost@ust.hk): Team Member
 
 Quick reference links:
 
