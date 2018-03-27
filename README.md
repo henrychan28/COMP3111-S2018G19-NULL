@@ -1,5 +1,7 @@
 # HKUST COMP3111 Software Engineering (Spring 2018)
 
+- This is the GIT branch for Michael's DEV
+
 Quick reference links:
 
 - [Project Sign Up](https://docs.google.com/spreadsheets/d/1NKxQflvfnRKmjrX8E_HLnRCC6kr4spUST_9fcyZIgFo/edit#gid=0)
