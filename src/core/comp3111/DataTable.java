@@ -44,19 +44,18 @@ public class DataTable {
 		int curNumCol = getNumCol();
 		if (curNumCol == 0) {
 			dc.put(colName, newCol); // add the column
-			return; // exit the method
-		}
+		} else {
+			// If there is more than one column,
+			// we need to ensure that all columns having the same size
 
-		// If there is more than one column,
-		// we need to ensure that all columns having the same size
+			int curNumRow = getNumRow();
+			if (newCol.getSize() != curNumRow) {
+				throw new DataTableException(String.format(
+						"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
+			}
 
-		int curNumRow = getNumRow();
-		if (newCol.getSize() != curNumRow) {
-			throw new DataTableException(String.format(
-					"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
-		}
-
-		dc.put(colName, newCol); // add the mapping
+			dc.put(colName, newCol); // add the mapping
+		}		
 	}
 
 	/**
@@ -70,9 +69,9 @@ public class DataTable {
 	public void removeCol(String colName) throws DataTableException {
 		if (containsColumn(colName)) {
 			dc.remove(colName);
-			return;
+		} else {
+			throw new DataTableException("removeCol: The column does not exist");
 		}
-		throw new DataTableException("removeCol: The column does not exist");
 	}
 
 	/**
@@ -84,10 +83,11 @@ public class DataTable {
 	 * @return DataColumn reference or null
 	 */
 	public DataColumn getCol(String colName) {
+		DataColumn dataCol = null;
 		if (containsColumn(colName)) {
-			return dc.get(colName);
+			dataCol = dc.get(colName);
 		}
-		return null;
+		return dataCol;
 	}
 
 	/**
@@ -116,8 +116,9 @@ public class DataTable {
 	 * @return the number of row of the data table
 	 */
 	public int getNumRow() {
-		if (dc.size() <= 0)
+		if (dc.size() <= 0) {
 			return dc.size();
+		}
 
 		// Pick the first entry and get its size
 		// assumption: For DataTable, all columns should have the same size
