@@ -20,11 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
-import javafx.stage.FileChooser;
-import java.io.File;
-import java.io.IOException;
-
 /**
  * The Main class of this GUI application
  * 
@@ -182,7 +177,7 @@ public class Main extends Application {
 			if (fileToImport.showSingleFileChooser()) 
 			{
 				// Process the selected file
-				fileToImport.parseFile();
+				fileToImport.parseFileToDataTable();
 				
 				
 				/*
