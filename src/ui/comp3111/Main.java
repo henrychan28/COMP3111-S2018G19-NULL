@@ -4,6 +4,7 @@ import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataType;
 import core.comp3111.SampleDataGenerator;
+import core.comp3111.DataImport;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,6 +19,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * The Main class of this GUI application
@@ -35,10 +41,12 @@ public class Main extends Application {
 	private DataTable sampleDataTable = null;
 
 	// Attributes: Scene and Stage
-	private static final int SCENE_NUM = 2;
+	private static final int SCENE_NUM = 4;
 	private static final int SCENE_MAIN_SCREEN = 0;
 	private static final int SCENE_LINE_CHART = 1;
-	private static final String[] SCENE_TITLES = { "COMP3111 Chart - [Team Name]", "Sample Line Chart Screen" };
+	private static final int SCENE_IMPORT = 2;
+	private static final int SCENE_EXPORT = 3;
+	private static final String[] SCENE_TITLES = { "COMP3111 Chart - NULL", "Sample Line Chart Screen" };
 	private Stage stage = null;
 	private Scene[] scenes = null;
 
@@ -47,7 +55,7 @@ public class Main extends Application {
 	// createScene()
 
 	// Screen 1: paneMainScreen
-	private Button btSampleLineChartData, btSampleLineChartDataV2, btSampleLineChart;
+	private Button btSampleLineChartData, btSampleLineChartDataV2, btSampleLineChart, btImportDataLineChart;
 	private Label lbSampleDataTable, lbMainScreenTitle;
 
 	// Screen 2: paneSampleLineChartScreen
@@ -163,6 +171,30 @@ public class Main extends Application {
 			populateSampleDataTableValuesToChart("Sample 2");
 
 		});
+		
+		// click handler for import test
+		btImportDataLineChart.setOnAction(e -> {
+			
+			// Present file chooser to the user and store result
+			DataImport fileToImport = new DataImport();
+			
+			// If a file is chosen process it
+			if (fileToImport.showSingleFileChooser()) 
+			{
+				// Process the selected file
+				fileToImport.parseFile();
+				
+				
+				/*
+				sampleDataTable = null;
+				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", sampleDataTable.getNumRow(),
+						sampleDataTable.getNumCol()));
+
+				populateSampleDataTableValuesToChart("Import Test");
+				*/
+			} 
+			
+		});
 
 		// click handler
 		btSampleLineChart.setOnAction(e -> {
@@ -170,6 +202,7 @@ public class Main extends Application {
 		});
 
 	}
+	
 
 	/**
 	 * Create the line chart screen and layout its UI components
@@ -212,6 +245,7 @@ public class Main extends Application {
 		lbMainScreenTitle = new Label("COMP3111 Chart");
 		btSampleLineChartData = new Button("Sample 1");
 		btSampleLineChartDataV2 = new Button("Sample 2");
+		btImportDataLineChart = new Button("Import Test");
 		btSampleLineChart = new Button("Sample Line Chart");
 		lbSampleDataTable = new Label("DataTable: empty");
 
@@ -219,7 +253,7 @@ public class Main extends Application {
 
 		HBox hc = new HBox(20);
 		hc.setAlignment(Pos.CENTER);
-		hc.getChildren().addAll(btSampleLineChartData, btSampleLineChartDataV2);
+		hc.getChildren().addAll(btSampleLineChartData, btSampleLineChartDataV2, btImportDataLineChart);
 
 		VBox container = new VBox(20);
 		container.getChildren().addAll(lbMainScreenTitle, hc, lbSampleDataTable, new Separator(), btSampleLineChart);
@@ -235,6 +269,7 @@ public class Main extends Application {
 
 		return pane;
 	}
+	
 
 	/**
 	 * This method is used to pick anyone of the scene on the stage. It handles the

@@ -1,5 +1,7 @@
 package testing.comp3111;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import core.comp3111.DataColumn;
@@ -38,6 +40,13 @@ class DataColumnTest {
 		assert (dc.getTypeName().equals(""));
 		assert (dc.getData() == null);
 
+	}
+	
+	@Test
+	void crap() {
+		String str = ",3,,";
+		String[] strArr = str.split(",");
+		System.out.println(Arrays.toString(strArr));
 	}
 
 }

@@ -69,9 +69,11 @@ public class DataColumn {
 	 * @return 0 if data is null. Otherwise, length of the data array
 	 */
 	public int getSize() {
-		if (data == null)
-			return 0;
-		return data.length;
+		int size = 0;
+		if (data != null) {
+			size = data.length;
+		}
+		return size;
 	}
 
 	// attributes
