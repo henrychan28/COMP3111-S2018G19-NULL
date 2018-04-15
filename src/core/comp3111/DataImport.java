@@ -95,7 +95,7 @@ public class DataImport {
             		
             		// We finished reading in the file, now we can put the data into a DataTable
             		// If this works we can return that the import succeeded
-            		success = createDataTable();
+            		success = createDataTable(selectedFile.getName());
             }
             
         } catch (FileNotFoundException e) {
@@ -159,13 +159,16 @@ public class DataImport {
 	/**
 	 * Converts the scratchpad into a properly formatted DataTable
 	 * 
-	 * @return boolean notifying whether the DataTable was created successfully
+	 * @param name
+	 * 			The name to initialize the DataTable with
+	 * @return boolean 
+	 * 				Notifies whether the DataTable was created successfully
 	 */
-	private boolean createDataTable() {
+	private boolean createDataTable(String name) {
 		boolean success = false;
 		
 		if (importMatrix != null) {
-			table = new DataTable();
+			table = new DataTable(name);
 			
 			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
 				String[] strArr = (String[]) importMatrix.get(colNum).toArray();

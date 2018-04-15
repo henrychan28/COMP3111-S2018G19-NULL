@@ -116,4 +116,19 @@ public class DataTableTest {
 		int numCol = dataTable.getNumCol();
 		assertEquals(0, numCol);
 	}
+	
+	@Test
+	void testSetName_OnInit() throws DataTableException {
+		DataTable dataTable = new DataTable("Test");
+		
+		assertEquals("Test", dataTable.getName());
+	}
+	
+	@Test
+	void testSetName_AfterInit() throws DataTableException {
+		DataTable dataTable = new DataTable("Test");
+		dataTable.setName("Not Test");
+		
+		assertEquals("Not Test", dataTable.getName());
+	}
 }

@@ -5,6 +5,7 @@ import core.comp3111.DataTable;
 import core.comp3111.DataType;
 import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataImport;
+import core.comp3111.CoreData;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ public class Main extends Application {
 	// Hint: Use java.util.List interface and its implementation classes (e.g.
 	// java.util.ArrayList)
 	private DataTable sampleDataTable = null;
+	private CoreData coreData = new CoreData();
 
 	// Attributes: Scene and Stage
 	private static final int SCENE_NUM = 4;
@@ -100,8 +102,8 @@ public class Main extends Application {
 	private void populateSampleDataTableValuesToChart(String seriesName) {
 
 		// Get 2 columns
-		DataColumn xCol = sampleDataTable.getCol("X");
-		DataColumn yCol = sampleDataTable.getCol("Y");
+		DataColumn xCol = coreData.getDataTable(0, 0).getCol("X");
+		DataColumn yCol = coreData.getDataTable(0, 0).getCol("Y");
 
 		// Ensure both columns exist and the type is number
 		if (xCol != null && yCol != null && xCol.getTypeName().equals(DataType.TYPE_NUMBER)
@@ -145,11 +147,11 @@ public class Main extends Application {
 
 		// click handler
 		btSampleLineChartData.setOnAction(e -> {
-
+			int index = 0;
 			// In this example, we invoke SampleDataGenerator to generate sample data
-			sampleDataTable = SampleDataGenerator.generateSampleLineData();
-			lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", sampleDataTable.getNumRow(),
-					sampleDataTable.getNumCol()));
+			index = coreData.addParentTable(SampleDataGenerator.generateSampleLineData());
+			lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(index, 0).getNumRow(),
+					coreData.getDataTable(index, 0).getNumCol()));
 
 			populateSampleDataTableValuesToChart("Sample 1");
 
@@ -157,11 +159,11 @@ public class Main extends Application {
 
 		// click handler
 		btSampleLineChartDataV2.setOnAction(e -> {
-
+			int index = 0;
 			// In this example, we invoke SampleDataGenerator to generate sample data
-			sampleDataTable = SampleDataGenerator.generateSampleLineDataV2();
-			lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", sampleDataTable.getNumRow(),
-					sampleDataTable.getNumCol()));
+			index = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2());
+			lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(index, 0).getNumRow(),
+					coreData.getDataTable(index, 0).getNumCol()));
 
 			populateSampleDataTableValuesToChart("Sample 2");
 

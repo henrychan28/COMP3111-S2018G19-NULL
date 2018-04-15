@@ -16,13 +16,25 @@ import java.util.Map;
 public class DataTable {
 
 	/**
-	 * Construct - Create an empty DataTable
+	 * Construct - Create an empty DataTable with blank name
 	 */
 	public DataTable() {
 
 		// In this application, we use HashMap data structure defined in
 		// java.util.HashMap
 		dc = new HashMap<String, DataColumn>();
+		tableName = "";
+	}
+	
+	/**
+	 * Construct - Create an empty DataTable
+	 * 
+	 * @param name
+	 * 			The name of the data table
+	 */
+	public DataTable(String name) {
+		this();
+		tableName = name;
 	}
 
 	/**
@@ -125,10 +137,29 @@ public class DataTable {
 		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
 		return dc.get(entry.getKey()).getSize();
 	}
+	
+	/**
+	 * Returns the name of the DataTable
+	 * 
+	 * @return String representing the DataTable name
+	 */
+	public String getName() {
+		return this.tableName;
+	}
+	
+	/**
+	 * Sets the name of the DataTable
+	 * 
+	 * @param name 
+	 * 			String representing the DataTable name
+	 */
+	public void setName(String name) {
+		this.tableName = name;
+	}
 
 	// attribute: A java.util.Map interface
 	// KeyType: String
 	// ValueType: DataColumn
 	private Map<String, DataColumn> dc;
-
+	private String tableName;
 }
