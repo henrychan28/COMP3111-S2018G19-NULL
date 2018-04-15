@@ -5,7 +5,18 @@ import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataType;
 
+/**
+ * Data storage class for the application.  Main property is a 2D matrix of DataTable objects.
+ * 
+ * @author michaelfrost
+ *
+ */
 public class CoreData {
+	
+	// Defines
+	private static final int EMPTY = -1;
+	private static final int OUTER = 0;
+	private static final int INNER = 1;
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
@@ -20,20 +31,21 @@ public class CoreData {
 	 * 
 	 * @param table
 	 * 			The DataTable
-	 * @return the index on the outer list in which the table was added
+	 * @return the index in which the table was added
 	 */
-	public int addParentTable(DataTable table) {
-		int outerIndex = -1;
+	public int[] addParentTable(DataTable table) {
+		int[] newParentIndex = {EMPTY, EMPTY};
 		
 		if (table != null)
 		{
 			ArrayList<DataTable> inner = new ArrayList<DataTable>();
 			inner.add(table);
 			masterTableList.add(inner);
-			outerIndex = masterTableList.size() - 1;
+			newParentIndex[OUTER] = masterTableList.size() - 1;
+			newParentIndex[INNER] = 0;
 		}
 		
-		return outerIndex;
+		return newParentIndex;
 	}
 	
 	/**
@@ -41,18 +53,19 @@ public class CoreData {
 	 * 
 	 * @param table
 	 *            The DataTable
-	 * @return child table index on the inner list
+	 * @return child table index
 	 */
-	public int addChildTable(DataTable table, int parentIndex) {
-		int childIndex = -1;
+	public int[] addChildTable(DataTable table, int parentIndex) {
+		int[] newChildIndex = {EMPTY,EMPTY};
 		
 		if (masterTableList.size() > parentIndex && table != null)
 		{
 			masterTableList.get(parentIndex).add(table);
-			childIndex = masterTableList.get(parentIndex).size() - 1;
+			newChildIndex[INNER] = masterTableList.get(parentIndex).size() - 1;
+			newChildIndex[OUTER] = parentIndex;
 		}
 		
-		return childIndex;
+		return newChildIndex;
 	}
 	
 	/**
@@ -62,12 +75,12 @@ public class CoreData {
 	 * 			The index of the data table ArrayList in outer Arraylist
 	 * @return the inner ArrayList
 	 */
-	public ArrayList<DataTable> getList(int index) {
+	public ArrayList<DataTable> getList(int outerIndex) {
 		ArrayList<DataTable> tableList = null;
 		
 		// Return the ArrayList of the index so long as the index can have contents
-		if (masterTableList.size() > index) {
-			tableList = masterTableList.get(index);
+		if (masterTableList.size() > outerIndex) {
+			tableList = masterTableList.get(outerIndex);
 		}
 		
 		return tableList;
@@ -82,19 +95,37 @@ public class CoreData {
 	 * 				int that represents inner ArrayList index to access
 	 * @return the DataTable
 	 */
-	public DataTable getDataTable(int outerIndex, int innerIndex) {
+	public DataTable getDataTable(int[] index) {
 		DataTable table = null;
 		
 		// Chain of if statements to protect against nulls
-		if (masterTableList.size() > outerIndex && 
-				masterTableList.get(outerIndex) != null &&
-				masterTableList.get(outerIndex).size() > innerIndex &&
-				masterTableList.get(outerIndex).get(innerIndex) != null) {
+		if (masterTableList.size() > index[OUTER] && 
+				masterTableList.get(index[OUTER]) != null &&
+				masterTableList.get(index[OUTER]).size() > index[INNER] &&
+				masterTableList.get(index[OUTER]).get(index[INNER]) != null) {
 			
-			table = masterTableList.get(outerIndex).get(innerIndex);
+			table = masterTableList.get(index[OUTER]).get(index[INNER]);
 		}
 		
 		return table;
+	}
+	
+	/**
+	 * Sets the DataTable referenced by index to the passed DataTable
+	 * 
+	 * @param index
+	 * 			Outer and Inner index of the DataTable in question
+	 * @param table
+	 * 			The DataTable that will be stored
+	 */
+	public void setDataTable(int[] index, DataTable table) {
+		if (index[OUTER] >= 0 && 
+				index[INNER] >= 0 && 
+				masterTableList.size() > index[OUTER] &&
+				masterTableList.get(index[OUTER]).size() > index[INNER] ) {
+			
+			masterTableList.get(index[OUTER]).set(index[INNER], table);
+		}
 	}
 	
 	/**
@@ -105,7 +136,7 @@ public class CoreData {
 	 * @return [outer, inner] indices of the desired DataTable, [-1,-1] if not found
 	 */
 	public int[] searchForDataTable(String name) { 
-		int[] indices = {-1,-1};
+		int[] indices = {EMPTY,EMPTY};
 		boolean found = false;
 		
 		// Iterate through the ArrayList searching for the desired DataTable
@@ -119,8 +150,8 @@ public class CoreData {
 					if (masterTableList.get(outerIndex).get(innerIndex) != null && 
 							masterTableList.get(outerIndex).get(innerIndex).getName().equalsIgnoreCase(name)) {
 						
-						indices[0] = outerIndex;
-						indices[1] = innerIndex;
+						indices[OUTER] = outerIndex;
+						indices[INNER] = innerIndex;
 						found = true;
 					}
 				}

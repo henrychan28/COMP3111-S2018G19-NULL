@@ -1,5 +1,7 @@
 package core.comp3111;
 
+import core.comp3111.DataType;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,6 +82,11 @@ public class DataImport {
             		
             		// Prompt the user for the type of data for each column
             		// HERE
+            		columnDataType = new String[columnCount];
+            		for (int i = 0; i < columnCount; i++)
+            		{
+            			columnDataType[i] = DataType.TYPE_STRING;
+            		}
             		
             		// Build an arraylist of Strings arraylists to store the CSV with
             		// This transposes the rows of file data into columns convenient for our application
@@ -171,7 +178,7 @@ public class DataImport {
 			table = new DataTable(name);
 			
 			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
-				String[] strArr = (String[]) importMatrix.get(colNum).toArray();
+				String[] strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
 				DataColumn column = new DataColumn(columnDataType[colNum], strArr);
 			}
 			
