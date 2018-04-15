@@ -16,7 +16,6 @@ public class DataImport {
 	
 	private File selectedFile = null;
 	private ArrayList<ArrayList<String>> importMatrix = null;
-	private DataTable table = null;
 	String[] columnHeaders = null;
 	String[] columnDataType = null;
 	
@@ -61,9 +60,9 @@ public class DataImport {
 	 * 
 	 * @return boolean notifying whether the file was parsed successfully
 	 */
-	public boolean parseFileToDataTable() {
+	public DataTable parseFileToDataTable() {
 		// Variable init
-		boolean success = false;
+		DataTable table = null;
 		BufferedReader reader = null;
         String line = "";
         int columnCount = -1;
@@ -102,14 +101,17 @@ public class DataImport {
             		
             		// We finished reading in the file, now we can put the data into a DataTable
             		// If this works we can return that the import succeeded
-            		success = createDataTable(selectedFile.getName());
+            		table = createDataTable(selectedFile.getName());
             }
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        } catch (DataTableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
             if (reader != null) {
                 try {
                     reader.close();
@@ -119,7 +121,7 @@ public class DataImport {
             }
         }
 		
-		return success;
+		return table;
 	}
 	
 	/**
@@ -170,9 +172,10 @@ public class DataImport {
 	 * 			The name to initialize the DataTable with
 	 * @return boolean 
 	 * 				Notifies whether the DataTable was created successfully
+	 * @throws DataTableException 
 	 */
-	private boolean createDataTable(String name) {
-		boolean success = false;
+	private DataTable createDataTable(String name) throws DataTableException {
+		DataTable table = null;
 		
 		if (importMatrix != null) {
 			table = new DataTable(name);
@@ -180,12 +183,11 @@ public class DataImport {
 			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
 				String[] strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
 				DataColumn column = new DataColumn(columnDataType[colNum], strArr);
+				table.addCol(columnHeaders[colNum], column);
 			}
-			
-			success = true;
 		}
 		
-		return success;
+		return table;
 	}
 	
 	/**

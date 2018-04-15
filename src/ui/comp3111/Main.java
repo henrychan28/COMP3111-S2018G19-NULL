@@ -184,16 +184,12 @@ public class Main extends Application {
 			if (fileToImport.showSingleFileChooser()) 
 			{
 				// Process the selected file
-				fileToImport.parseFileToDataTable();
-				
-				
-				/*
-				sampleDataTable = null;
-				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", sampleDataTable.getNumRow(),
-						sampleDataTable.getNumCol()));
+				selectedTableIndex = coreData.addParentTable(fileToImport.parseFileToDataTable());
+				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
+						coreData.getDataTable(selectedTableIndex).getNumCol()));
 
 				populateSampleDataTableValuesToChart("Import Test");
-				*/
+				
 			} 
 			
 		});
