@@ -1,0 +1,70 @@
+package testing.comp3111;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import core.comp3111.DataColumn;
+import core.comp3111.DataTable;
+import core.comp3111.DataFilter;
+
+
+public class DataFilterTest {
+	DataFilter testDataFilter;
+	DataTable smallDataTable;
+	Object[] column1 = {"Hello", "Bye", "GoToSchool"};
+	Object[] column2 = {"No!", "Yes", "Yes"};
+
+	@BeforeEach
+	void init() {
+		testDataFilter = new DataFilter();
+		smallDataTable = new DataTable();
+		try {
+			smallDataTable.addCol("Random1", new DataColumn("String", column1));
+			smallDataTable.addCol("Random2", new DataColumn("String", column2));
+		}
+		catch (Exception e) {
+			System.err.println("Error when adding column in DataFilterTest");
+		}
+
+	}
+	@Test
+	void testGetTableTextLabels() {
+		HashMap<String, Set<Object>> testValue = testDataFilter.GetTableTextLabels(smallDataTable);
+		HashMap<String,Set<Object>> trueValue = new HashMap<String, Set<Object>>();
+		Set<Object> set1 = new HashSet<Object>();
+		Set<Object> set2 = new HashSet<Object>();
+		for(Object value:column1) {
+			set1.add(value);
+		}
+		for(Object value:column2) {
+			set2.add(value);
+		}
+		trueValue.put("Random1", set1);
+		trueValue.put("Random2", set2);
+		assertEquals(trueValue, testValue);
+	}
+	
+	@Test
+	void testFilterTablebyIndex() {
+		testDataFilter = new DataFilter();
+		DataTable filterTable = new DataTable();
+		try {
+			filterTable = testDataFilter.FilterTableByIndex(smallDataTable, new int[]{0});
+		} catch (Exception e) {}
+		DataTable trueTable = new DataTable();
+		try{
+			trueTable.addCol("Random1", new DataColumn("String", new Object[]{"Hello"}));
+			trueTable.addCol("Random2", new DataColumn("String", new Object[] {"No!"}));
+		}
+		catch(Exception e){}
+		assertEquals(trueTable,filterTable);
+		
+		
+	}
+}

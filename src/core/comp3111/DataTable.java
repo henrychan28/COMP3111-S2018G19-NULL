@@ -1,5 +1,6 @@
 package core.comp3111;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,8 +114,10 @@ public class DataTable {
 	 * 
 	 * @return the keys in the data table
 	 */	
-	public Object[] getColumnNames() {
-		return dc.keySet().toArray();
+	public String[] getColumnNames() {
+		Object[] columnNames = dc.keySet().toArray();
+		String[] columnString = Arrays.copyOf(columnNames, columnNames.length, String[].class);
+		return columnString;
 	}
 
 	/**
@@ -132,7 +135,27 @@ public class DataTable {
 		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
 		return dc.get(entry.getKey()).getSize();
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		DataTable otherDataTable = (DataTable) obj;
+		this.printDataTable();
+		otherDataTable.printDataTable();
+		return dc.equals(otherDataTable.dc);
+	}
+	
+	public void printDataTable() {
+		for(String key: dc.keySet()) {
+			System.out.println(key);
+			DataColumn currentColumn = dc.get(key);
+			Object[] currentData = currentColumn.getData();
+			for(Object datum:currentData) {
+				System.out.print(datum + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println("----------------------");
+	}
 	// attribute: A java.util.Map interface
 	// KeyType: String
 	// ValueType: DataColumn

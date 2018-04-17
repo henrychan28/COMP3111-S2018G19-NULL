@@ -13,7 +13,7 @@ import core.comp3111.DataType;
  *
  */
 class DataColumnTest {
-
+	
 	@Test
 	void testCoverageEmptyDataColumnConstructor() {
 
