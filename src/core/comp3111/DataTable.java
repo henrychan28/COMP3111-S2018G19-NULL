@@ -1,5 +1,6 @@
 package core.comp3111;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @author cspeter
  *
  */
-public class DataTable {
+public class DataTable implements Serializable{
 
 	/**
 	 * Construct - Create an empty DataTable with blank name

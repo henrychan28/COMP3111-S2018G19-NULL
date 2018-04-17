@@ -6,6 +6,7 @@ import core.comp3111.DataType;
 import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataImport;
 import core.comp3111.CoreData;
+import core.comp3111.CoreDataIO;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -190,6 +191,8 @@ public class Main extends Application {
 
 				populateSampleDataTableValuesToChart("Import Test");
 				
+				CoreDataIO io = new CoreDataIO();
+				io.saveCoreData(coreData, "/Users/michaelfrost/Desktop/","Someshit",io.FILE_EX);
 			} 
 			
 		});

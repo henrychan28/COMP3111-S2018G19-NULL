@@ -13,10 +13,10 @@ import core.comp3111.DataTable;
 public class CoreData implements Serializable {
 	
 	// Defines
-	private static final int EMPTY = -1;
-	private static final int OUTER = 0;
-	private static final int INNER = 1;
-	private static final long serialVersionUID = 1L;
+	public static final int EMPTY = -1;
+	public static final int OUTER = 0;
+	public static final int INNER = 1;
+	public static final long serialVersionUID = 1;
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
@@ -118,14 +118,17 @@ public class CoreData implements Serializable {
 	 * @param table
 	 * 			The DataTable that will be stored
 	 */
-	public void setDataTable(int[] index, DataTable table) {
+	public boolean setDataTable(int[] index, DataTable table) {
+		boolean success = false;
 		if (index[OUTER] >= 0 && 
 				index[INNER] >= 0 && 
 				masterTableList.size() > index[OUTER] &&
 				masterTableList.get(index[OUTER]).size() > index[INNER] ) {
 			
 			masterTableList.get(index[OUTER]).set(index[INNER], table);
+			success = true;
 		}
+		return success;
 	}
 	
 	/**

@@ -8,8 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class CoreDataIO {
-	public void saveCoreData(CoreData coreData, String address) {
-
+	
+	public static final String FILE_EX = ".COMP3111";
+	
+	public void saveCoreData(CoreData coreData, String folder, String fileName, String extention) {
+		String address = folder + System.getProperty("file.separator") + fileName + FILE_EX;
 		try {
 			// write object to file
 			FileOutputStream fos = new FileOutputStream(address);

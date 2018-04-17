@@ -41,12 +41,4 @@ class DataColumnTest {
 		assert (dc.getData() == null);
 
 	}
-	
-	@Test
-	void crap() {
-		String str = ",3,,";
-		String[] strArr = str.split(",");
-		System.out.println(Arrays.toString(strArr));
-	}
-
 }
