@@ -1,9 +1,8 @@
 package core.comp3111;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
-import core.comp3111.DataType;
 
 /**
  * Data storage class for the application.  Main property is a 2D matrix of DataTable objects.
@@ -11,12 +10,13 @@ import core.comp3111.DataType;
  * @author michaelfrost
  *
  */
-public class CoreData {
+public class CoreData implements Serializable {
 	
 	// Defines
 	private static final int EMPTY = -1;
 	private static final int OUTER = 0;
 	private static final int INNER = 1;
+	private static final long serialVersionUID = 1L;
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
