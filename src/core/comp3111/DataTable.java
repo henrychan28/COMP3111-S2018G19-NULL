@@ -108,6 +108,14 @@ public class DataTable {
 	public int getNumCol() {
 		return dc.size();
 	}
+	/**
+	 * Return the keys in the data table
+	 * 
+	 * @return the keys in the data table
+	 */	
+	public Object[] getColumnNames() {
+		return dc.keySet().toArray();
+	}
 
 	/**
 	 * Return the number of row of the data table. This data structure ensures that
