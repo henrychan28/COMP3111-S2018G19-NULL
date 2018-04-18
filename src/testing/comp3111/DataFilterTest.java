@@ -2,6 +2,7 @@ package testing.comp3111;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class DataFilterTest {
 
 	@BeforeEach
 	void init() {
-		testDataFilter = new DataFilter();
+		testDataFilter = DataFilter.getFilter();
 		smallDataTable = new DataTable();
 		try {
 			smallDataTable.addCol("Random1", new DataColumn("String", column1));
@@ -32,6 +33,25 @@ public class DataFilterTest {
 			System.err.println("Error when adding column in DataFilterTest");
 		}
 
+	}
+	@Test
+	void testTextFilter() {
+		HashMap<String, Set<Object>> retainValues = new HashMap();
+		Set<Object> retainString2 = new HashSet();
+		retainString2.add("Yes");
+		retainValues.put("Random2", retainString2);
+		DataTable testDataTable = testDataFilter.TextFilter(smallDataTable, retainValues);
+		DataTable expectDataTable = new DataTable();
+		try{
+			expectDataTable.addCol("Random1", new DataColumn("String", new Object[]{"Bye", "GoToSchool"}));
+			expectDataTable.addCol("Random2", new DataColumn("String", new Object[]{"Yes", "Yes"}));
+
+		} catch(Exception e) {
+			System.err.println(e.getMessage());
+		}
+		expectDataTable.printDataTable();
+		testDataTable.printDataTable();
+		assertEquals(testDataTable,expectDataTable);
 	}
 	@Test
 	void testGetTableTextLabels() {
@@ -52,10 +72,9 @@ public class DataFilterTest {
 	
 	@Test
 	void testFilterTablebyIndex() {
-		testDataFilter = new DataFilter();
 		DataTable filterTable = new DataTable();
 		try {
-			filterTable = testDataFilter.FilterTableByIndex(smallDataTable, new int[]{0});
+			filterTable = testDataFilter.FilterTableByIndex(smallDataTable, new ArrayList<Integer>() {{add(new Integer(0));}});
 		} catch (Exception e) {}
 		DataTable trueTable = new DataTable();
 		try{
@@ -68,3 +87,4 @@ public class DataFilterTest {
 		
 	}
 }
+	

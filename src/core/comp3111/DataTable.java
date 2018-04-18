@@ -138,8 +138,6 @@ public class DataTable {
 	@Override
 	public boolean equals(Object obj) {
 		DataTable otherDataTable = (DataTable) obj;
-		this.printDataTable();
-		otherDataTable.printDataTable();
 		return dc.equals(otherDataTable.dc);
 	}
 	
