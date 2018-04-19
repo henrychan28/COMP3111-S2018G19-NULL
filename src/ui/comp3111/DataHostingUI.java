@@ -2,6 +2,8 @@ package ui.comp3111;
 
 import java.awt.List;
 import core.comp3111.CoreData;
+import core.comp3111.DataColumn;
+import core.comp3111.DataTable;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,41 +26,50 @@ import javafx.stage.Stage;
 
 public class DataHostingUI extends Application {
 		 
-	    private final ObservableList<String> datasetName =
-	        FXCollections.observableArrayList(
-	            new String("Henry")
-	        );
-	   
+	    public ObservableList<DataTable> GetDataTable() {
+	    	//To-Do: Once the CoreData is completed, retrieve data from there.
+	    	ObservableList<DataTable> datasetName = FXCollections.observableArrayList();
+	    	datasetName.add(new DataTable("table1"));
+	    	datasetName.add(new DataTable("table2"));
+	    	datasetName.add(new DataTable("table3"));
+	    	datasetName.add(new DataTable("table4"));
+	    	datasetName.add(new DataTable("table5"));
+	    	datasetName.add(new DataTable("table6"));
+	    	return datasetName;
+	    }
 	    public static void main(String[] args) {
 	        launch(args);
 	    }
 	 
 	    @Override
 	    public void start(Stage stage) {
-	        Scene scene = new Scene(new Group());
+	        //Scene scene = new Scene(new Group());
 	        stage.setTitle("Table View Sample");
 	        stage.setWidth(650);
 	        stage.setHeight(500);
 	 
-	        TableView<String> table = CreateDatasetTableView();
-	        TableView<String> table2 = CreateChartTableView();
+	        TableView<DataTable> table = CreateDatasetTableView();
+	        //TableView<String> table2 = CreateChartTableView();
 
 	        final HBox hbox = new HBox();
-	        hbox.setSpacing(5);
-	        hbox.setPadding(new Insets(10, 0, 0, 10));
-	        hbox.getChildren().addAll(table, table2);
+	        //hbox.setSpacing(5);
+	        //hbox.setPadding(new Insets(10, 0, 0, 10));
+	        hbox.getChildren().addAll(table);
 	 
-	        ((Group) scene.getRoot()).getChildren().addAll(hbox);
-	 
+	        //((Group) scene.getRoot()).getChildren().addAll(hbox);
+	        Scene scene = new Scene(hbox);
 	        stage.setScene(scene);
 	        stage.show();
 	    }
 	    
 
-	    public TableView<String> CreateDatasetTableView(){
-	    	TableView<String> table = new TableView<String>();
-	    	table.setEditable(true);
-	        TableColumn<Void, String> Dataset = new TableColumn("Dataset");
+	    public TableView<DataTable> CreateDatasetTableView(){
+	    	TableView<DataTable> table = new TableView<>();
+	        TableColumn<DataTable, String> Dataset = new TableColumn<>("Dataset");
+	        Dataset.setCellValueFactory(new PropertyValueFactory<>("tableName"));
+	        ObservableList<DataTable> dataTables = GetDataTable();
+	        table.setItems(dataTables);
+	        table.getColumns().addAll(Dataset);
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	    	return table;
 	    }

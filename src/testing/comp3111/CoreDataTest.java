@@ -83,8 +83,8 @@ public class CoreDataTest {
 		
 		ArrayList list = coreData.getList(resParent[OUTER]);
 		
-		assertEquals("Parent",((DataTable) list.get(resParent[INNER])).getName());
-		assertEquals("Child",((DataTable) list.get(resChild[INNER])).getName());
+		assertEquals("Parent",((DataTable) list.get(resParent[INNER])).getTableName());
+		assertEquals("Child",((DataTable) list.get(resChild[INNER])).getTableName());
 	}
 	
 	@Test 
