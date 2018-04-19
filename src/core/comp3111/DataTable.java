@@ -149,7 +149,6 @@ public class DataTable implements Serializable{
 	 * @return String representing the DataTable name
 	 */
 	public String getTableName() {
-		//System.out.println("Inside getName");
 		return this.tableName;
 	}
 	/**
