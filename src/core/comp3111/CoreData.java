@@ -173,7 +173,7 @@ public class CoreData implements Serializable {
 				for (int innerIndex = 0; innerIndex < masterTableList.get(outerIndex).size() && !found; innerIndex++) {
 					// Look deeper if there is content and finally evaluate comparison
 					if (masterTableList.get(outerIndex).get(innerIndex) != null && 
-							masterTableList.get(outerIndex).get(innerIndex).getName().equalsIgnoreCase(name)) {
+							masterTableList.get(outerIndex).get(innerIndex).getTableName().equalsIgnoreCase(name)) {
 						
 						indices[OUTER] = outerIndex;
 						indices[INNER] = innerIndex;

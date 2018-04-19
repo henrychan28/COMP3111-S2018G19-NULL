@@ -140,7 +140,7 @@ public class DataTable implements Serializable{
 	 * 
 	 * @return String representing the DataTable name
 	 */
-	public String getName() {
+	public String getTableName() {
 		return this.tableName;
 	}
 	/**
