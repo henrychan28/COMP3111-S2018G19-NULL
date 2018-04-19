@@ -1,7 +1,7 @@
 package ui.comp3111;
 
 import java.awt.List;
-
+import core.comp3111.CoreData;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,14 +24,9 @@ import javafx.stage.Stage;
 
 public class DataHostingUI extends Application {
 		 
-	    private TableView<Person> table2 = new TableView<Person>();
-	    private final ObservableList<Person> data =
+	    private final ObservableList<String> datasetName =
 	        FXCollections.observableArrayList(
-	            new Person("Jacob", "Smith", "jacob.smith@example.com"),
-	            new Person("Isabella", "Johnson", "isabella.johnson@example.com"),
-	            new Person("Ethan", "Williams", "ethan.williams@example.com"),
-	            new Person("Emma", "Jones", "emma.jones@example.com"),
-	            new Person("Michael", "Brown", "michael.brown@example.com")
+	            new String("Henry")
 	        );
 	   
 	    public static void main(String[] args) {
@@ -45,11 +40,8 @@ public class DataHostingUI extends Application {
 	        stage.setWidth(650);
 	        stage.setHeight(500);
 	 
-	        final Label label = new Label("Address Book");
-	        label.setFont(new Font("Arial", 20));
-	 
-	        TableView<Person> table = CreateDatasetTableView();
-	        TableView<Person> table2 = CreateChartTableView();
+	        TableView<String> table = CreateDatasetTableView();
+	        TableView<String> table2 = CreateChartTableView();
 
 	        final HBox hbox = new HBox();
 	        hbox.setSpacing(5);
@@ -61,59 +53,23 @@ public class DataHostingUI extends Application {
 	        stage.setScene(scene);
 	        stage.show();
 	    }
-	 
-	    public TableView<Person> CreateDatasetTableView(){
-	    	TableView<Person> table = new TableView<Person>();
+	    
+
+	    public TableView<String> CreateDatasetTableView(){
+	    	TableView<String> table = new TableView<String>();
 	    	table.setEditable(true);
-	        TableColumn Dataset = new TableColumn("Dataset");
-	        table.getColumns().addAll(Dataset);
+	        TableColumn<Void, String> Dataset = new TableColumn("Dataset");
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	    	return table;
 	    }
 	    
-	    public TableView<Person> CreateChartTableView(){
-	    	TableView<Person> table = new TableView<Person>();
+	    public TableView<String> CreateChartTableView(){
+	    	TableView<String> table = new TableView<String>();
 	    	table.setEditable(true);
 	        TableColumn Chart = new TableColumn("Chart");
 	        table.getColumns().addAll(Chart);
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	    	return table;
 	    }   
-	    
-	    public static class Person {
-	 
-	        private final SimpleStringProperty firstName;
-	        private final SimpleStringProperty lastName;
-	        private final SimpleStringProperty email;
-	 
-	        private Person(String fName, String lName, String email) {
-	            this.firstName = new SimpleStringProperty(fName);
-	            this.lastName = new SimpleStringProperty(lName);
-	            this.email = new SimpleStringProperty(email);
-	        }
-	 
-	        public String getFirstName() {
-	            return firstName.get();
-	        }
-	 
-	        public void setFirstName(String fName) {
-	            firstName.set(fName);
-	        }
-	 
-	        public String getLastName() {
-	            return lastName.get();
-	        }
-	 
-	        public void setLastName(String fName) {
-	            lastName.set(fName);
-	        }
-	 
-	        public String getEmail() {
-	            return email.get();
-	        }
-	 
-	        public void setEmail(String fName) {
-	            email.set(fName);
-	        }
-	    }
+
 	} 

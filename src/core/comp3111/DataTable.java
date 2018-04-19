@@ -112,7 +112,11 @@ public class DataTable implements Serializable{
 	public boolean containsColumn(String colName) {
 		return dc.containsKey(colName);
 	}
-
+	
+	public void setName(String string) {
+		tableName = string;
+	}
+	
 	/**
 	 * Return the number of column in the data table
 	 * 
@@ -178,5 +182,6 @@ public class DataTable implements Serializable{
 	// ValueType: DataColumn
 	private Map<String, DataColumn> dc;
 	private String tableName;
+
 
 }
