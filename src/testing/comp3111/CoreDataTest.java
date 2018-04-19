@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 
 public class CoreDataTest {
 	
-	CoreData coreData = null;
-	DataTable table = null;
-	DataColumn testNumColumn = new DataColumn();
+	CoreData coreData;
+	DataTable table;
+	DataColumn testNumColumn;
 	
 	// Defines
 	public static final int EMPTY = -1;
@@ -81,7 +81,7 @@ public class CoreDataTest {
 		table = new DataTable("Child");
 		int[] resChild = coreData.addChildTable(table, resParent[OUTER]);
 		
-		ArrayList list = coreData.getList(resParent[OUTER]);
+		ArrayList list = coreData.getInnerList(resParent[OUTER]);
 		
 		assertEquals("Parent",((DataTable) list.get(resParent[INNER])).getName());
 		assertEquals("Child",((DataTable) list.get(resChild[INNER])).getName());
@@ -89,7 +89,7 @@ public class CoreDataTest {
 	
 	@Test 
 	void getList_BadIndex() {
-		assertEquals(null,coreData.getList(2));
+		assertEquals(null,coreData.getInnerList(2));
 	}
 	
 	@Test
@@ -236,5 +236,31 @@ public class CoreDataTest {
 		
 		assertEquals(1,found[OUTER]);
 		assertEquals(3,found[INNER]);
+	}
+	
+	@Test
+	void getSize_OuterEmpty() {
+		assertEquals(0,coreData.getOuterSize());
+	}
+	
+	@Test
+	void getSize_Outer() {
+		table = new DataTable("Parent");
+		coreData.addParentTable(table);
+		
+		assertEquals(1,coreData.getOuterSize());
+	}
+	
+	@Test
+	void getSize_InnerEmpty() {
+		assertEquals(EMPTY,coreData.getInnerSize(0));
+	}	
+	
+	@Test
+	void getSize_Inner() {
+		table = new DataTable("Parent");
+		coreData.addParentTable(table);
+		
+		assertEquals(1,coreData.getInnerSize(0));
 	}
 }
