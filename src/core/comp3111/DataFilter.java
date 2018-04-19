@@ -50,7 +50,17 @@ public class DataFilter {
 	}
 	
 	
-	
+	/**
+	 * RandomSplitTable takes in a dataTable and randomly split it into two according to the splitRatio
+	 *  which the exact number of rows for one of the splitted dataTable is (lowerbound)splitRatio*numRows.
+	 * 
+	 * @param dataTable 
+	 *            - the input dataTable for processing
+	 * @param splitRatio
+	 * 			  - the splitRatio
+	 * @return splitedTables
+	 * 			  - a DataTable array with splitted dataTable with the first element has the one specific by the splitRatio
+	 */
 	public DataTable[] RandomSplitTable(DataTable dataTable, double splitRatio) {
 		DataTable[] splitedTables = new DataTable[2];
 		int numRows = dataTable.getNumRow();
@@ -81,7 +91,7 @@ public class DataFilter {
 	 * 			   - randomly shuffled integer array with specified range
 	 */
 	public Integer[] NonRepRandomIntegerGenerator(int start, int end) {
-	    Integer[] randomIntegerArray = new Integer[start-end];
+	    Integer[] randomIntegerArray = new Integer[end-start];
 	    for (int i = start; i < end; i++) {
 	    	randomIntegerArray[i] = i;
 	    }
@@ -120,7 +130,7 @@ public class DataFilter {
 	 * @param dataTable
 	 *            - the input dataTable for processing
 	 * @return textLabelTable
-	 * 			   - Columns with 
+	 * 			   - Unique text entries for each column in the dataTable
 	 */
 	public HashMap<String,Set<Object>> GetTableTextLabels(DataTable dataTable) {
 		HashMap<String, Set<Object>> tableTextSet = new HashMap();

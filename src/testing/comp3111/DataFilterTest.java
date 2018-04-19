@@ -1,6 +1,7 @@
 package testing.comp3111;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +31,12 @@ public class DataFilterTest {
 			smallDataTable.addCol("Random2", new DataColumn("String", column2));
 		}
 		catch (Exception e) {
-			System.err.println("Error when adding column in DataFilterTest");
+			System.err.println(e.getMessage());
 		}
 
 	}
+	
+	
 	@Test
 	void testTextFilter() {
 		HashMap<String, Set<Object>> retainValues = new HashMap();
@@ -49,10 +52,23 @@ public class DataFilterTest {
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
 		}
-		expectDataTable.printDataTable();
-		testDataTable.printDataTable();
+		//expectDataTable.printDataTable();
+		//testDataTable.printDataTable();
 		assertEquals(testDataTable,expectDataTable);
 	}
+	
+	@Test
+	void testRandomSplitTable() {
+		double splitRatio = 0.4;
+		DataTable[] testDataTable = testDataFilter.RandomSplitTable(smallDataTable, splitRatio);
+		int splitNumRowsA = testDataTable[0].getNumRow();
+		int splitNumRowsB = testDataTable[1].getNumRow();
+		int numRows = smallDataTable.getNumRow();
+		int numRowsA = (int)(((double)numRows)*splitRatio);
+		assertTrue(splitNumRowsA == numRowsA || splitNumRowsB == numRowsA);
+	}
+	
+	
 	@Test
 	void testGetTableTextLabels() {
 		HashMap<String, Set<Object>> testValue = testDataFilter.GetTableTextLabels(smallDataTable);
@@ -69,6 +85,7 @@ public class DataFilterTest {
 		trueValue.put("Random2", set2);
 		assertEquals(trueValue, testValue);
 	}
+	
 	
 	@Test
 	void testFilterTablebyIndex() {
