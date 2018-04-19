@@ -75,7 +75,7 @@ public class CoreData implements Serializable {
 	 * 			The index of the data table ArrayList in outer Arraylist
 	 * @return the inner ArrayList
 	 */
-	public ArrayList<DataTable> getList(int outerIndex) {
+	public ArrayList<DataTable> getInnerList(int outerIndex) {
 		ArrayList<DataTable> tableList = null;
 		
 		// Return the ArrayList of the index so long as the index can have contents
@@ -108,6 +108,28 @@ public class CoreData implements Serializable {
 		}
 		
 		return table;
+	}
+	
+	/**
+	 * Return the size of the inner ArrayList, meaning the number of related parent and children DataTables
+	 * 
+	 * @param innerIndex
+	 * 			The array index on the outer ArrayList
+	 * @return
+	 */
+	public int getInnerSize(int innerIndex) {
+		int size = EMPTY;
+		
+		// Make sure there is a ArrayList at the desired outer index
+		if (innerIndex < masterTableList.size()) {
+			size = masterTableList.get(innerIndex).size();
+		}
+		
+		return size;
+	}
+	
+	public int getOuterSize() {
+		return masterTableList.size();
 	}
 	
 	/**
