@@ -1,5 +1,7 @@
 package testing.comp3111;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import core.comp3111.DataColumn;
@@ -13,7 +15,7 @@ import core.comp3111.DataType;
  *
  */
 class DataColumnTest {
-	
+
 	@Test
 	void testCoverageEmptyDataColumnConstructor() {
 
@@ -39,5 +41,4 @@ class DataColumnTest {
 		assert (dc.getData() == null);
 
 	}
-
 }

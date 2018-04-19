@@ -1,5 +1,6 @@
 package core.comp3111;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @author cspeter
  *
  */
-public class DataTable {
+public class DataTable implements Serializable{
 
 	/**
 	 * Construct - Create an empty DataTable
@@ -24,8 +25,20 @@ public class DataTable {
 		// In this application, we use HashMap data structure defined in
 		// java.util.HashMap
 		dc = new HashMap<String, DataColumn>();
+		tableName = "";
+		
 	}
-
+	/**
+	 * Construct - Create an empty DataTable
+	 * 
+	 * @param name
+	 * 			The name of the data table
+	 */
+	public DataTable(String name) {
+		this();
+		tableName = name;
+	}
+	
 	/**
 	 * Add a data column to the table.
 	 * 
@@ -45,19 +58,18 @@ public class DataTable {
 		int curNumCol = getNumCol();
 		if (curNumCol == 0) {
 			dc.put(colName, newCol); // add the column
-			return; // exit the method
+		} else {
+			// If there is more than one column,
+			// we need to ensure that all columns having the same size
+
+			int curNumRow = getNumRow();
+			if (newCol.getSize() != curNumRow) {
+				throw new DataTableException(String.format(
+						"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
+			}
+
+			dc.put(colName, newCol); // add the mapping
 		}
-
-		// If there is more than one column,
-		// we need to ensure that all columns having the same size
-
-		int curNumRow = getNumRow();
-		if (newCol.getSize() != curNumRow) {
-			throw new DataTableException(String.format(
-					"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
-		}
-
-		dc.put(colName, newCol); // add the mapping
 	}
 
 	/**
@@ -71,9 +83,9 @@ public class DataTable {
 	public void removeCol(String colName) throws DataTableException {
 		if (containsColumn(colName)) {
 			dc.remove(colName);
-			return;
+		} else {
+			throw new DataTableException("removeCol: The column does not exist");
 		}
-		throw new DataTableException("removeCol: The column does not exist");
 	}
 
 	/**
@@ -119,7 +131,14 @@ public class DataTable {
 		String[] columnString = Arrays.copyOf(columnNames, columnNames.length, String[].class);
 		return columnString;
 	}
-
+	/**
+	 * Returns the name of the DataTable
+	 * 
+	 * @return String representing the DataTable name
+	 */
+	public String getName() {
+		return this.tableName;
+	}
 	/**
 	 * Return the number of row of the data table. This data structure ensures that
 	 * all columns having the same number of row
@@ -158,5 +177,6 @@ public class DataTable {
 	// KeyType: String
 	// ValueType: DataColumn
 	private Map<String, DataColumn> dc;
+	private String tableName;
 
 }

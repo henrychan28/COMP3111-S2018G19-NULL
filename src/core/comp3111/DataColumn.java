@@ -1,5 +1,6 @@
 package core.comp3111;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Arrays;
  * @author cspeter
  *
  */
-public class DataColumn {
+public class DataColumn implements Serializable {
 
 	/**
 	 * Constructor. Create an empty data column
