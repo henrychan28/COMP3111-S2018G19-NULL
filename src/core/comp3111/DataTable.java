@@ -1,6 +1,7 @@
 package core.comp3111;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 public class DataTable implements Serializable{
 
 	/**
-	 * Construct - Create an empty DataTable with blank name
+	 * Construct - Create an empty DataTable
 	 */
 	public DataTable() {
 
@@ -25,8 +26,8 @@ public class DataTable implements Serializable{
 		// java.util.HashMap
 		dc = new HashMap<String, DataColumn>();
 		tableName = "";
+		
 	}
-	
 	/**
 	 * Construct - Create an empty DataTable
 	 * 
@@ -37,7 +38,7 @@ public class DataTable implements Serializable{
 		this();
 		tableName = name;
 	}
-
+	
 	/**
 	 * Add a data column to the table.
 	 * 
@@ -68,7 +69,7 @@ public class DataTable implements Serializable{
 			}
 
 			dc.put(colName, newCol); // add the mapping
-		}		
+		}
 	}
 
 	/**
@@ -96,11 +97,10 @@ public class DataTable implements Serializable{
 	 * @return DataColumn reference or null
 	 */
 	public DataColumn getCol(String colName) {
-		DataColumn dataCol = null;
 		if (containsColumn(colName)) {
-			dataCol = dc.get(colName);
+			return dc.get(colName);
 		}
-		return dataCol;
+		return null;
 	}
 
 	/**
@@ -112,7 +112,11 @@ public class DataTable implements Serializable{
 	public boolean containsColumn(String colName) {
 		return dc.containsKey(colName);
 	}
-
+	
+	public void setName(String string) {
+		tableName = string;
+	}
+	
 	/**
 	 * Return the number of column in the data table
 	 * 
@@ -121,24 +125,16 @@ public class DataTable implements Serializable{
 	public int getNumCol() {
 		return dc.size();
 	}
-
 	/**
-	 * Return the number of row of the data table. This data structure ensures that
-	 * all columns having the same number of row
+	 * Return the keys in the data table
 	 * 
-	 * @return the number of row of the data table
-	 */
-	public int getNumRow() {
-		if (dc.size() <= 0) {
-			return dc.size();
-		}
-
-		// Pick the first entry and get its size
-		// assumption: For DataTable, all columns should have the same size
-		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
-		return dc.get(entry.getKey()).getSize();
+	 * @return the keys in the data table
+	 */	
+	public String[] getColumnNames() {
+		Object[] columnNames = dc.keySet().toArray();
+		String[] columnString = Arrays.copyOf(columnNames, columnNames.length, String[].class);
+		return columnString;
 	}
-	
 	/**
 	 * Returns the name of the DataTable
 	 * 
@@ -147,20 +143,45 @@ public class DataTable implements Serializable{
 	public String getName() {
 		return this.tableName;
 	}
-	
 	/**
-	 * Sets the name of the DataTable
+	 * Return the number of row of the data table. This data structure ensures that
+	 * all columns having the same number of row
 	 * 
-	 * @param name 
-	 * 			String representing the DataTable name
+	 * @return the number of row of the data table
 	 */
-	public void setName(String name) {
-		this.tableName = name;
-	}
+	public int getNumRow() {
+		if (dc.size() <= 0)
+			return dc.size();
 
+		// Pick the first entry and get its size
+		// assumption: For DataTable, all columns should have the same size
+		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
+		return dc.get(entry.getKey()).getSize();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		DataTable otherDataTable = (DataTable) obj;
+		return dc.equals(otherDataTable.dc);
+	}
+	
+	public void printDataTable() {
+		for(String key: dc.keySet()) {
+			System.out.println(key);
+			DataColumn currentColumn = dc.get(key);
+			Object[] currentData = currentColumn.getData();
+			for(Object datum:currentData) {
+				System.out.print(datum + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println("----------------------");
+	}
 	// attribute: A java.util.Map interface
 	// KeyType: String
 	// ValueType: DataColumn
 	private Map<String, DataColumn> dc;
 	private String tableName;
+
+
 }
