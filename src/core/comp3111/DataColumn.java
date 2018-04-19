@@ -1,6 +1,7 @@
 package core.comp3111;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * DataColumn - A column of data. This class will be used by DataTable. It
@@ -71,13 +72,15 @@ public class DataColumn implements Serializable {
 	 * @return 0 if data is null. Otherwise, length of the data array
 	 */
 	public int getSize() {
-		int size = 0;
-		if (data != null) {
-			size = data.length;
-		}
-		return size;
+		if (data == null)
+			return 0;
+		return data.length;
 	}
-
+	@Override
+	public boolean equals(Object obj) {
+		DataColumn otherDataColumn = (DataColumn) obj;
+		return Arrays.equals(data,otherDataColumn.data) && typeName.equals(otherDataColumn.typeName);
+	}
 	// attributes
 	private Object[] data;
 	private String typeName;
