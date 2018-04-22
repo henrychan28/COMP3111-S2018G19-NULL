@@ -5,6 +5,9 @@ import core.comp3111.DataTable;
 import core.comp3111.DataType;
 import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataImport;
+
+import java.util.Map;
+
 import core.comp3111.CoreData;
 import core.comp3111.CoreDataIO;
 import javafx.application.Application;
@@ -177,15 +180,23 @@ public class Main extends Application {
 		
 		// click handler for import test
 		btImportDataLineChart.setOnAction(e -> {
-			
+						
 			// Present file chooser to the user and store result
 			DataImport fileToImport = new DataImport();
 			
+			
 			// If a file is chosen process it
-			if (fileToImport.showSingleFileChooser()) 
+			if (fileToImport.getFileForImport()) 
 			{
-				// Process the selected file
-				selectedTableIndex = coreData.addParentTable(fileToImport.parseFileToDataTable());
+				// Parse the selected file to temporary table
+				String[] columnHeaders = null;
+				columnHeaders = fileToImport.parseFile();
+				
+				// Ask the user about the method to handle the various columns
+				ColumnTypeUI columnWindow = new ColumnTypeUI();
+				Map columnData = columnWindow.start(stage);
+				
+				selectedTableIndex = coreData.addParentTable(null);
 				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
 						coreData.getDataTable(selectedTableIndex).getNumCol()));
 
@@ -195,6 +206,9 @@ public class Main extends Application {
 				io.saveCoreData(coreData, "/Users/michaelfrost/Desktop/","Someshit",io.FILE_EX);
 			} 
 			
+			ColumnTypeUI ui = new ColumnTypeUI();
+			ui.start(stage);
+						
 		});
 
 		// click handler

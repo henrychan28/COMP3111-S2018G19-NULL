@@ -20,6 +20,7 @@ public class CoreData implements Serializable {
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
+	//MAKE A HASHMAP FOR CHART PRESET
 	
 	// Initializer
 	public CoreData() {
