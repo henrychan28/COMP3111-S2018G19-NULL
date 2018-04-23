@@ -11,15 +11,22 @@ package core.comp3111;
 public class ScatterChart extends Chart{
 	
 	
-	public ScatterChart(DataTable DataTable, String[] AxisLabels, String ChartName) {
-		super(DataTable, AxisLabels, ChartName, "ScatterChart");
+	public ScatterChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		
+		
+		super(DataTable, AxisLabels, ChartName, "ScatterChart");
+		//At least three DataColumn
+
 		//Check if the DataColumns Type consistent with the Chart Type
+		
+		
+		//At least one String and two Number
+		
 		
 		
 		//Create the line chart from javafx
 
 	}
-	
+
 	
 }

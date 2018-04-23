@@ -29,8 +29,15 @@ public class LineChart extends Chart{
 	
 	
 	public LineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
+		//Constructor of the parent class
+
 		super(DataTable, AxisLabels, ChartName, "LineChart");
 		
+		//At least two DataColumn
+		if (AxisLabels.length < 2) {
+			throw new ChartException("LineChart", String.format("Inconsistent number of DataColumn: (%d)", AxisLabels.length));
+		}
+
 		//Check if the DataColumns Type consistent with the Chart Type
 		for (String AxisLabel: AxisLabels) {
 			String TypeOfColumn = DataTable.getCol(AxisLabel).getTypeName();
@@ -74,9 +81,6 @@ public class LineChart extends Chart{
 		
 	}
 	
-	public void ShowGraph() {
-		
-	}
 
 	
 	
