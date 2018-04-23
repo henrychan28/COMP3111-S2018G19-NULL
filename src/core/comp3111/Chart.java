@@ -1,5 +1,11 @@
 package core.comp3111;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart;
+
+import javafx.stage.Stage;
+
 
 public class Chart{
 	
@@ -20,6 +26,7 @@ public class Chart{
 	protected String[] AxisLabels;
 	protected String ChartName;
 	protected String ChartType;
+	protected chart <Object, Object> chart;
 	
 	
 }
