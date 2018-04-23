@@ -8,6 +8,13 @@ import javafx.stage.Stage;
 
 
 public class Chart{
+	/**
+	 * Constructor of the Chart class
+	 * @param DataTable
+	 * @param AxisLabels
+	 * @param ChartName
+	 * @param ChartType
+	 */
 	
 	Chart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
 		this.DataTable = DataTable;
@@ -18,6 +25,14 @@ public class Chart{
 		
 	}
 	
+	/**
+	 * A method to show the chart
+	 * 
+	 * @return true if the graph is sucessfully shown
+	 */
+	public boolean showGraph() {
+		return true;
+	}
 	
 	//Attributes
 	
