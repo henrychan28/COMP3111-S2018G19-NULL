@@ -23,7 +23,7 @@ public class scatterchart extends xychart{
 	 * Constructor of the ScatterChart class.
 	 * 
 	 * @param DataTable
-	 * 			- the DataTable object. It should be 
+	 * 			- the DataTable object. It should contains at least 2 Number type and 1 String type DataColumns.
 	 * @param AxisLabels
 	 * 			- the DataColumn names. Must pass 2 Number type and  1 String type.
 	 * 			- the 1st label is the x-axis, 2nd label is the y-axis, 3rd label is the category. 
@@ -38,9 +38,9 @@ public class scatterchart extends xychart{
 		
 		super(DataTable, AxisLabels, ChartName, "ScatterChart");
 		
-		//Check: Must passed 3 DataColumn with 2 Number Type and 1 String Type
+		/**Check: Must passed 3 DataColumn with 2 Number Type and 1 String Type*/
 		
-		//number of DataColumn must be 3
+		//Check: Number of DataColumn must be 3
 		if(AxisLabels.length != 3) {
 			throw new ChartException(this.ChartType, String.format("Inconsistent number of Data Column (%d)", AxisLabels.length));
 		}
@@ -59,26 +59,26 @@ public class scatterchart extends xychart{
 																		AxisLabels[i], this.DataTableName)) ;
 			}
 			else {
-				dcs[i] = DataTable.getCol(xlabel);
+				dcs[i] = DataTable.getCol(AxisLabels[i]);
 			}
 		}
 		//Check if the size for every DataColumns are the same
 		if (xdc.getSize() != ydc.getSize() || xdc.getSize() != cdc.getSize()) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
 		}
+		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
-		Object[] xarray = xdc.getData();
-		Object[] yarray = ydc.getData();
-		Object[] carray = cdc.getData();
+		//Initialize: Object[] from DataColumn
+
 		//First two DataColumn must be Number Type
 		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
 			throw new ChartException(this.ChartType, String.format("Inconsistent Data Column type: "
-								+ "x-axis should be Number Type (Current: &s DataColumn with type &s))",
+								+ "x-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 								xlabel, this.xdc.getTypeName()));	
 		}
 		if (this.ydc.getTypeName() != DataType.TYPE_NUMBER) {
 			throw new ChartException(this.ChartType, String.format("Inconsistent Data Column type: "
-					+ "y-axis should be Number Type (Current: &s DataColumn with type &s))",
+					+ "y-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 					ylabel, this.ydc.getTypeName()));
 		}
 		//Third DataColumn must be String Type
@@ -90,7 +90,10 @@ public class scatterchart extends xychart{
 		
 		
 		//Create the scatter chart from javafx
-
+		Object[] xarray = xdc.getData();
+		Object[] yarray = ydc.getData();
+		Object[] carray = cdc.getData();
+		
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(xlabel);
@@ -127,6 +130,21 @@ public class scatterchart extends xychart{
 		
 
 	}
+	
+	/**
+	 * Set the ChartName. 
+	 * 
+	 * @param ChartName
+	 * 		- the name of the line chart
+	 * @return void
+	 */
+	public void SetChartName(String ChartName) {
+		this.ChartName = ChartName;
+		this.xychart.setTitle(ChartName);
+		return;
+		
+	}
+		
 	//Attributes
 	protected String xlabel;
 	protected String ylabel;
