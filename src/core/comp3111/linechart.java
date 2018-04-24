@@ -16,7 +16,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
-public class LineChart extends Chart{
+
+public class linechart extends xychart{
 	/**
 	 * Constructor of the LineChart
 	 * By default, the first AxisLabel is set to be the x-axis.
@@ -28,7 +29,7 @@ public class LineChart extends Chart{
 	 */
 	
 	
-	public LineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
+	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
 		//Constructor of the parent class
 
 		super(DataTable, AxisLabels, ChartName, "LineChart");
@@ -57,8 +58,8 @@ public class LineChart extends Chart{
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(xlabel);
 		
-		this.chart = new LineChart<Number,Number>(xAxis,yAxis);
-		this.chart.setTitle("");
+		this.xychart = new LineChart<Number,Number>(xAxis,yAxis);
+		this.xychart.setTitle("");
 		
 		
 		//Define a series for each column
