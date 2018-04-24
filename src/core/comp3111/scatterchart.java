@@ -11,8 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
 import javafx.stage.Stage;
 import java.util.HashMap;
+import java.util.Map;
+
 
 
 public class scatterchart extends xychart{
@@ -64,7 +67,9 @@ public class scatterchart extends xychart{
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
 		}
 		SizeOfdc = xdc.getSize();
-		
+		Object[] xarray = xdc.getData();
+		Object[] yarray = ydc.getData();
+		Object[] carray = cdc.getData();
 		//First two DataColumn must be Number Type
 		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
 			throw new ChartException(this.ChartType, String.format("Inconsistent Data Column type: "
@@ -85,6 +90,7 @@ public class scatterchart extends xychart{
 		
 		
 		//Create the scatter chart from javafx
+
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(xlabel);
@@ -92,19 +98,32 @@ public class scatterchart extends xychart{
 		
 		this.xychart  = new ScatterChart<Number, Number> (xAxis, yAxis); 
 		this.xychart.setTitle(this.ChartName); //title of the chart is the ChartName
-		//defining a series
-		HashMap<String, XYChart.Series<Number, Number>> allSeries = new HashMap<String, XYChart.Series<Number, Number>>();
+		//defining a series for each category
+		HashMap<Object, XYChart.Series<Number, Number>> allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
 		
 		for (int i = 0; i < SizeOfdc; i++) {
-			
-			
+			//if the category key already exists in allSeries
+			if (allSeries.containsKey(carray[i])) {
+				//add the data point to the corresponding series
+				allSeries.get(carray[i]).getData().add(new Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
+			}
+			//if the category key not yet exists in allSeries
+			else {
+				//create a new series
+				XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+				series.setName((String) carray[i]);
+				//add the data point to the new series
+				series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
+				//add the new series to HashMap allSeries
+				allSeries.put(carray[i], series);
+			}		
 			
 		}
 		
-		
-		
-		
-		
+		//Add all series to the ScatterChart
+		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry: allSeries.entrySet()) {
+			this.xychart.getData().add(entry.getValue());
+		}
 		
 
 	}
