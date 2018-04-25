@@ -1,5 +1,7 @@
 package core.comp3111;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  * @author cspeter
  *
  */
-public class DataTable {
+public class DataTable implements Serializable{
 
 	/**
 	 * Construct - Create an empty DataTable
@@ -23,8 +25,19 @@ public class DataTable {
 		// In this application, we use HashMap data structure defined in
 		// java.util.HashMap
 		dc = new HashMap<String, DataColumn>();
+		tableName = "";
 	}
-
+	/**
+	 * Construct - Create an empty DataTable
+	 * 
+	 * @param name
+	 * 			The name of the data table
+	 */
+	public DataTable(String name) {
+		this();
+		tableName = name;
+	}
+	
 	/**
 	 * Add a data column to the table.
 	 * 
@@ -44,19 +57,18 @@ public class DataTable {
 		int curNumCol = getNumCol();
 		if (curNumCol == 0) {
 			dc.put(colName, newCol); // add the column
-			return; // exit the method
+		} else {
+			// If there is more than one column,
+			// we need to ensure that all columns having the same size
+
+			int curNumRow = getNumRow();
+			if (newCol.getSize() != curNumRow) {
+				throw new DataTableException(String.format(
+						"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
+			}
+
+			dc.put(colName, newCol); // add the mapping
 		}
-
-		// If there is more than one column,
-		// we need to ensure that all columns having the same size
-
-		int curNumRow = getNumRow();
-		if (newCol.getSize() != curNumRow) {
-			throw new DataTableException(String.format(
-					"addCol: The row size does not match: newCol(%d) and curNumRow(%d)", newCol.getSize(), curNumRow));
-		}
-
-		dc.put(colName, newCol); // add the mapping
 	}
 
 	/**
@@ -70,9 +82,9 @@ public class DataTable {
 	public void removeCol(String colName) throws DataTableException {
 		if (containsColumn(colName)) {
 			dc.remove(colName);
-			return;
+		} else {
+			throw new DataTableException("removeCol: The column does not exist");
 		}
-		throw new DataTableException("removeCol: The column does not exist");
 	}
 
 	/**
@@ -89,7 +101,16 @@ public class DataTable {
 		}
 		return null;
 	}
-
+	
+	public DataColumn[] getCol() {
+		DataColumn[] dataColumns = new DataColumn[dc.size()];
+		int index = 0;
+		for(String key:dc.keySet()) {
+			dataColumns[index] = dc.get(key);
+			index++;
+		}
+		return null;
+	}
 	/**
 	 * Check whether the column exists by the given column name
 	 * 
@@ -99,7 +120,11 @@ public class DataTable {
 	public boolean containsColumn(String colName) {
 		return dc.containsKey(colName);
 	}
-
+	
+	public void setName(String string) {
+		tableName = string;
+	}
+	
 	/**
 	 * Return the number of column in the data table
 	 * 
@@ -108,7 +133,24 @@ public class DataTable {
 	public int getNumCol() {
 		return dc.size();
 	}
-
+	/**
+	 * Return the keys in the data table
+	 * 
+	 * @return the keys in the data table
+	 */	
+	public String[] getColumnNames() {
+		Object[] columnNames = dc.keySet().toArray();
+		String[] columnString = Arrays.copyOf(columnNames, columnNames.length, String[].class);
+		return columnString;
+	}
+	/**
+	 * Returns the name of the DataTable
+	 * 
+	 * @return String representing the DataTable name
+	 */
+	public String getTableName() {
+		return this.tableName;
+	}
 	/**
 	 * Return the number of row of the data table. This data structure ensures that
 	 * all columns having the same number of row
@@ -124,7 +166,13 @@ public class DataTable {
 		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
 		return dc.get(entry.getKey()).getSize();
 	}
-	/**
+	@Override
+	public boolean equals(Object obj) {
+		DataTable otherDataTable = (DataTable) obj;
+		return dc.equals(otherDataTable.dc);
+	}
+  
+  /**
 	 * Return the number of columns with the input column type.
 	 * 
 	 * @param colType
@@ -172,9 +220,24 @@ public class DataTable {
 		return keys;
 	}
 	
+	public void printDataTable() {
+		for(String key: dc.keySet()) {
+			System.out.println(key);
+			DataColumn currentColumn = dc.get(key);
+			Object[] currentData = currentColumn.getData();
+			for(Object datum:currentData) {
+				System.out.print(datum + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println("----------------------");
+	}
 	// attribute: A java.util.Map interface
 	// KeyType: String
 	// ValueType: DataColumn
 	private Map<String, DataColumn> dc;
+	private String tableName;
+
 
 }
