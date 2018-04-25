@@ -171,6 +171,54 @@ public class DataTable implements Serializable{
 		DataTable otherDataTable = (DataTable) obj;
 		return dc.equals(otherDataTable.dc);
 	}
+  
+  /**
+	 * Return the number of columns with the input column type.
+	 * 
+	 * @param colType
+	 * 			- Type of the column: Defined in DataType class
+	 * @return 
+	 * 			- integer
+	 */	
+	
+	public int getNumColOfType(String colType) {
+		int Num = 0;
+		
+		//Iterate every element in dc
+		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
+			String type = entry.getValue().getTypeName();
+			if (type == colType) {
+				Num +=1;
+			}	
+		}
+		
+		return Num;
+	}
+	/**
+	 * Return the keys of the columns of the input column type
+	 * 
+	 * @param colType
+	 * 			- Type of the column: Defined in DataType class
+	 * @return
+	 * 			- String[] keys
+	 */
+	
+	public String[] getColKeysOfType(String colType) {
+		int size = getNumColOfType(colType);
+		
+		String [] keys = new String[size];
+		//iterate the HashMap dc
+		int i = 0;
+		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
+			String type = entry.getValue().getTypeName();
+			if (type == colType) {
+				keys[i] = entry.getKey();
+			}	
+			i++;
+		}
+		
+		return keys;
+	}
 	
 	public void printDataTable() {
 		for(String key: dc.keySet()) {
