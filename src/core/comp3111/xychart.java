@@ -55,6 +55,7 @@ public class xychart{
 	protected String DataTableName;
 	protected String[] AxisLabels;
 	protected String ChartName;
+	//protected String ChartName+ id; 
 	protected String ChartType;
 	protected XYChart <Number, Number> xychart;
 	
