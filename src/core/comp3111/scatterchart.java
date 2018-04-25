@@ -6,15 +6,11 @@ package core.comp3111;
  * @author YuenTing
  *
  */
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
-import javafx.stage.Stage;
 import java.util.HashMap;
-import java.util.Map;
 
 
 

@@ -4,19 +4,14 @@ package core.comp3111;
 /**
  *  The implementation of the LineChart class. 
  *  It store the line chart in javafx.scene.chart.LineChart.
- * 	B
  * 
  * @author YuenTing
  *
  */
 
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
 
 public class linechart extends xychart{
 	/**
@@ -90,56 +85,30 @@ public class linechart extends xychart{
 		
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel(xlabel);
-		xAxis.setLabel(ylabel);
+		xAxis.setLabel(this.xlabel);
 		
 		this.xychart  = new LineChart<Number, Number> (xAxis, yAxis); 
 		this.xychart.setTitle(this.ChartName); //title of the chart is the ChartName
 		
 		//Define a series 
-		 XYChart.Series<Number, Number> series =  new XYChart.Series<Number, Number>();
-		 
+		 this.series =  new XYChart.Series<Number, Number>();
+		 this.series.setName(this.ylabel);
 		 for (int i = 0; i < this.SizeOfdc; i ++) {
-			 series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
+			 this.series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
 		 }
 		//Add the series to the LineChart
-		 this.xychart.getData().add(series);
+		 this.xychart.getData().add(this.series);
 		 
-		/*
-		//Define a series for each column
-		for (String AxisLabel: AxisLabels) {
-	        XYChart.Series<Number, Number> series = new XYChart.Series();
-	        series.setName(AxisLabel);
-	        DataColumn ydc  = DataTable.getCol(AxisLabel);
-	        int SizeOfdc = ydc.getSize();
-	        for (int i = 0; i < SizeOfdc; i++) {
-	        	series.getData().add(new XYChart.Data<Number, Number>(xdc[i], ydc[i]);
-	        }
-	        xychart.getData().add(series);
-			
-			
-		}*/
-			
 	}
-	/**
-	 * Set the ChartName. 
-	 * 
-	 * @param ChartName
-	 * 		- the name of the line chart
-	 * @return void
-	 */
-	public void SetChartName(String ChartName) {
-		this.ChartName = ChartName;
-		this.xychart.setTitle(ChartName);
-		return;
-		
-	}
+	//Can create a add line function
+	
 		
 	//Attributes
 	protected String xlabel;
 	protected String ylabel;
 	protected DataColumn xdc;
 	protected DataColumn ydc;
+	protected XYChart.Series<Number, Number> series;
 	protected int SizeOfdc;
 
 	

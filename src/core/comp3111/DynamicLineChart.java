@@ -7,18 +7,28 @@ package core.comp3111;
  * @author YuenTing
  */
 
-public class DynamicLineChart extends LineChart{
+public class DynamicLineChart extends linechart{
+	/**
+	 * Constructor of the Dynamic Line Chart class
+	 * 
+	 * @param DataTable
+	 * @param AxisLabels
+	 * @param ChartName
+	 * @throws ChartException
+	 */
 	
-	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName) {
-		super( DataTable, AxisLabels,  ChartName);
+	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
+		super( DataTable, AxisLabels,  ChartName) ;
 		this.ChartType = "DynamicLineChart";
-		
+
 	}
 	
 	
 	public void Animate() {
 		return;
 	}
+	
+
 	
 	
 	//attributes

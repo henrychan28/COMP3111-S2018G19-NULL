@@ -19,7 +19,7 @@ public class LineChartUI extends Application {
 	public void start(Stage stage) {
 		Scene scene = new Scene(new Group(), 400, 350);
 		//Create the Label, TextField, ComboBox, Button
-		Label HeadingL = new Label ("Select the chart setting");
+		Label HeadingL = new Label ("Select the line chart setting");
 		Label TitleL = new Label ("Title");
 		Label xL = new Label ("x-axis");
 		Label yL = new Label ("y-axis");

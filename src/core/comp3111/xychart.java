@@ -1,9 +1,12 @@
 package core.comp3111;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
+/**
+ * The implementation of the xychart class 
+ * Which is the parent class of Line Chart and Scatter Chart
+ * 
+ * @author YuenTing
+ */
 import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
 
 
 public class xychart{
@@ -15,13 +18,12 @@ public class xychart{
 	 * @param ChartType
 	 */
 	
-	xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
+	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
 		this.DataTable = DataTable;
 		//this.DataTableName = DataTable.getName();
 		this.AxisLabels = AxisLabels;
 		this.ChartName = ChartName;
-		this.ChartType = ChartType;	
-		
+		this.ChartType = ChartType;					
 	}
 	
 	/**
@@ -32,6 +34,20 @@ public class xychart{
 	public boolean showGraph() {
 		return true;
 	}
+	/**
+	 * Set the ChartName. 
+	 * 
+	 * @param ChartName
+	 * 		- the name of the line chart
+	 * @return void
+	 */
+	public void SetChartName(String ChartName) {
+		this.ChartName = ChartName;
+		this.xychart.setTitle(ChartName);
+		return;
+		
+	}
+
 	
 	//Attributes
 	
