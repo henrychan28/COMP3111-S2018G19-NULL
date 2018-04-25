@@ -18,18 +18,19 @@ public class xychart{
 	 * @param ChartType
 	 */
 	
-	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
+	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType, int serialID){
 		this.DataTable = DataTable;
 		//this.DataTableName = DataTable.getName();
 		this.AxisLabels = AxisLabels;
 		this.ChartName = ChartName;
-		this.ChartType = ChartType;					
+		this.ChartType = ChartType;
+		this.ChartID = ChartName + '_' + Integer.toString(serialID);
 	}
 	
 	/**
 	 * A method to show the chart
 	 * 
-	 * @return true if the graph is sucessfully shown
+	 * @return true if the graph is successfully shown
 	 */
 	public boolean showGraph() {
 		return true;
@@ -47,7 +48,22 @@ public class xychart{
 		return;
 		
 	}
-
+	
+	public String getChartID() {
+		return this.ChartID;
+	}
+	public String getChartName() {
+		return this.ChartName;
+	}
+	public String getChartType() {
+		return this.ChartType;
+	}
+	public String[] getAxisLabels() {
+		return this.AxisLabels;
+	}
+	public String getDataTableName() {
+		return DataTableName;
+	}
 	
 	//Attributes
 	
@@ -55,7 +71,7 @@ public class xychart{
 	protected String DataTableName;
 	protected String[] AxisLabels;
 	protected String ChartName;
-	//protected String ChartName+ id; 
+	protected String ChartID; 
 	protected String ChartType;
 	protected XYChart <Number, Number> xychart;
 	

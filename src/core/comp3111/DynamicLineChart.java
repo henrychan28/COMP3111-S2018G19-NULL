@@ -8,6 +8,9 @@ package core.comp3111;
  */
 
 public class DynamicLineChart extends linechart{
+	
+	//attributes
+	protected float timespan;
 	/**
 	 * Constructor of the Dynamic Line Chart class
 	 * 
@@ -17,9 +20,12 @@ public class DynamicLineChart extends linechart{
 	 * @throws ChartException
 	 */
 	
-	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
-		super( DataTable, AxisLabels,  ChartName) ;
+	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName, int serialID) throws ChartException{
+		super( DataTable, AxisLabels,  ChartName, serialID) ;
 		this.ChartType = "DynamicLineChart";
+		
+		
+		
 
 	}
 	
@@ -31,7 +37,6 @@ public class DynamicLineChart extends linechart{
 
 	
 	
-	//attributes
-	protected float timespan;
+
 	
 }
