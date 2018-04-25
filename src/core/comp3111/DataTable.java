@@ -26,7 +26,6 @@ public class DataTable implements Serializable{
 		// java.util.HashMap
 		dc = new HashMap<String, DataColumn>();
 		tableName = "";
-		
 	}
 	/**
 	 * Construct - Create an empty DataTable
@@ -102,7 +101,16 @@ public class DataTable implements Serializable{
 		}
 		return null;
 	}
-
+	
+	public DataColumn[] getCol() {
+		DataColumn[] dataColumns = new DataColumn[dc.size()];
+		int index = 0;
+		for(String key:dc.keySet()) {
+			dataColumns[index] = dc.get(key);
+			index++;
+		}
+		return null;
+	}
 	/**
 	 * Check whether the column exists by the given column name
 	 * 
