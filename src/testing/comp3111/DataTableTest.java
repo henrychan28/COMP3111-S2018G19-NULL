@@ -121,7 +121,7 @@ public class DataTableTest {
 	void testSetName_OnInit() throws DataTableException {
 		DataTable dataTable = new DataTable("Test");
 		
-		assertEquals("Test", dataTable.getName());
+		assertEquals("Test", dataTable.getTableName());
 	}
 	
 	@Test
@@ -129,6 +129,6 @@ public class DataTableTest {
 		DataTable dataTable = new DataTable("Test");
 		dataTable.setName("Not Test");
 		
-		assertEquals("Not Test", dataTable.getName());
+		assertEquals("Not Test", dataTable.getTableName());
 	}
 }

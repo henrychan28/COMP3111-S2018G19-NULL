@@ -2,6 +2,8 @@ package core.comp3111;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import core.comp3111.DataTable;
 
 /**
@@ -20,7 +22,8 @@ public class CoreData implements Serializable {
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
-	
+	//TO-DO:After merge, change the Object type to xychart which is defined by Cherry
+	private HashMap<String, ArrayList<Object>> blah;
 	// Initializer
 	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
@@ -173,7 +176,7 @@ public class CoreData implements Serializable {
 				for (int innerIndex = 0; innerIndex < masterTableList.get(outerIndex).size() && !found; innerIndex++) {
 					// Look deeper if there is content and finally evaluate comparison
 					if (masterTableList.get(outerIndex).get(innerIndex) != null && 
-							masterTableList.get(outerIndex).get(innerIndex).getName().equalsIgnoreCase(name)) {
+							masterTableList.get(outerIndex).get(innerIndex).getTableName().equalsIgnoreCase(name)) {
 						
 						indices[OUTER] = outerIndex;
 						indices[INNER] = innerIndex;

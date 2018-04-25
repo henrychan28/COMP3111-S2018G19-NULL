@@ -32,12 +32,14 @@ public class DataFilter {
 		for(int i=0;i<dataTable.getNumRow();i++) index.add(i);
 		for(String columnName:retainValues.keySet()) {
 			if(!dataTable.containsColumn(columnName)) continue;
-			DataColumn currentColumn = dataTable.getCol(columnName);
-			Set<Object> retainValue = retainValues.get(columnName);
-			Object[] currentData = currentColumn.getData();
-			for(int i=0;i<currentData.length;i++) {
-				if(!retainValue.contains(currentData[i])) {
-					if(index.contains(i)) index.remove((Integer)i);
+			else {
+				DataColumn currentColumn = dataTable.getCol(columnName);
+				Set<Object> retainValue = retainValues.get(columnName);
+				Object[] currentData = currentColumn.getData();
+				for(int i=0;i<currentData.length;i++) {
+					if(!retainValue.contains(currentData[i])) {
+						if(index.contains(i)) index.remove((Integer)i);
+					}
 				}
 			}
 		}
