@@ -2,6 +2,8 @@ package core.comp3111;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import core.comp3111.DataTable;
 
 /**
@@ -20,7 +22,8 @@ public class CoreData implements Serializable {
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
-	
+	//TO-DO:After merge, change the Object type to xychart which is defined by Cherry
+	private HashMap<String, ArrayList<Object>> blah;
 	// Initializer
 	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
