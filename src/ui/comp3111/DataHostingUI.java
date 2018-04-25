@@ -32,6 +32,11 @@ import javafx.util.Callback;
 public class DataHostingUI extends Application {
 		public static final int OUTER = 0;
 		public static final int INNER = 1;
+		private static ObservableList<DataTable> parentTableList = null;
+		private static ObservableList<DataTable> childTableList = null;
+		private static int childIndex = 0;
+		private static TableView<DataTable> parentTable;
+		private static TableView<DataTable> childTable;
 		
 		/**
 		 * GetDataTable takes in the axis and outer index(if needed) and generate an ObservableList along the axis 
@@ -47,23 +52,32 @@ public class DataHostingUI extends Application {
 		 * @return dataSet
 		 * 			  - a ObservableList containing the scanned item in order
 		 */
-	    public ObservableList<DataTable> GetDataTable(int axis, int outer) {
+	    public ObservableList<DataTable> GetDataTable(int axis, int parent) {
 	    	//To-Do: Once the CoreData is completed, retrieve data from there
 	    	CoreData coreData = getCoreData();
 	    	ObservableList<DataTable> dataSet = FXCollections.observableArrayList();
-	    	if (axis == OUTER && outer == -1) {
+	    	if (axis == OUTER && parent == -1) {
 		    	int outerSize = coreData.getOuterSize();
 		    	for(int outerIndex=0;outerIndex<outerSize;outerIndex++) {
 		    		dataSet.add(coreData.getDataTable(new int[] {outerIndex, 0}));
 		    	}
 	    	}
 	    	else if (axis==INNER) {
-	    		int innerSize = coreData.getInnerSize(outer);
+	    		int innerSize = coreData.getInnerSize(parent);
 	    		for(int innerIndex=0;innerIndex<innerSize;innerIndex++) {
-		    		dataSet.add(coreData.getDataTable(new int[] {outer, innerIndex}));
+		    		dataSet.add(coreData.getDataTable(new int[] {parent, innerIndex}));
 	    		}
 	    	}
 	    	return dataSet;
+	    }
+	    
+	    private void SetDataTable(int axis, int outerIndex) {
+	    	if(axis==OUTER) {
+	    		parentTableList = GetDataTable(OUTER, -1);
+	    	}
+	    	else if(axis==INNER) {
+	    		childTableList = GetDataTable(INNER, outerIndex);
+	    	}
 	    }
 	    
 	    public static void main(String[] args) {
@@ -95,68 +109,54 @@ public class DataHostingUI extends Application {
 	 
 	    @Override
 	    public void start(Stage stage) {
-	        //Scene scene = new Scene(new Group());
+	    	//Initialize the parent table
+	    	SetDataTable(OUTER, -1);
+	    	SetDataTable(INNER, childIndex);
 	        stage.setTitle("Table View Sample");
 	        stage.setWidth(650);
 	        stage.setHeight(500);
 	 
-	        TableView<DataTable> table = CreateDatasetTableView();
-	        TableView<DataTable> table2 = CreateChartTableView();
+	        parentTable = CreateTableView("Parent Table", "tableName", parentTable, parentTableList);
+	        childTable = CreateTableView("Child Table", "tableName", childTable, childTableList);
 
 	        final HBox hbox = new HBox();
-	        //hbox.setSpacing(5);
-	        //hbox.setPadding(new Insets(10, 0, 0, 10));
-	        hbox.getChildren().addAll(table, table2);
-	 
-	        //((Group) scene.getRoot()).getChildren().addAll(hbox);
+	        hbox.getChildren().addAll(parentTable, childTable);
 	        Scene scene = new Scene(hbox);
 	        stage.setScene(scene);
 	        stage.show();
 	    }
 	    
-
-	    public TableView<DataTable> CreateDatasetTableView(){
+	    public TableView<DataTable> CreateTableView(String tableName, String propertyName, TableView<DataTable> tableView, 
+	    											ObservableList<DataTable> tableList) {
 	    	TableView<DataTable> table = new TableView<>();
-	        TableColumn Dataset = new TableColumn("Dataset");
-	        Dataset.setCellValueFactory(new PropertyValueFactory<>("tableName"));
-	        ObservableList<DataTable> dataTables = GetDataTable(OUTER, -1);
-	        table.setItems(dataTables);
+	        TableColumn Dataset = new TableColumn(tableName);
+	        Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+	        Dataset.setCellFactory(getDataTableFactory());
+	        table.setItems(tableList);
 	        table.getColumns().addAll(Dataset);
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-	    	return table;
+	    	return table;	    	
 	    }
 	    
-	    public TableView<DataTable> CreateChartTableView(){
-	    	TableView<DataTable> table = new TableView<>();
-	        TableColumn Dataset = new TableColumn("Dataset");
-	        Dataset.setCellValueFactory(new PropertyValueFactory<>("tableName"));
-	        Dataset.setCellFactory(getChartTableFactory());
-	        ObservableList<DataTable> dataTables = GetDataTable(OUTER, -1);
-	        table.setItems(dataTables);
-	        table.getColumns().addAll(Dataset);
-	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-	    	return table;
-	    }  
-	    
-	    Callback<TableColumn, TableCell> getChartTableFactory(){
-	    	Callback<TableColumn, TableCell> chartTableFactory = new Callback<TableColumn, TableCell>(){
+	    Callback<TableColumn, TableCell> getDataTableFactory(){
+	    	Callback<TableColumn, TableCell> dataTableFactory = new Callback<TableColumn, TableCell>(){
 	    		@Override
 	    		public TableCell call(TableColumn p) {
-	    			MyStringTableCell cell = new MyStringTableCell();
-	    			cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new MyEventHandler());
+	    			StringTableCell cell = new StringTableCell();
+	    			cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new dataTableFactoryEventHandler());
 	    			return cell;
 	    		}
 	    	};
-	    	return chartTableFactory;
+	    	return dataTableFactory;
 	    }
 	    
-	    class MyStringTableCell extends TableCell<DataTable, String> {
+	    class StringTableCell extends TableCell<DataTable, String> {
 	    	 
 	        @Override
 	        public void updateItem(String item, boolean empty) {
 	            super.updateItem(item, empty);
 	            setText(empty ? null : getString());
-	            setGraphic(null);
+	            //setGraphic(null);
 	        }
 	 
 	        private String getString() {
@@ -164,13 +164,13 @@ public class DataHostingUI extends Application {
 	        }
 	    }
 	    
-	    class MyEventHandler implements EventHandler<MouseEvent> {
-	    	 
+	    class dataTableFactoryEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
-	            TableCell c = (TableCell) t.getSource();
-	            int index = c.getIndex();
-	            System.out.println(index);
+	            TableCell cell = (TableCell) t.getSource();
+	            int index = cell.getIndex();
+	            SetDataTable(INNER, index);
+	            childTable.setItems(childTableList);
 	        }
 	    }
 	    
