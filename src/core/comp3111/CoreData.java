@@ -18,13 +18,15 @@ public class CoreData implements Serializable {
 	public static final long serialVersionUID = 1;
 	
 	// Class variables
+	
 	private ArrayList<ArrayList<DataTable>> masterTableList; //👺
 	//TO-DO:After merge, change the Object type to xychart which is defined by Cherry
-	private HashMap<String, ArrayList<Object>> blah;
+	private HashMap<String, ArrayList<xychart>> masterChartList; 
 
 	// Initializer
 	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
+		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
 	
 	/**
@@ -186,4 +188,60 @@ public class CoreData implements Serializable {
 		
 		return indices;
 	}
+	/**
+	 * Add the Chart to the masterChartList.
+	 * 
+	 * @param DataTableName
+	 * 			- Corresponding DataTable
+	 * @param ChartName
+	 * 			- ChartName
+	 * @return true if success, false otherwise
+	 */
+	
+	public boolean addChart(String DataTableName, xychart xychart) {
+		boolean success = false;
+		if(this.masterChartList.containsKey(DataTableName)) {
+			masterChartList.get(DataTableName).add(xychart);
+			success = true;
+		}
+		else {
+			ArrayList<xychart> arraylist = new ArrayList<xychart>();
+			arraylist.add(xychart);
+			masterChartList.put(DataTableName, arraylist);
+			success = true;
+		}
+		return success;
+	}
+	/**
+	 * get the ArrayList of xychart for the specific DataTable.
+	 * 
+	 * 
+	 * @param DataTable
+	 * @return ArrayList<xychart> if there is charts for DataTable. null otherwise.
+	 */
+	public ArrayList<xychart> getCharts(String DataTable){
+		return masterChartList.get(DataTable);
+	}
+	/**
+	 * get the chart with ChartID known and DataTable known 
+	 * 
+	 * @param DataTableName
+	 * @param ChartID
+	 * @return the xychart if existed. null otherwise.
+	 */
+	
+	public xychart getChart(String DataTableName, String ChartID) {
+		if (masterChartList.containsKey(DataTableName)) {
+			ArrayList<xychart> Charts = masterChartList.get(DataTableName);
+			for (int i = 0; i < Charts.size(); i++) {
+				if (Charts.get(i).getChartID() == ChartID) {
+					return Charts.get(i);
+				}
+			}
+
+		}
+		return null;
+	}
+	
+	
 }
