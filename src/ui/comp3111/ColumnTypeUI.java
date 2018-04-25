@@ -1,7 +1,10 @@
 package ui.comp3111;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import core.comp3111.AutoFillType;
+import core.comp3111.DataColumn;
 import core.comp3111.DataType;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +32,19 @@ public class ColumnTypeUI {
 	private static final int SIZE_H = 400;
 	private static final int SIZE_W = 600;
 	
-	public HashMap<String, String[]> start(Stage parent) {
+	private HashMap<String, String[]> columnPrefs;
+	
+	public ColumnTypeUI(String[] columns) {
+		columnPrefs = new HashMap<String, String[]>();
+		String[] defaultVals = {DataType.TYPE_STRING, AutoFillType.TYPE_EMPTY};
+		
+		for (int i = 0; i < columns.length; i++)
+		{
+			columnPrefs.put(columns[i], defaultVals);
+		}
+	}
+	
+	public HashMap<String, String[]> presentUI(Stage parent) {
 		
 		
 		/*
@@ -49,6 +64,7 @@ public class ColumnTypeUI {
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				columnSelectedLabel.setText((String) newValue);
+				columnPrefs.put("stuff", null);
 			}
 		});
 		
@@ -154,7 +170,7 @@ public class ColumnTypeUI {
 		
 
 		System.out.println("SHIT");
-		return null;
+		return columnPrefs;
 	}
 
 }

@@ -9,10 +9,8 @@ import java.io.ObjectOutputStream;
 
 public class CoreDataIO {
 	
-	public static final String FILE_EX = ".COMP3111";
-	
 	public void saveCoreData(CoreData coreData, String folder, String fileName, String extention) {
-		String address = folder + System.getProperty("file.separator") + fileName + FILE_EX;
+		String address = folder + System.getProperty("file.separator") + fileName + Constants.FILE_EX;
 		try {
 			// write object to file
 			FileOutputStream fos = new FileOutputStream(address);

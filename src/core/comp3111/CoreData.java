@@ -13,9 +13,6 @@ import core.comp3111.DataTable;
 public class CoreData implements Serializable {
 	
 	// Defines
-	public static final int EMPTY = -1;
-	public static final int OUTER = 0;
-	public static final int INNER = 1;
 	public static final long serialVersionUID = 1;
 	
 	// Class variables
@@ -35,15 +32,15 @@ public class CoreData implements Serializable {
 	 * @return the index in which the table was added
 	 */
 	public int[] addParentTable(DataTable table) {
-		int[] newParentIndex = {EMPTY, EMPTY};
+		int[] newParentIndex = {Constants.EMPTY, Constants.EMPTY};
 		
 		if (table != null)
 		{
 			ArrayList<DataTable> inner = new ArrayList<DataTable>();
 			inner.add(table);
 			masterTableList.add(inner);
-			newParentIndex[OUTER] = masterTableList.size() - 1;
-			newParentIndex[INNER] = 0;
+			newParentIndex[Constants.OUTER] = masterTableList.size() - 1;
+			newParentIndex[Constants.INNER] = 0;
 		}
 		
 		return newParentIndex;
@@ -57,13 +54,13 @@ public class CoreData implements Serializable {
 	 * @return child table index
 	 */
 	public int[] addChildTable(DataTable table, int parentIndex) {
-		int[] newChildIndex = {EMPTY,EMPTY};
+		int[] newChildIndex = {Constants.EMPTY,Constants.EMPTY};
 		
 		if (masterTableList.size() > parentIndex && table != null)
 		{
 			masterTableList.get(parentIndex).add(table);
-			newChildIndex[INNER] = masterTableList.get(parentIndex).size() - 1;
-			newChildIndex[OUTER] = parentIndex;
+			newChildIndex[Constants.INNER] = masterTableList.get(parentIndex).size() - 1;
+			newChildIndex[Constants.OUTER] = parentIndex;
 		}
 		
 		return newChildIndex;
@@ -100,12 +97,12 @@ public class CoreData implements Serializable {
 		DataTable table = null;
 		
 		// Chain of if statements to protect against nulls
-		if (masterTableList.size() > index[OUTER] && 
-				masterTableList.get(index[OUTER]) != null &&
-				masterTableList.get(index[OUTER]).size() > index[INNER] &&
-				masterTableList.get(index[OUTER]).get(index[INNER]) != null) {
+		if (masterTableList.size() > index[Constants.OUTER] && 
+				masterTableList.get(index[Constants.OUTER]) != null &&
+				masterTableList.get(index[Constants.OUTER]).size() > index[Constants.INNER] &&
+				masterTableList.get(index[Constants.OUTER]).get(index[Constants.INNER]) != null) {
 			
-			table = masterTableList.get(index[OUTER]).get(index[INNER]);
+			table = masterTableList.get(index[Constants.OUTER]).get(index[Constants.INNER]);
 		}
 		
 		return table;
@@ -119,7 +116,7 @@ public class CoreData implements Serializable {
 	 * @return
 	 */
 	public int getInnerSize(int innerIndex) {
-		int size = EMPTY;
+		int size = Constants.EMPTY;
 		
 		// Make sure there is a ArrayList at the desired outer index
 		if (innerIndex < masterTableList.size()) {
@@ -143,12 +140,12 @@ public class CoreData implements Serializable {
 	 */
 	public boolean setDataTable(int[] index, DataTable table) {
 		boolean success = false;
-		if (index[OUTER] >= 0 && 
-				index[INNER] >= 0 && 
-				masterTableList.size() > index[OUTER] &&
-				masterTableList.get(index[OUTER]).size() > index[INNER] ) {
+		if (index[Constants.OUTER] >= 0 && 
+				index[Constants.INNER] >= 0 && 
+				masterTableList.size() > index[Constants.OUTER] &&
+				masterTableList.get(index[Constants.OUTER]).size() > index[Constants.INNER] ) {
 			
-			masterTableList.get(index[OUTER]).set(index[INNER], table);
+			masterTableList.get(index[Constants.OUTER]).set(index[Constants.INNER], table);
 			success = true;
 		}
 		return success;
@@ -162,7 +159,7 @@ public class CoreData implements Serializable {
 	 * @return [outer, inner] indices of the desired DataTable, [-1,-1] if not found
 	 */
 	public int[] searchForDataTable(String name) { 
-		int[] indices = {EMPTY,EMPTY};
+		int[] indices = {Constants.EMPTY,Constants.EMPTY};
 		boolean found = false;
 		
 		// Iterate through the ArrayList searching for the desired DataTable
@@ -176,8 +173,8 @@ public class CoreData implements Serializable {
 					if (masterTableList.get(outerIndex).get(innerIndex) != null && 
 							masterTableList.get(outerIndex).get(innerIndex).getTableName().equalsIgnoreCase(name)) {
 						
-						indices[OUTER] = outerIndex;
-						indices[INNER] = innerIndex;
+						indices[Constants.OUTER] = outerIndex;
+						indices[Constants.INNER] = innerIndex;
 						found = true;
 					}
 				}

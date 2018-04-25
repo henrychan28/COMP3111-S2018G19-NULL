@@ -56,15 +56,48 @@ public class DataImport {
 		return success;
 	}
 	
+	
+	/**
+	 * Converts the scratchpad into a properly formatted DataTable
+	 * 
+	 * @param columns
+	 * 			HashMap with column names as key to a value pair of {data type, autofill type}
+	 * @return
+	 * 			A completed DataTable
+	 */
 	public DataTable buildDataTable(HashMap<String, String[]> columns) {
 		DataTable table = null;
-		
-		// Crap about Column header
 		
 		// We finished reading in the file, now we can put the data into a DataTable
 		// If this works we can return that the import succeeded
 		try {
-			table = createDataTable(selectedFile.getName());
+			table = new DataTable("Default");
+			
+			String[] strArr = null;
+			String[] colSettings = null;
+			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
+				strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
+				colSettings = columns.get(columnHeaders[colNum]);
+				
+				// Process this column's raw data, adding in blanks where needed
+				switch (colSettings[Constants.AUTOFILLTYPE_INDEX]) {
+				case AutoFillType.TYPE_AVG:
+					break;
+				case AutoFillType.TYPE_EMPTY:
+					break;
+				case AutoFillType.TYPE_MEAN:
+					break;
+				case AutoFillType.TYPE_ZERO:
+					break;
+				default:
+					break;
+				}						
+				
+				// Save to the DataTable
+				DataColumn column = new DataColumn(colSettings[Constants.DATATYPE_INDEX], strArr);
+				table.addCol(columnHeaders[colNum], column);
+			}
+			
 		} catch (DataTableException e) {
 			e.printStackTrace();
 		}
@@ -163,31 +196,6 @@ public class DataImport {
 		for (int i = 0; i < strArray.length; i++) {
 			matrix.get(i).add(strArray[i]);
 		}
-	}
-	
-	/**
-	 * Converts the scratchpad into a properly formatted DataTable
-	 * 
-	 * @param name
-	 * 			The name to initialize the DataTable with
-	 * @return boolean 
-	 * 				Notifies whether the DataTable was created successfully
-	 * @throws DataTableException 
-	 */
-	private DataTable createDataTable(String name) throws DataTableException {
-		DataTable table = null;
-		
-		if (importMatrix != null) {
-			table = new DataTable(name);
-			
-			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
-				String[] strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
-				DataColumn column = new DataColumn(DataType.TYPE_STRING, strArr);
-				table.addCol(columnHeaders[colNum], column);
-			}
-		}
-		
-		return table;
 	}
 	
 	/**
