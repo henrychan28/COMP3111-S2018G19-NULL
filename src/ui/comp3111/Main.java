@@ -3,8 +3,13 @@ package ui.comp3111;
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataType;
+import core.comp3111.Constants;
 import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataImport;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import core.comp3111.CoreData;
 import core.comp3111.CoreDataIO;
 import javafx.application.Application;
@@ -36,14 +41,9 @@ public class Main extends Application {
 	// Hint: Use java.util.List interface and its implementation classes (e.g.
 	// java.util.ArrayList)
 	
-	// Defines
-	private static final int EMPTY = -1;
-	private static final int OUTER = 0;
-	private static final int INNER = 1;
-	
 	// Data Storage
 	private CoreData coreData = new CoreData();
-	private int[] selectedTableIndex = {EMPTY, EMPTY};
+	private int[] selectedTableIndex = {Constants.EMPTY, Constants.EMPTY};
 
 	// Attributes: Scene and Stage
 	private static final int SCENE_NUM = 4;
@@ -177,24 +177,32 @@ public class Main extends Application {
 		
 		// click handler for import test
 		btImportDataLineChart.setOnAction(e -> {
-			
+						
 			// Present file chooser to the user and store result
 			DataImport fileToImport = new DataImport();
 			
+			
 			// If a file is chosen process it
-			if (fileToImport.showSingleFileChooser()) 
+			if (fileToImport.getFileForImport()) 
 			{
-				// Process the selected file
-				selectedTableIndex = coreData.addParentTable(fileToImport.parseFileToDataTable());
+				// Parse the selected file to temporary table
+				String[] columnHeaders = null;
+				columnHeaders = fileToImport.parseFile();
+				
+				// Ask the user about the method to handle the various columns
+				ColumnTypeUI columnWindow = new ColumnTypeUI(columnHeaders);
+				HashMap<String, String[]> columnData = columnWindow.presentUI(stage);
+				
+				selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
 				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
 						coreData.getDataTable(selectedTableIndex).getNumCol()));
 
 				populateSampleDataTableValuesToChart("Import Test");
 				
 				CoreDataIO io = new CoreDataIO();
-				io.saveCoreData(coreData, "/Users/michaelfrost/Desktop/","Someshit",io.FILE_EX);
+				io.saveCoreData(coreData, "/Users/michaelfrost/Desktop/","Someshit",Constants.FILE_EX);
 			} 
-			
+						
 		});
 
 		// click handler

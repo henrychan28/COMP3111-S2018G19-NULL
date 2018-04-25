@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -17,7 +19,6 @@ public class DataImport {
 	private File selectedFile = null;
 	private ArrayList<ArrayList<String>> importMatrix = null;
 	String[] columnHeaders = null;
-	String[] columnDataType = null;
 	
 	public DataImport() {
 		
@@ -30,7 +31,7 @@ public class DataImport {
 	 * 
 	 * @return boolean notifying whether a file was chosen successfully
 	 */
-	public boolean showSingleFileChooser() {
+	public boolean getFileForImport() {
 		boolean success = false;
 		
 		// Initialize the file chooser
@@ -55,17 +56,65 @@ public class DataImport {
 		return success;
 	}
 	
+	
+	/**
+	 * Converts the scratchpad into a properly formatted DataTable
+	 * 
+	 * @param columns
+	 * 			HashMap with column names as key to a value pair of {data type, autofill type}
+	 * @return
+	 * 			A completed DataTable
+	 */
+	public DataTable buildDataTable(HashMap<String, String[]> columns) {
+		DataTable table = null;
+		
+		// We finished reading in the file, now we can put the data into a DataTable
+		// If this works we can return that the import succeeded
+		try {
+			table = new DataTable("Default");
+			
+			String[] strArr = null;
+			String[] colSettings = null;
+			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
+				strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
+				colSettings = columns.get(columnHeaders[colNum]);
+				
+				// Process this column's raw data, adding in blanks where needed
+				switch (colSettings[Constants.AUTOFILLTYPE_INDEX]) {
+				case AutoFillType.TYPE_AVG:
+					break;
+				case AutoFillType.TYPE_EMPTY:
+					break;
+				case AutoFillType.TYPE_MEAN:
+					break;
+				case AutoFillType.TYPE_ZERO:
+					break;
+				default:
+					break;
+				}						
+				
+				// Save to the DataTable
+				DataColumn column = new DataColumn(colSettings[Constants.DATATYPE_INDEX], strArr);
+				table.addCol(columnHeaders[colNum], column);
+			}
+			
+		} catch (DataTableException e) {
+			e.printStackTrace();
+		}
+		
+		return table;
+	}
+	
 	/**
 	 * Attempts to extract the CSV formatted file contents contained in the file
 	 * 
 	 * @return boolean notifying whether the file was parsed successfully
 	 */
-	public DataTable parseFileToDataTable() {
+	public String[] parseFile() {
+		
 		// Variable init
-		DataTable table = null;
 		BufferedReader reader = null;
         String line = "";
-        int columnCount = -1;
         String[] lineArray = null;
 
         // Try opening and reading the file previously linked
@@ -75,43 +124,27 @@ public class DataImport {
             // Double check there is content before proceeding
             if ((line = reader.readLine()) != null) {
             		
-            		// Get the headers
-            		columnHeaders = line.split(",", -1);
-            		columnCount = columnHeaders.length;
-            		
-            		// Prompt the user for the type of data for each column
-            		// HERE
-            		columnDataType = new String[columnCount];
-            		for (int i = 0; i < columnCount; i++)
-            		{
-            			columnDataType[i] = DataType.TYPE_STRING;
-            		}
-            		
-            		// Build an arraylist of Strings arraylists to store the CSV with
-            		// This transposes the rows of file data into columns convenient for our application
-            		importMatrix = buildImportScratchpad(columnCount);
-            		
-            		// Extract the content line by line
-            		while ((line = reader.readLine()) != null) {
-            			
-            			// Use specified separator to parse into same number of columns as we had headers
-            			lineArray = line.split(",", columnCount);
-            			addRowToScratchpad(importMatrix,lineArray);
-            		}
-            		
-            		// We finished reading in the file, now we can put the data into a DataTable
-            		// If this works we can return that the import succeeded
-            		table = createDataTable(selectedFile.getName());
+	    		// Get the headers
+	    		columnHeaders = line.split(",", -1);
+	    		
+	    		// Build an arraylist of Strings arraylists to store the CSV with
+	    		// This transposes the rows of file data into columns convenient for our application
+	    		importMatrix = buildImportScratchpad(columnHeaders.length);
+	    		
+	    		// Extract the content line by line
+	    		while ((line = reader.readLine()) != null) {
+	    			
+	    			// Use specified separator to parse into same number of columns as we had headers
+	    			lineArray = line.split(",", columnHeaders.length);
+	    			addRowToScratchpad(importMatrix,lineArray);
+            	}	
             }
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DataTableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+        } finally {
             if (reader != null) {
                 try {
                     reader.close();
@@ -120,8 +153,8 @@ public class DataImport {
                 }
             }
         }
-		
-		return table;
+        
+        return columnHeaders;
 	}
 	
 	/**
@@ -163,31 +196,6 @@ public class DataImport {
 		for (int i = 0; i < strArray.length; i++) {
 			matrix.get(i).add(strArray[i]);
 		}
-	}
-	
-	/**
-	 * Converts the scratchpad into a properly formatted DataTable
-	 * 
-	 * @param name
-	 * 			The name to initialize the DataTable with
-	 * @return boolean 
-	 * 				Notifies whether the DataTable was created successfully
-	 * @throws DataTableException 
-	 */
-	private DataTable createDataTable(String name) throws DataTableException {
-		DataTable table = null;
-		
-		if (importMatrix != null) {
-			table = new DataTable(name);
-			
-			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
-				String[] strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
-				DataColumn column = new DataColumn(columnDataType[colNum], strArr);
-				table.addCol(columnHeaders[colNum], column);
-			}
-		}
-		
-		return table;
 	}
 	
 	/**
