@@ -96,13 +96,14 @@ public class scatterchart extends xychart{
 		
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel(xlabel);
-		xAxis.setLabel(ylabel);
+		xAxis.setLabel(this.xlabel);
+		yAxis.setLabel(this.ylabel);
 		
 		this.xychart  = new ScatterChart<Number, Number> (xAxis, yAxis); 
 		this.xychart.setTitle(this.ChartName); //title of the chart is the ChartName
 		//defining a series for each category
-		HashMap<Object, XYChart.Series<Number, Number>> allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
+		
+		this.allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
 		
 		for (int i = 0; i < SizeOfdc; i++) {
 			//if the category key already exists in allSeries
@@ -131,27 +132,18 @@ public class scatterchart extends xychart{
 
 	}
 	
-	/**
-	 * Set the ChartName. 
-	 * 
-	 * @param ChartName
-	 * 		- the name of the line chart
-	 * @return void
-	 */
-	public void SetChartName(String ChartName) {
-		this.ChartName = ChartName;
-		this.xychart.setTitle(ChartName);
-		return;
-		
-	}
+
+	//set xlabel -> NumberAxis name
+	//set ylabel -> NumberAxis name
 		
 	//Attributes
-	protected String xlabel;
-	protected String ylabel;
-	protected String category;
+	protected String xlabel; //for naming of the graph
+	protected String ylabel; //for naming of the graph
+	protected String category; //for naming of the graph
 	protected DataColumn xdc;
 	protected DataColumn ydc;
 	protected DataColumn cdc;
+	protected HashMap<Object, XYChart.Series<Number, Number>> allSeries;
 	protected int SizeOfdc;
 	
 }
