@@ -147,14 +147,23 @@ public class DataHostingUI extends Application {
 	    	TableView<DataTable> table = new TableView<>();
 	        TableColumn Dataset = new TableColumn(tableName);
 	        Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-	        Dataset.setCellFactory(getDataTableFactory(eventType));
+	        Dataset.setCellFactory(GetDataTableFactory(eventType));
 	        table.setItems(tableList);
 	        table.getColumns().addAll(Dataset);
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	    	return table;	    	
 	    }
 	    
-	    Callback<TableColumn, TableCell> getDataTableFactory(EventHandlerType eventType){
+		/**
+		 * GetDataTableFactory returns Callback which includes corresponding event handler
+		 * which the behavior of cell is defined by StringTableCell().
+		 * 
+		 * @param eventType
+		 *            - the type of event handler 
+		 * @return dataTableFactory
+		 * 			  - callback with desired event handler 
+		 */
+	    Callback<TableColumn, TableCell> GetDataTableFactory(EventHandlerType eventType){
 	    	Callback<TableColumn, TableCell> dataTableFactory = new Callback<TableColumn, TableCell>(){
 	    		@Override
 	    		public TableCell call(TableColumn p) {
@@ -177,6 +186,7 @@ public class DataHostingUI extends Application {
 	    	return dataTableFactory;
 	    }
 	    
+	    //Define the behavior of cells in table
 	    class StringTableCell extends TableCell<DataTable, String> {
 	    	 
 	        @Override
