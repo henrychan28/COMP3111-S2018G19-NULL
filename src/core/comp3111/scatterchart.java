@@ -29,10 +29,10 @@ public class scatterchart extends xychart{
 	 * 			- Exception class 
 	 */
 	
-	public scatterchart(DataTable DataTable, String[] AxisLabels, String ChartName, int serialID) throws ChartException {
+	public scatterchart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		
 		
-		super(DataTable, AxisLabels, ChartName, "ScatterChart", serialID);
+		super(DataTable, AxisLabels, ChartName, "ScatterChart");
 		
 		/**Check: Must passed 3 DataColumn with 2 Number Type and 1 String Type*/
 		

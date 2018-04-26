@@ -16,6 +16,7 @@ public class CoreData implements Serializable {
 	
 	// Defines
 	public static final long serialVersionUID = 1;
+	private static long serialchartid = 1;
 	
 	// Class variables
 	
@@ -241,6 +242,24 @@ public class CoreData implements Serializable {
 
 		}
 		return null;
+	}
+	/**
+	 * Get and update the chartid. 
+	 * 
+	 * @return long chartid
+	 */
+	public static long getchartid() {
+		
+		CoreData.serialchartid +=1;	
+		return CoreData.serialchartid -1;
+	}
+	/**
+	 * Get the chartid. No updating. 
+	 * 
+	 * @return long chartid
+	 */
+	public static long checkchartid() {
+		return CoreData.serialchartid;
 	}
 	
 	

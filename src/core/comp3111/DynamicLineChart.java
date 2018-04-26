@@ -20,8 +20,8 @@ public class DynamicLineChart extends linechart{
 	 * @throws ChartException
 	 */
 	
-	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName, int serialID) throws ChartException{
-		super( DataTable, AxisLabels,  ChartName, serialID) ;
+	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
+		super( DataTable, AxisLabels,  ChartName) ;
 		this.ChartType = "DynamicLineChart";
 		
 		

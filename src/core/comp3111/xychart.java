@@ -20,13 +20,14 @@ public class xychart{
 	 * @param ChartType
 	 */
 	
-	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType, int serialID){
+	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
 		this.DataTable = DataTable;
 		//this.DataTableName = DataTable.getName();
 		this.AxisLabels = AxisLabels;
 		this.ChartName = ChartName;
 		this.ChartType = ChartType;
-		this.ChartID = ChartName + '_' + Integer.toString(serialID);
+		long serialID = CoreData.getchartid();
+		this.ChartID = ChartName + '_' +ChartName +Long.toString(serialID);
 	}
 	
 	/**

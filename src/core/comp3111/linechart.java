@@ -29,10 +29,10 @@ public class linechart extends xychart{
 	 */
 	
 	
-	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName, int serialID) throws ChartException{		
+	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
 		//Constructor of the parent class
 
-		super(DataTable, AxisLabels, ChartName, "LineChart", serialID);
+		super(DataTable, AxisLabels, ChartName, "LineChart");
 		
 		/** Check: Must passed 2 DataColumn with Number Type */
 
