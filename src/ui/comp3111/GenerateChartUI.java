@@ -175,41 +175,61 @@ public class GenerateChartUI extends Application {
 		
 		//1: heading 
 		lbSelectNewLineChart = new Label("Select Line Chart Setting");
+		lbSelectNewLineChart.setFont(new Font("Arial", 20));
+		
 		//2: Title - default DataTable Name, use editable combobox
-		HBox Title = new HBox();
+		HBox Title = new HBox(10);
 		lbLineTitle = new Label("Title"); 
 		cbLineTitle = new ComboBox();
 		Title.getChildren().addAll(lbLineTitle, cbLineTitle);
+		Title.setAlignment(Pos.CENTER);
 		//TODO: editable combobox
-
+		
 		
 		//3: x-axis 
-		HBox Xaxis = new HBox();
+		HBox Xaxis = new HBox(10);
 		lbLineXaxis = new Label("x-axis");
 		cbLineXaxis = new ComboBox();
-		Xaxis.getChildren().addAll(lbLineXaxis, cbLineYaxis);
-		//TODO: add the key of all number type data columns of the DataTable to the ComboBox
+		Xaxis.getChildren().addAll(lbLineXaxis, cbLineXaxis);
+		Xaxis.setAlignment(Pos.CENTER);
 
+		//TODO: add the key of all number type data columns of the DataTable to the ComboBox
+	
 		//4: y-axis
-		HBox Yaxis = new HBox();
+		HBox Yaxis = new HBox(10);
 		lbLineYaxis = new Label("y-axis");
 		cbLineYaxis= new ComboBox();
-		Yaxis.getChildren().addAll(lbLineXaxis, cbLineYaxis);
+		Yaxis.getChildren().addAll(lbLineYaxis, cbLineYaxis);
+		Yaxis.setAlignment(Pos.CENTER);
 
 		//TODO: add the key of all number type data columns of the DataTable to the ComboBox
 
 		//5 Buttons
-		HBox ButtonsSave = new HBox();
-		btLineSave = new Button("View History");
-		btLineSaveandPreview= new Button("Generate New");
-		ButtonsSave.getChildren().addAll(btLineSave, btLineSaveandPreview);
+		HBox ButtonsSave = new HBox(20);
+		ButtonsSave.setAlignment(Pos.CENTER);
+		btLineSave = new Button("Save");
+		btLineSaveandPreview= new Button("Save and View");
+		ButtonsSave.getChildren().addAll(btLineSave, btLineSaveandPreview, btbackto1);
 		
-		VBox container = new VBox();
-		container.getChildren().addAll(lbSelectNewLineChart,  Title, Xaxis, Yaxis, ButtonsSave);
+		
+		VBox container = new VBox(20);
+		container.getChildren().addAll(lbSelectNewLineChart, Title, Xaxis, Yaxis, new Separator(), ButtonsSave);
 		container.setAlignment(Pos.CENTER);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(container);
 		
+		return pane;
+	}
+	private Pane paneScatterChartSelection() {
+		BorderPane pane = new BorderPane();
+		return pane;
+	}
+	private Pane paneDynamicChartSelection() {
+		BorderPane pane = new BorderPane();
+		return pane;
+	}
+	private Pane paneShowChart() {
+		BorderPane pane = new BorderPane();
 		return pane;
 	}
 	
@@ -221,12 +241,11 @@ public class GenerateChartUI extends Application {
 	private void initScenes() {
 		scenes = new Scene[SCENE_CHART_NUM];
 		scenes[SCENE_Chart_TYPE_SELECTION] = new Scene(paneChartTypeSelection(), 400, 600);
-/*
-		public static final int SCENE_SCATTER_CHART_SELECTION = 3;
-		public static final int SCENE_DYNAMIC_CHART_SELECTION = 4;
-		public static final int SCENE_SHOW_CHART = 5;*/
 		scenes[SCENE_VIEW_HISTORY] = new Scene(paneViewHistory(), 400, 600);
 		scenes[SCENE_LINE_CHART_SELECTION] = new Scene( paneLineChartSelection() , 400, 600);
+		scenes[SCENE_SCATTER_CHART_SELECTION] = new Scene(paneScatterChartSelection(), 400, 600) ;
+		scenes[SCENE_DYNAMIC_CHART_SELECTION] = new Scene(paneDynamicChartSelection() , 400, 600);
+		scenes[SCENE_SHOW_CHART] = new Scene(paneShowChart() , 400, 600);	
 		
 		for(Scene s: scenes) {
 			if(s!= null) {s.getStylesheets().add("Main.css");}
