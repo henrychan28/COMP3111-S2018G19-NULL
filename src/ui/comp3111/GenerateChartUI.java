@@ -221,7 +221,62 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 	private Pane paneScatterChartSelection() {
+		//screen 4: paneScatterChartSelection
+		//private Label , , , , ;
+		//private Button btScatterSave, btScatterSaveandPreview;
+		//private ComboBox , , , ;
+		//1. heading
+		lbSelectNewScatterChart = new Label("Select the Scatter Chart Setting");
+		lbSelectNewScatterChart.setFont(new Font("Arial", 20));
+		
+		//2: Title - default DataTable Name, use editable combobox
+		HBox Title = new HBox(10);
+		lbScatterTitle = new Label("Title"); 
+		cbScatterTitle = new ComboBox();
+		Title.getChildren().addAll(lbScatterTitle, cbScatterTitle);
+		Title.setAlignment(Pos.CENTER);
+		//TODO: editable combobox
+		
+		
+		//3: x-axis 
+		HBox Xaxis = new HBox(10);
+		lbScatterXaxis = new Label("x-axis");
+		cbScatterXaxis = new ComboBox();
+		Xaxis.getChildren().addAll(lbScatterXaxis, cbScatterXaxis);
+		Xaxis.setAlignment(Pos.CENTER);
+
+		//TODO: add the key of all number type data columns of the DataTable to the ComboBox
+	
+		//4: y-axis
+		HBox Yaxis = new HBox(10);
+		lbScatterYaxis = new Label("y-axis");
+		cbScatterYaxis= new ComboBox();
+		Yaxis.getChildren().addAll(lbScatterYaxis, cbScatterYaxis);
+		Yaxis.setAlignment(Pos.CENTER);
+
+		//TODO: add the key of all number type data columns of the DataTable to the ComboBox
+
+		//5 Category Axis
+		HBox Caxis = new HBox(10);
+		lbScatterCaxis = new Label("Categories");
+		cbScatterCaxis= new ComboBox();
+		Caxis.getChildren().addAll(lbScatterCaxis, cbScatterCaxis);
+		Caxis.setAlignment(Pos.CENTER);
+		
+		//6 Buttons
+		HBox  ButtonsSave = new HBox(20);
+		ButtonsSave.setAlignment(Pos.CENTER);
+		btScatterSave = new Button("Save");
+		btScatterSaveandPreview= new Button("Save and View");
+		ButtonsSave.getChildren().addAll(btScatterSave, btScatterSaveandPreview, btbackto1);
+		
+		
+		VBox container = new VBox(20);
+		container.setAlignment(Pos.CENTER);
+		container.getChildren().addAll(lbSelectNewScatterChart, Title,  Xaxis, Yaxis,Caxis, new Separator(), ButtonsSave);
+		
 		BorderPane pane = new BorderPane();
+		pane.setCenter(container);
 		return pane;
 	}
 	private Pane paneDynamicChartSelection() {
@@ -275,7 +330,7 @@ public class GenerateChartUI extends Application {
 		 stage = primarystage;
 		 initScenes();
 		 initEventHandlers();
-		 putSceneOnStage(SCENE_LINE_CHART_SELECTION);
+		 putSceneOnStage(SCENE_SCATTER_CHART_SELECTION);
 		 
 		
 
