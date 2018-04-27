@@ -12,5 +12,12 @@ public class DataType {
 	public static final String TYPE_NUMBER = "java.lang.Number";
 	public static final String TYPE_STRING = "java.lang.String";
 
+	public static boolean CheckInDataType(String typeName){
+		if(typeName!=TYPE_STRING || typeName!=TYPE_NUMBER || typeName!=TYPE_STRING){
+			return false;
+		}
+		else return true;
+	}
+
 	// TODO: Add more type mapping here...
 }

@@ -31,6 +31,11 @@ public class DataColumn implements Serializable {
 	 *            - any Java Object array
 	 */
 	public DataColumn(String typeName, Object[] values) {
+		if (!DataType.CheckInDataType(typeName)) {
+			System.err.println("Provided typeName is not included in the default DataType...");
+			System.err.println("The typeName is set to Object...");
+			set(DataType.TYPE_OBJECT, values);
+		};
 		set(typeName, values);
 	}
 
@@ -44,7 +49,8 @@ public class DataColumn implements Serializable {
 	 *            - any Java Object array
 	 */
 	public void set(String typeName, Object[] values) {
-		this.typeName = typeName;
+		if(DataType.CheckInDataType(typeName)) 	this.typeName = typeName;
+		else System.err.println("typeName not in DataType. typeName setting denied...");
 		data = values;
 	}
 

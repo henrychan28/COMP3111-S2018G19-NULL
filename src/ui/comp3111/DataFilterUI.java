@@ -1,8 +1,13 @@
 package ui.comp3111;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import core.comp3111.CoreData;
 import core.comp3111.DataColumn;
+import core.comp3111.DataFilter;
 import core.comp3111.DataTable;
+import core.comp3111.UIHelperFunction;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,53 +22,23 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import ui.comp3111.DataHostingUI.StringTableCell;
-import ui.comp3111.DataHostingUI.childTableFactoryEventHandler;
-import ui.comp3111.DataHostingUI.graphFactoryEventHandler;
-import ui.comp3111.DataHostingUI.parentTableFactoryEventHandler;
 
 public class DataFilterUI extends Application {
-	private static DataTable currentTable = null;
-	private static ObservableList<DataColumn> dataColumns = null;
-	private static TableView<DataColumn> tableView;
+	private static TableView<DataTable> tableColumnView;
+	private static TableView<HashMap<String, Set<Object>>> tableTextView;
+	private static ObservableList<DataTable> columnNames = null;
+	private static HashMap<String, Set<Object>> tableText = null;
 	private enum EventHandlerType {
-	    PARENT, CHILD, GRAPH
+	    COLUMN, TEXT
 	}
-
-    private static void SetCurrentTable(DataTable dataTable) {
-    	currentTable = dataTable;
-    	dataColumns = FXCollections.observableArrayList();
-    	for (String columnName:dataTable.getColumnNames()) {
-    		DataColumn column = dataTable.getCol(columnName);
-    		dataColumns.add(column);
-    	}
+    
+    private void InitializeTableTableView(DataTable dataTable) {
+    	DataFilter filter = DataFilter.getFilter();
+    	tableText = filter.GetTableTextLabels(dataTable);
     }
     
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    //Temporary function for getting dummy CoreData for demonstration purpose
-    public CoreData getCoreData() {
-		CoreData coreData = new CoreData();
-		DataTable table = new DataTable("Test");
-		int OUTER = 0;
-		table = new DataTable("Parent");
-		int[] res = coreData.addParentTable(table);
-		table = new DataTable("Child");
-		coreData.addChildTable(table,res[OUTER]);
-		
-		table = new DataTable("another");
-		res = coreData.addParentTable(table);
-		table = new DataTable("kid");
-		coreData.addChildTable(table,res[OUTER]);
-		table = new DataTable("yay");
-		coreData.addChildTable(table,res[OUTER]);
-		table = new DataTable("cat");
-		coreData.addChildTable(table,res[OUTER]);
-		table = new DataTable("dog");
-		res = coreData.addChildTable(table,res[OUTER]);
-    	return coreData;
     }
  
     @Override
@@ -72,10 +47,9 @@ public class DataFilterUI extends Application {
         stage.setWidth(650);
         stage.setHeight(500);
  
-        tableView = CreateTableView("Parent Table", "tableName", dataColumns, EventHandlerType.PARENT);
 
         final HBox hbox = new HBox();
-        hbox.getChildren().addAll(tableView);
+        hbox.getChildren().addAll(tableColumnView, tableTextView);
         Scene scene = new Scene(hbox);
         stage.setScene(scene);
         stage.show();
@@ -93,9 +67,9 @@ public class DataFilterUI extends Application {
 	 * @return table
 	 * 			  - the table created 
 	 */
-    public TableView<DataColumn> CreateTableView(String tableName, String propertyName, ObservableList<DataColumn> tableList,
+    public TableView<HashMap<String, Set<Object>>> CreateTableView(String tableName, String propertyName, HashMap<String, Set<Object>> tableList,
     											EventHandlerType eventType) {
-    	TableView<DataColumn> table = new TableView<>();
+    	TableView<HashMap<String, Set<Object>>> table = new TableView<>();
         TableColumn Dataset = new TableColumn(tableName);
         Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
         Dataset.setCellFactory(GetDataTableFactory(eventType));
@@ -143,7 +117,7 @@ public class DataFilterUI extends Application {
             return getItem() == null ? "" : getItem().toString();
         }
     }
-    /*
+    
     class parentTableFactoryEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
@@ -155,7 +129,7 @@ public class DataFilterUI extends Application {
 
         }
     }
-    */
+    
 
 
 }
