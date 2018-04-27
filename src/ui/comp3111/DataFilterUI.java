@@ -24,17 +24,24 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class DataFilterUI extends Application {
-	private static TableView<DataTable> tableColumnView;
-	private static TableView<HashMap<String, Set<Object>>> tableTextView;
-	private static ObservableList<DataTable> columnNames = null;
-	private static HashMap<String, Set<Object>> tableText = null;
+	private static String[] currentText;
+	private static ObservableList<DataColumn> columnList;
+	private static TableView<DataColumn> columnTableView;
+	private static TableView<String> textTableView;
+	
 	private enum EventHandlerType {
 	    COLUMN, TEXT
 	}
     
-    private void InitializeTableTableView(DataTable dataTable) {
+    private void InjectCurrentText(DataTable dataTable, String columnName) {
     	DataFilter filter = DataFilter.getFilter();
-    	tableText = filter.GetTableTextLabels(dataTable);
+    	currentText = (String[]) filter.GetTableTextLabels(dataTable).get(columnName).toArray();
+    }
+    
+    private void InjectColumnList(DataTable dataTable) {
+    	for(DataColumn dataColumn: dataTable.getCol()) {
+    		columnList.add(dataColumn);
+    	}
     }
     
     public static void main(String[] args) {
@@ -49,7 +56,7 @@ public class DataFilterUI extends Application {
  
 
         final HBox hbox = new HBox();
-        hbox.getChildren().addAll(tableColumnView, tableTextView);
+        hbox.getChildren().addAll();
         Scene scene = new Scene(hbox);
         stage.setScene(scene);
         stage.show();

@@ -54,7 +54,6 @@ public class DataHostingUI extends Application {
 	        launch(args);
 	    }
 	    
-	 
 	    @Override
 	    public void start(Stage stage) {
 	    	//Initialize the parent table
@@ -64,25 +63,18 @@ public class DataHostingUI extends Application {
 	        stage.setTitle("Table View Sample");
 	        stage.setWidth(650);
 	        stage.setHeight(500);
-			//System.out.println("Inside start():before CreateTableView()");
 	        parentTable = CreateTableView("Parent Table", "tableName", parentTableList, EventHandlerType.PARENT);
-			//System.out.println("Inside start():after CreateTableView()");
-			//parentTable.setOnMouseClicked(new parentTableFactoryEventHandler());
+			parentTable.setOnMouseClicked(new parentTableFactoryEventHandler());
 	        childTable = CreateTableView("Child Table", "tableName", childTableList, EventHandlerType.CHILD);
+			childTable.setOnMouseClicked(new childTableFactoryEventHandler());
 	        graphTable = CreateTableView("Graph Table", "graphName", graphTableList, EventHandlerType.GRAPH);
-	        //parentTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			graphTable.setOnMouseClicked(new graphFactoryEventHandler());
 
 	        final HBox hbox = new HBox();
-			//System.out.println("Inside start():before addAll(parentTable)");
-	        //hbox.getChildren().addAll(parentTable);
-			//System.out.println("Inside start():after addAll(parentTable)");
-
 	        hbox.getChildren().addAll(parentTable, childTable, graphTable);
 	        Scene scene = new Scene(hbox);
 	        stage.setScene(scene);
-			//System.out.println("Inside start():before stage.show()");
 	        stage.show();
-			//System.out.println("Inside start():after stage.show()");
 	    }
 	    
 		/**
@@ -100,82 +92,21 @@ public class DataHostingUI extends Application {
 	    private TableView<DataTable> CreateTableView(String tableName, String propertyName, ObservableList<DataTable> tableList,
 	    											EventHandlerType eventType) {
 	    	TableView<DataTable> table = new TableView<>();
-	        TableColumn Dataset = new TableColumn(tableName);
+	        TableColumn<DataTable, String> Dataset = new TableColumn<>(tableName);
 	        Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-	        Dataset.setCellFactory(GetDataTableFactory(eventType));
 	        table.setItems(tableList);
-	        table.getColumns().addAll(Dataset);
+	        table.getColumns().add(Dataset);
 	        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	    	return table;	    	
 	    }
-	    
-		/**
-		 * GetDataTableFactory returns Callback which includes corresponding event handler
-		 * which the behavior of cell is defined by StringTableCell().
-		 * 
-		 * @param eventType
-		 *            - the type of event handler 
-		 * @return dataTableFactory
-		 * 			  - callback with desired event handler 
-		 */
-	    private Callback<TableColumn, TableCell> GetDataTableFactory(EventHandlerType eventType){
-	    	Callback<TableColumn, TableCell> dataTableFactory = new Callback<TableColumn, TableCell>(){
-	    		@Override
-	    		public TableCell call(TableColumn p) {
-	    			//System.out.println("Inside GetDataTableFactory: calling Callback.call");
-	    			StringTableCell cell = new StringTableCell();
-	    			//System.out.println("Inside GetDataTableFactory: calling Callback.call: Finished constructing StringTableCell");
-	    			switch(eventType) {
-	    				case PARENT:
-	    	    			cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new parentTableFactoryEventHandler());
-	    	    			break;
-	    				case CHILD:
-	    	    			cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new childTableFactoryEventHandler());
-	    					break;
-	    				case GRAPH:
-	    	    			cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new graphFactoryEventHandler());
-	    				default:
-	    					throw new Error();
-	    			}
-	    			//System.out.println("Inside GetDataTableFactory: calling Callback.call: End of Callback.call");
-	    			return cell;
-	    		}
-	    	};
-			//System.out.println("Inside GetDataTableFactory: End of 'new Callback'");
-	    	return dataTableFactory;
-	    }
-	    
-	    //Define the behavior of cells in table
-	    private class StringTableCell extends TableCell<DataTable, String> {
-	    	public StringTableCell() {
-	    		super();
-	    		//System.out.println("Calling StringTableCell constructor...");
-	    	}
-	        @Override
-	        public void updateItem(String item, boolean empty) {
-	        	System.out.println(item);
-	            super.updateItem(item, empty);
-	            setText(empty ? null : getString());
-	            setGraphic(null);
-	        }
-	 
-	        private String getString() {
-	            return getItem() == null ? "" : getItem().toString();
-	        }
-	    }
+
 	    
 	    private class parentTableFactoryEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
-	            TableCell cell = (TableCell) t.getSource();
-	            int index = cell.getIndex();
+	             int index = parentTable.getSelectionModel().getSelectedIndex();
 	            SetTable(Constants.INNER, index);
 	            childTable.setItems(childTableList);
-	            
-	            /*
-	             int temp = parentTable.getSelectionModel().getSelectedIndex();
-	             System.out.println(temp);
-	            */
 	        }
 	    }
 	    private class childTableFactoryEventHandler implements EventHandler<MouseEvent> {
