@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -284,7 +286,24 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 	private Pane paneShowChart() {
+		//heading
+		lbShowChart = new Label("This is the chart");
+		lbShowChart.setFont(new Font("Arial", 20));
+		//chart
+		NumberAxis xAxis = new NumberAxis();
+		NumberAxis yAxis = new NumberAxis();
+		chartShowChart = new LineChart<Number, Number>(xAxis, yAxis);
+		xAxis.setLabel("undefined");
+		yAxis.setLabel("undefined");
+		chartShowChart.setTitle("An empty line chart");
+		//button
+		btbackto2 = new Button("Back");
+		
+		VBox container = new VBox(20);
+		container.setAlignment(Pos.CENTER);
+		container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
 		BorderPane pane = new BorderPane();
+		pane.setCenter(container);
 		return pane;
 	}
 	
@@ -330,15 +349,7 @@ public class GenerateChartUI extends Application {
 		 stage = primarystage;
 		 initScenes();
 		 initEventHandlers();
-		 putSceneOnStage(SCENE_SCATTER_CHART_SELECTION);
-		 
-		
-
-		/*VBox for Scatter Chart Selection UI */
-
-		/*VBox for Dynamic Chart Selection UI */
-
-		
+		 putSceneOnStage(SCENE_SHOW_CHART);
 		
 	}
 	
