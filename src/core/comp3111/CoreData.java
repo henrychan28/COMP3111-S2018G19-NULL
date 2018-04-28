@@ -224,6 +224,41 @@ public class CoreData implements Serializable {
 		return masterChartList.get(DataTable);
 	}
 	/**
+	 * 
+	 */
+	public int getNumChartsWithType(String DataTableName, String ChartType){
+		int num = 0;
+
+		ArrayList<xychart> charts = masterChartList.get(DataTableName);
+		if (charts == null) {return num;}
+		for (xychart chart: charts) {
+			if (chart.getChartType().equals(ChartType)) {
+				num +=1; 
+			}
+		}
+		return num;
+		
+		
+	}
+	
+	public ArrayList<xychart> getChartsWithType(String DataTableName, String ChartType){
+		ArrayList<xychart> charts = masterChartList.get(DataTableName);
+		if (charts == null) {return null;}
+		ArrayList<xychart> chart_ChartType = new ArrayList<xychart>();
+		for (xychart chart: charts) {
+			if (chart.getChartType().equals(ChartType)) {
+				 chart_ChartType.add(chart);
+			}
+		}
+		if (chart_ChartType.size() == 0) {
+			return null;
+		}
+		else {
+		return chart_ChartType;
+		}
+		
+	}
+	/**
 	 * get the chart with ChartID known and DataTable known 
 	 * 
 	 * @param DataTableName

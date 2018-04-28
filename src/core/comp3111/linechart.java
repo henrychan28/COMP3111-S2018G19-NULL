@@ -32,7 +32,7 @@ public class linechart extends xychart{
 	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
 		//Constructor of the parent class
 
-		super(DataTable, AxisLabels, ChartName, "LineChart");
+		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_LINE);
 		
 		/** Check: Must passed 2 DataColumn with Number Type */
 
@@ -106,7 +106,10 @@ public class linechart extends xychart{
 		 this.xychart.getData().add(this.series);
 		 
 	}
-
+	public XYChart.Series<Number, Number> getSeries(){
+		return series;
+	}
+	
 	//Attributes
 	protected String xlabel;
 	protected String ylabel;

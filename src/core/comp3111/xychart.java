@@ -57,7 +57,16 @@ public class xychart{
         Scene scene  = new Scene(xychart, 500, 400);
         stage.setScene(scene);
         stage.show();	
-		
+        
+	}
+	
+	/**
+	 * 
+	 * get the xychart for UI
+	 * @return
+	 */
+	public XYChart<Number, Number> getXYChart(){
+		return xychart;
 	}
 	/**
 	 * get the ChartID
