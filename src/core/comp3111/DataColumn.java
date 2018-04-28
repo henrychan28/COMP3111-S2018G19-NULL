@@ -71,7 +71,7 @@ public class DataColumn implements Serializable {
 	public String getTypeName() {
 		return typeName;
 	}
-
+	
 	/**
 	 * Get the number of elements in the data array
 	 * 

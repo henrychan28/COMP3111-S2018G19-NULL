@@ -134,16 +134,25 @@ public class DataFilter {
 	 * @return textLabelTable
 	 * 			   - Unique text entries for each column in the dataTable
 	 */
-	public HashMap<String,Set<Object>> GetTableTextLabels(DataTable dataTable) {
+	public DataTable GetTableTextLabels(DataTable dataTable) {
 		HashMap<String, Set<Object>> tableTextSet = new HashMap();
 		String[] columnNames = dataTable.getColumnNames();
 		for(String columnName:columnNames) {
 			DataColumn dataColumn = dataTable.getCol(columnName);
-			if(dataColumn.getTypeName()!="String") continue; //ignore non-String column
+			if(!dataColumn.getTypeName().equals(DataType.TYPE_STRING)) continue; //ignore non-String column
 			Set<Object> columnTextSet = new HashSet<Object>(Arrays.asList(dataColumn.getData()));
 			tableTextSet.put(columnName, columnTextSet);
 		}
-		return tableTextSet;
+		DataTable newTable = new DataTable("Unique Text Table");
+		for(String key:tableTextSet.keySet()) {
+			DataColumn newColumn = new DataColumn(DataType.TYPE_STRING, tableTextSet.get(key).toArray());
+			try {
+				newTable.addCol(key, newColumn);
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			};
+		}
+		return newTable;
 	}
 }
 
