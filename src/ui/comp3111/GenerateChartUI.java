@@ -1,5 +1,6 @@
 package ui.comp3111;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import core.comp3111.*;
@@ -40,7 +41,7 @@ import javafx.stage.Stage;
 // getNumberOfDataColumn(Type)
 // getDataColumnsOf(Type)
 
-public class GenerateChartUI extends Application {
+public class GenerateChartUI extends Application  {
 
 	// Daata Storage
 	private CoreData coreData = new CoreData();
@@ -159,6 +160,18 @@ public class GenerateChartUI extends Application {
 
 		TableView tvhistory = new TableView();
 		tvhistory.getColumns().add(colHistory);
+		
+		//TODO: add charts for (1) selected datatable (2) selected chart type 
+		DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
+		ArrayList<xychart> charts = coreData.getCharts(selecteDataTable.getTableName());
+		for (xychart chart: charts) {
+			if (chart.getChartType() == ChartType) {
+				//TODO: add to the TableView
+				
+				
+			}
+		}
+		
 
 		// 2.
 
@@ -378,6 +391,9 @@ public class GenerateChartUI extends Application {
 
 		btshow.setOnAction(e -> {
 			// TODO: select chart
+			
+			
+			//chartShowChart;
 
 			// and then show chart
 			putSceneOnStage(SCENE_SHOW_CHART);
@@ -400,18 +416,22 @@ public class GenerateChartUI extends Application {
 
 				lblinemsg.setText("Please select the y-axis");
 			} else {
-				System.out.print("Finished!");
-/*
+				System.out.print("Ok making the chart...Check it in history!!! :) ");
+
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] AxisLabels = { cbLineXaxis.getValue().toString(), cbLineYaxis.getValue().toString() };
-				linechart linechart;
+				linechart lc;
+				
 				try {
-					linechart = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
-					coreData.addChart(selectedDataTable.getTableName(), linechart);
-
-				} catch (ChartException e1) { // TODO Auto-generated catch block
+					lc = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
+					coreData.addChart(selectedDataTable.getTableName(), lc);
+					
+				} catch (ChartException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}*/
+				}
+				
+
 
 			}
 
@@ -451,7 +471,7 @@ public class GenerateChartUI extends Application {
 			
 		}});
 		btScatterSaveandPreview.setOnAction(e -> {
-
+			//TODO: delete it?
 		});
 
 		btbackto1__.setOnAction(e -> {
@@ -469,6 +489,7 @@ public class GenerateChartUI extends Application {
 	}
 
 	private void initShowChartHandler() {
+		
 		btbackto2.setOnAction(e -> {
 			putSceneOnStage(SCENE_VIEW_HISTORY);
 		});

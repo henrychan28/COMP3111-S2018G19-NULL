@@ -217,8 +217,10 @@ public class DataTable implements Serializable{
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			String type = entry.getValue().getTypeName();
 			if (type == colType) {
+
 				keys[i] = entry.getKey();
 				i++;
+
 			}	
 		}
 		
