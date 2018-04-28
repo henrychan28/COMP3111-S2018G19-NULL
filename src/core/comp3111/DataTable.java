@@ -221,6 +221,7 @@ public class DataTable implements Serializable{
 	}
 	
 	public void printDataTable() {
+		System.out.println("---------printDataTable()---------");
 		for(String key: dc.keySet()) {
 			DataColumn currentColumn = dc.get(key);
 			Object[] currentData = currentColumn.getData();
@@ -230,8 +231,7 @@ public class DataTable implements Serializable{
 			}
 			System.out.println();
 		}
-		System.out.println();
-		System.out.println("----------------------");
+		System.out.println("-------------------------------");
 	}
 	// attribute: A java.util.Map interface
 	// KeyType: String

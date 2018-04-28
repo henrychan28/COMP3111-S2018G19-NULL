@@ -2,14 +2,13 @@ package ui.comp3111;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
-import core.comp3111.CoreData;
 import core.comp3111.DataColumn;
 import core.comp3111.DataFilter;
 import core.comp3111.DataTable;
 import core.comp3111.SampleDataGenerator;
-import core.comp3111.UIHelperFunction;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -17,11 +16,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -34,10 +33,8 @@ public class DataFilterUI extends Application {
 	private static TableView<String> columnTableView;
 	private static TableView<String> textTableView;
 	private static DataTable currentTable;
-	
-	private enum EventHandlerType {
-	    COLUMN, TEXT
-	}
+	private static HashMap<String, Set<Object>> selectedRetainText;
+	private static TextField tableNameTextField;
     
     private void InjectCurrentText(String columnName) throws Exception {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
@@ -74,7 +71,8 @@ public class DataFilterUI extends Application {
     }
     
     private void TestInitialize() {
-    	DataTable testTable = SampleDataGenerator.generateSampleLineData();
+    	selectedRetainText = new HashMap<>();
+    	DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
     	try{
     		SetCurrentTable(testTable);
     	} catch (Exception e) {
@@ -86,15 +84,21 @@ public class DataFilterUI extends Application {
     public void start(Stage stage) {
     	//Initialize the UI test data
     	TestInitialize();
-        System.out.println("Finished initialization...");
+
     	stage.setTitle("Table View Sample");
-        stage.setWidth(650);
+        stage.setWidth(800);
         stage.setHeight(500);
-        columnTableView = createTableView("hello", columnNames);
-        textTableView = createTableView("hello", currentText);
+        columnTableView = createTableView("Column Name", columnNames);
+        columnTableView.setOnMouseClicked(new columnTableEventHandler());
+        textTableView = createTableView("Text", currentText);
         textTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        Button selectButton = new Button("Select");
+        selectButton.setOnMouseClicked(new SelectButtonEventHandler());
+        Button generateButton = new Button("Generate");
+        generateButton.setOnMouseClicked(new GenerateButtonEventHandler());
+        tableNameTextField = new TextField ();
         final HBox hbox = new HBox();
-        hbox.getChildren().addAll(columnTableView, textTableView);
+        hbox.getChildren().addAll(columnTableView, textTableView, selectButton, tableNameTextField, generateButton);
         Scene scene = new Scene(hbox);
         stage.setScene(scene);
         stage.show();
@@ -102,7 +106,7 @@ public class DataFilterUI extends Application {
     
 	private TableView<String> createTableView(String tableName, String[] data) {
 		TableView<String> table = new TableView<>();
-		TableColumn<String, String> Dataset = new TableColumn(tableName);
+		TableColumn<String, String> Dataset = new TableColumn<>(tableName);
 		Dataset.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String, String>, ObservableValue<String>>(){
 			@Override
 			public ObservableValue<String> call(TableColumn.CellDataFeatures<String, String> p){
@@ -114,5 +118,63 @@ public class DataFilterUI extends Application {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		return table;
 	}
+	
+    private class columnTableEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+             String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
+             try {
+				InjectCurrentText(selectedColumn);
+				textTableView.getItems().setAll(Arrays.asList(currentText));
+				if(selectedRetainText.get(selectedColumn)!=null) {
+					for(Object previousSelectedText: selectedRetainText.get(selectedColumn)) {
+				        textTableView.getSelectionModel().select((String)previousSelectedText);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+    }
+    
+    private class SelectButtonEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
+        		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
+        		Set<Object> selectedTextSet = new HashSet<Object>();
+        		for(String selectedText: selectedTextList) {
+        			selectedTextSet.add(selectedText);
+        		}
+        		selectedRetainText.put(selectedColumn, selectedTextSet);
+        		PrintSelectedRetainText();
+		}
+    }
+    
+    private class GenerateButtonEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataFilter filter = DataFilter.getFilter();
+        	//This is the dataTable that will be added to CoreData
+        	DataTable filteredDataTable = filter.TextFilter(currentTable, selectedRetainText);
+        	String userInput = tableNameTextField.getText();
+        	filteredDataTable.setName(userInput);
+        	filteredDataTable.printDataTable();
+		}
+    }
+    
+    private void PrintSelectedRetainText() {
+		System.out.println("---------PrintSelectedRetainText()---------");
+
+    	for(String column: selectedRetainText.keySet()) {
+    		System.out.println(column);
+    		for(Object entry: selectedRetainText.get(column)) {
+    			System.out.print(entry.toString() + " ");
+    		}
+    		System.out.println();
+    	}
+		System.out.println("-----------------------------------------");
+
+    }
 
 }
