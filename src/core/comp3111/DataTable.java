@@ -200,21 +200,26 @@ public class DataTable implements Serializable{
 	 * @param colType
 	 * 			- Type of the column: Defined in DataType class
 	 * @return
+	 * 			- null if not exists
 	 * 			- String[] keys
 	 */
 	
 	public String[] getColKeysOfType(String colType) {
 		int size = getNumColOfType(colType);
-		
+		if (size == 0) {
+			return null;
+		}
 		String [] keys = new String[size];
+		System.out.print(size);
+
 		//iterate the HashMap dc
 		int i = 0;
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			String type = entry.getValue().getTypeName();
 			if (type == colType) {
 				keys[i] = entry.getKey();
+				i++;
 			}	
-			i++;
 		}
 		
 		return keys;
