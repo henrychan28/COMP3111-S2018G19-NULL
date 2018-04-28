@@ -1,13 +1,13 @@
 package core.comp3111;
 
 /**
- *  The implementation of the DynamicLineChart class. 
+ *  The implementation of the Dynamic Scatter Chart class. 
  * 
  * 
  * @author YuenTing
  */
 
-public class dynamicbarChart extends xychart{
+public class dynamichart extends xychart{
 	
 	//attributes
 	protected float timespan;
@@ -20,9 +20,17 @@ public class dynamicbarChart extends xychart{
 	 * @throws ChartException
 	 */
 	
-	public dynamicbarChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
-		super( DataTable, AxisLabels,  ChartName, "DynamicBatChart") ;
+	public dynamichart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
+		super( DataTable, AxisLabels,  ChartName, ChartTypeValue.TYPE_DYNAMIC) ;
 		this.ChartType = "DynamicLineChart";
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

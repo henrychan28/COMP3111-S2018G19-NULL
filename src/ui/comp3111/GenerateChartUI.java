@@ -367,6 +367,7 @@ public class GenerateChartUI extends Application  {
 		return pane;
 	}
 	/** Handlers*/
+	/** Chart selection handler */
 	private void initChartTypeSelectionHandler() {
 
 		btHistory.setOnAction(e -> {
@@ -375,28 +376,33 @@ public class GenerateChartUI extends Application  {
 			} else {
 				//store the selected chart type to variable of the class
 				ChartType = cbChartType.getValue().toString();
-				
+				//default
+				cbChartType.setValue(null);
 				//Then add the Charts to the History Pane
 				DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
 				ArrayList<xychart> charts = coreData.getChartsWithType(selecteDataTable.getTableName(), ChartType);
-				//if it is empty, then remain in this pane
 				
-				if (charts == null) {
+				if (charts == null) {	//if it is empty, then remain in this pane
+
 					lbmessage.setText("No History Available. Create a new one.");
 					}
 				else {
 					lbmessage.setText("");
+					olhistory.clear();
+					
 					for (xychart chart: charts) {
 						if (chart.getChartType() == ChartType) {
 							//TODO: add to the TableView
-							
-						
+							olhistory.add(chart);
 						}
+						
 				}
+					
 				
 				
 				
-				putSceneOnStage(SCENE_VIEW_HISTORY);
+				
+					putSceneOnStage(SCENE_VIEW_HISTORY);		
 
 			}
 			}
@@ -405,14 +411,17 @@ public class GenerateChartUI extends Application  {
 			if (cbChartType.getValue() == null) {
 				lbmessage.setText("Please select a chart type");
 			} else {
-				lbmessage.setText("");
 				ChartType = cbChartType.getValue().toString();
-				if (ChartType == "Line Chart") {
+				//default
+				lbmessage.setText("");
+				cbChartType.setValue(null);
+				
+				if (ChartType == ChartTypeValue.TYPE_LINE) {
 					putSceneOnStage(SCENE_LINE_CHART_SELECTION);
-				} else if (ChartType == "Scatter Chart") {
+				} else if (ChartType == ChartTypeValue.TYPE_SCATTER) {
 					putSceneOnStage(SCENE_SCATTER_CHART_SELECTION);
-				} else if (ChartType == "Dynamic Chart") {
-					putSceneOnStage(SCENE_SHOW_CHART);
+				} else if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+					putSceneOnStage(SCENE_DYNAMIC_CHART_SELECTION);
 				}
 
 			}
@@ -426,17 +435,23 @@ public class GenerateChartUI extends Application  {
 		});
 
 		btshow.setOnAction(e -> {
+			
 			// TODO: select chart
+			// If not selected
+			//lbhistorymsg: "Please selected your chart"
+			//else
 			
-			
-			//chartShowChart;
+			//chartShowChart = coreData.getChart(DataTableName, selected chart name);
+			//or already selected xychart
+			//chartShowChart = xychart
+			//create new scene
 
 			// and then show chart
 			putSceneOnStage(SCENE_SHOW_CHART);
 		});
 
 	};
-
+/**Line Chart Handler*/
 	private void initLineChartSelectionHandler() {
 
 		btLineSave.setOnAction(e -> {
@@ -463,9 +478,9 @@ public class GenerateChartUI extends Application  {
 					coreData.addChart(selectedDataTable.getTableName(), lc);
 					System.out.print("Check it in history!!! :) ");
 					//Set back to the default values
-					tfScatterTitle.clear();
-					cbScatterXaxis.setValue(null);
-					cbScatterYaxis.setValue(null);
+					tfLineTitle.clear();
+					cbLineXaxis.setValue(null);
+					cbLineYaxis.setValue(null);
 					
 				} catch (ChartException e1) {
 					// TODO Auto-generated catch block
@@ -515,7 +530,7 @@ public class GenerateChartUI extends Application  {
 								tfLineTitle.clear();
 								cbLineXaxis.setValue(null);
 								cbLineYaxis.setValue(null);
-								
+
 								putSceneOnStage(SCENE_SHOW_CHART);
 							} catch (ChartException e1) {
 								// TODO Auto-generated catch block
@@ -530,6 +545,7 @@ public class GenerateChartUI extends Application  {
 		});
 
 	}
+	/**Scatter Chart Handler*/
 
 	private void initScatterChartSelectionHandler() {
 		btScatterSave.setOnAction(e -> {
@@ -565,6 +581,7 @@ public class GenerateChartUI extends Application  {
 								tfScatterTitle.clear();
 								cbScatterXaxis.setValue(null);
 								cbScatterYaxis.setValue(null);
+								cbScatterCaxis.setValue(null);
 								
 								
 							} catch (ChartException e1) {
@@ -618,7 +635,8 @@ public class GenerateChartUI extends Application  {
 									tfScatterTitle.clear();
 									cbScatterXaxis.setValue(null);
 									cbScatterYaxis.setValue(null);
-									
+									cbScatterCaxis.setValue(null);
+
 									putSceneOnStage(SCENE_SHOW_CHART);
 
 									
