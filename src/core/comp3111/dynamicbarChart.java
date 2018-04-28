@@ -7,7 +7,7 @@ package core.comp3111;
  * @author YuenTing
  */
 
-public class DynamicLineChart extends linechart{
+public class dynamicbarChart extends xychart{
 	
 	//attributes
 	protected float timespan;
@@ -20,8 +20,8 @@ public class DynamicLineChart extends linechart{
 	 * @throws ChartException
 	 */
 	
-	public DynamicLineChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
-		super( DataTable, AxisLabels,  ChartName) ;
+	public dynamicbarChart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{
+		super( DataTable, AxisLabels,  ChartName, "DynamicBatChart") ;
 		this.ChartType = "DynamicLineChart";
 		
 		

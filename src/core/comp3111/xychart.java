@@ -30,14 +30,7 @@ public class xychart{
 		this.ChartID = ChartName + '_' +ChartName +Long.toString(serialID);
 	}
 	
-	/**
-	 * A method to show the chart
-	 * 
-	 * @return true if the graph is successfully shown
-	 */
-	public boolean showGraph() {
-		return true;
-	}
+
 	/**
 	 * Set the ChartName. 
 	 * 
@@ -59,6 +52,7 @@ public class xychart{
 	 */
 	
 	public void showChart(Stage stage) {
+		
 		
         Scene scene  = new Scene(xychart, 500, 400);
         stage.setScene(scene);

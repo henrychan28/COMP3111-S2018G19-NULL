@@ -83,13 +83,13 @@ public class GenerateChartUI extends Application {
 	private TextField tfLineTitle;
 
 	// screen 4: paneScatterChartSelection
-	private Label lbSelectNewScatterChart, lbScatterTitle, lbScatterXaxis, lbScatterYaxis, lbScatterCaxis;
+	private Label lbSelectNewScatterChart, lbScatterTitle, lbScatterXaxis, lbScatterYaxis, lbScatterCaxis, lbscattermsg;
 	private Button btScatterSave, btScatterSaveandPreview, btbackto1__;
 	private ComboBox cbScatterXaxis, cbScatterYaxis, cbScatterCaxis;
 	private TextField tfScatterTitle;
 
 	// screen 5: paneDynamicChartSelection
-	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis;
+	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis, lbdynamicmsg;
 	private Button btDynamicSave, btDynamicSaveandPreview, btbackto1___;
 	private ComboBox cbDynamicXaxis, cbDynamicYaxis, cbDynamicCaxis;
 	private TextField tfDynamicTitle;
@@ -217,6 +217,7 @@ public class GenerateChartUI extends Application {
 		// TODO: add the key of all number type data columns of the DataTable to the
 		// ComboBox
 		cbLineYaxis.getItems().addAll(keys);
+		
 		// 5. message for reminding the user
 		lblinemsg = new Label("");
 
@@ -270,7 +271,6 @@ public class GenerateChartUI extends Application {
 		String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
 		cbScatterXaxis.getItems().addAll(keys);
 
-
 		// 4: y-axis
 		HBox Yaxis = new HBox(10);
 		lbScatterYaxis = new Label("y-axis");
@@ -281,7 +281,6 @@ public class GenerateChartUI extends Application {
 		// TODO: add the key of all number type data columns of the DataTable to the
 		// ComboBox
 		cbScatterYaxis.getItems().addAll(keys);
-
 		
 		// 5 Category Axis
 		HBox Caxis = new HBox(10);
@@ -289,13 +288,13 @@ public class GenerateChartUI extends Application {
 		cbScatterCaxis = new ComboBox();
 		Caxis.getChildren().addAll(lbScatterCaxis, cbScatterCaxis);
 		Caxis.setAlignment(Pos.CENTER);
-		
-		// add the key of all String type data columns of the DataTable to the ComboBox
-		//String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
-		//cbScatterCaxis.getItems().addAll(keys2);
-		
 
-		// 6 Buttons
+		// add the key of all String type data columns of the DataTable to the ComboBox
+		String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
+		cbScatterCaxis.getItems().addAll(keys2);
+		//6
+		lbscattermsg = new Label("");
+		// 7 Buttons
 		HBox ButtonsSave = new HBox(20);
 		ButtonsSave.setAlignment(Pos.CENTER);
 		btScatterSave = new Button("Save");
@@ -306,7 +305,7 @@ public class GenerateChartUI extends Application {
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
-		container.getChildren().addAll(lbSelectNewScatterChart, Title, Xaxis, Yaxis, Caxis, new Separator(),
+		container.getChildren().addAll(lbSelectNewScatterChart, Title, Xaxis, Yaxis, Caxis, new Separator(), lbscattermsg,
 				ButtonsSave);
 
 		BorderPane pane = new BorderPane();
@@ -402,18 +401,17 @@ public class GenerateChartUI extends Application {
 				lblinemsg.setText("Please select the y-axis");
 			} else {
 				System.out.print("Finished!");
-				// TODO: double check with test case
-				/*
-				 * DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-				 * String[] AxisLabels = {cbLineXaxis.getValue().toString(),
-				 * cbLineYaxis.getValue().toString()}; linechart linechart; try { linechart =
-				 * new linechart(selectedDataTable, AxisLabels,
-				 * tfLineTitle.getText().toString());
-				 * coreData.addChart(selectedDataTable.getTableName(), linechart);
-				 * 
-				 * } catch (ChartException e1) { // TODO Auto-generated catch block
-				 * e1.printStackTrace(); }
-				 */
+/*
+				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+				String[] AxisLabels = { cbLineXaxis.getValue().toString(), cbLineYaxis.getValue().toString() };
+				linechart linechart;
+				try {
+					linechart = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
+					coreData.addChart(selectedDataTable.getTableName(), linechart);
+
+				} catch (ChartException e1) { // TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
 
 			}
 
@@ -432,8 +430,26 @@ public class GenerateChartUI extends Application {
 
 	private void initScatterChartSelectionHandler() {
 		btScatterSave.setOnAction(e -> {
+			// Check the user enters value properly
+						if (tfScatterTitle.getText().isEmpty()) {
+							lbscattermsg.setText("Please enter the title");
+						} else if (cbScatterXaxis.getValue() == null) {
+							System.out.print("Select the x-axis");
 
-		});
+							lbscattermsg.setText("Please select the x-axis");
+						} else if (cbScatterYaxis.getValue() == null) {
+							System.out.print("Select the y-axis");
+
+							lbscattermsg.setText("Please select the y-axis");
+						}else if (cbScatterCaxis.getValue() == null) {
+							lbscattermsg.setText("Select the categories");
+						}
+							
+						else {
+							System.out.print("Finished!");
+							//TODO: make the scatter chart, 
+			
+		}});
 		btScatterSaveandPreview.setOnAction(e -> {
 
 		});
@@ -504,20 +520,20 @@ public class GenerateChartUI extends Application {
 	}
 
 	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); //2number, 1string
-		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); //2number
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2number, 1string
+		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
 		selectedTableIndex = a;
 	}
 
 	@Override
 	public void start(Stage primarystage) {
 		testingData();
-		 stage = primarystage;
-		 initScenes();
-		 initEventHandlers();
-		 putSceneOnStage(0);
-		 System.out.println(cbChartType.getValue());
-		
+		stage = primarystage;
+		initScenes();
+		initEventHandlers();
+		putSceneOnStage(0);
+		System.out.println(cbChartType.getValue());
+
 	}
 
 	public static void main(String[] args) {

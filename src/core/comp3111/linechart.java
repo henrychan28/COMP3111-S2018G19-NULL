@@ -100,9 +100,7 @@ public class linechart extends xychart{
 		 this.xychart.getData().add(this.series);
 		 
 	}
-	//Can create a add line function
-	
-		
+
 	//Attributes
 	protected String xlabel;
 	protected String ylabel;

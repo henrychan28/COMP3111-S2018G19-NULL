@@ -127,10 +127,6 @@ public class scatterchart extends xychart{
 		
 
 	}
-	
-
-	//set xlabel -> NumberAxis name
-	//set ylabel -> NumberAxis name
 		
 	//Attributes
 	protected String xlabel; //for naming of the graph
