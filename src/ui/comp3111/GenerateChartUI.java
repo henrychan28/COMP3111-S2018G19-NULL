@@ -73,7 +73,7 @@ public class GenerateChartUI extends Application {
 	}
 
 	// Data Storage
-	private CoreData coreData = new CoreData();
+	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = { Constants.EMPTY, Constants.EMPTY };
 
 	// View Chart

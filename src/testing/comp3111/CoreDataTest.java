@@ -27,7 +27,7 @@ public class CoreDataTest {
 	
 	@BeforeEach
 	void init() {
-		coreData = new CoreData();
+		coreData = CoreData.getInstance();
 		table = new DataTable("Test");
 		testNumColumn = new DataColumn(DataType.TYPE_NUMBER, new Number[] {1,2,3});
 	}

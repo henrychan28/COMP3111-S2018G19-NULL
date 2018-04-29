@@ -9,8 +9,8 @@ import java.io.ObjectOutputStream;
 
 public class CoreDataIO {
 	
-	public void saveCoreData(CoreData coreData, String folder, String fileName, String extention) {
-		String address = folder + System.getProperty("file.separator") + fileName + Constants.FILE_EX;
+	public void saveCoreData(CoreData coreData, String folder, String extention) {
+		String address = folder + Constants.FILE_EX;
 		try {
 			// write object to file
 			FileOutputStream fos = new FileOutputStream(address);

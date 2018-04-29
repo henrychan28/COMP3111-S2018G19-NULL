@@ -39,7 +39,7 @@ public class UIHelperFunction {
 	    
 	    //Temporary function for getting dummy CoreData for demonstration purpose
 	    public static CoreData getCoreData() {
-			CoreData coreData = new CoreData();
+			CoreData coreData = CoreData.getInstance();
 			DataTable table = new DataTable("Test");
 			int OUTER = 0;
 			table = new DataTable("Parent");

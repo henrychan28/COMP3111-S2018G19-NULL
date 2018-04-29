@@ -1,36 +1,42 @@
 package ui.comp3111;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 import core.comp3111.AutoFillType;
-import core.comp3111.DataColumn;
+import core.comp3111.Constants;
 import core.comp3111.DataType;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ColumnTypeUI {
 	
-	private static final int SIZE_H = 400;
-	private static final int SIZE_W = 600;
+	private static final int WINDOW_H = 500;
+	private static final int WINDOW_W = 600;
+	
+	private static final int LIST_W = 220;
+	private static final int LIST_H = WINDOW_H - 150;
+	private static final int BUTTONS_W = WINDOW_W - LIST_W - 150;
+	private static final int BUTTONS_H = WINDOW_H - 150;
 	
 	private HashMap<String, String[]> columnPrefs;
 	
@@ -46,60 +52,44 @@ public class ColumnTypeUI {
 	
 	public HashMap<String, String[]> presentUI(Stage parent) {
 		
+		// Defines
+		Stage newWindow = new Stage();
+		Button saveColumn = new Button("Save Column");
+		Button closeDialog = new Button("Confirm Import");
+		Button cancelDialog = new Button("Cancel Import");
 		
 		/*
 		 * Column list selection
 		 * 
+		 * 
 		 */
 		
-		String[] columnNames = {"Column One", "Column Two", "Column Three"};
+		// Pull column names from the preferences map
+		Set<String> keys = columnPrefs.keySet();
+		String[] columnNames = keys.toArray(new String[keys.size()]);
+		
+		// Add the column selections list
 		ObservableList<String> columnsList = FXCollections.observableArrayList(columnNames);
 		ListView<String> list = new ListView<String>(columnsList);
-		list.setPrefWidth(150);
+		list.setPrefWidth(LIST_W);
+		list.setPrefHeight(LIST_H);
+		
 		list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		Label columnSelectedLabel = new Label("No column selected");
-		
-		list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			
-			@Override
-			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
-				columnSelectedLabel.setText((String) newValue);
-				columnPrefs.put("stuff", null);
-			}
-		});
-		
-		
-		HBox colNameHBox = new HBox(20);
-		colNameHBox.setAlignment(Pos.CENTER);
-		colNameHBox.setPrefWidth(SIZE_W);
-		colNameHBox.getChildren().addAll(list, columnSelectedLabel);
-		
 		
 		/*
 		 * Method to fill in blanks
 		 * 
+		 * 
 		*/
-		String[] stringFill = {"Blank"};
-		String[] numberFill = {"Zero", "Mean", "Average"};
+		
+		String[] numberFill = {AutoFillType.TYPE_EMPTY, AutoFillType.TYPE_ZERO, AutoFillType.TYPE_MEDIAN, AutoFillType.TYPE_MEAN};
 		
 		Label fillLabel = new Label("No fill method selected"); 
 		
 		ChoiceBox<String> fillChoiceBox = new ChoiceBox<String>();
 		fillChoiceBox.setItems(FXCollections.observableArrayList(numberFill));
 		fillChoiceBox.disableProperty().set(true);
-		fillChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				fillLabel.setText(numberFill[newValue.intValue()]);
-			}
-		});
-		
-		HBox fillHBox = new HBox(20);
-		fillHBox.setAlignment(Pos.CENTER);
-		fillHBox.setPrefWidth(SIZE_W);
-		fillHBox.getChildren().addAll(fillChoiceBox, fillLabel);
-		
 		
 		/*
 		 * Data Type selection
@@ -112,64 +102,179 @@ public class ColumnTypeUI {
 
 		ChoiceBox<String> typeChoiceBox = new ChoiceBox<String>();
 		typeChoiceBox.setItems(FXCollections.observableArrayList(typeLabels));
+		
+		
+		
+		//
+		//
+		// Methods	
+		//
+		//
+		
+		/*
+		 * LIST
+		 * 
+		 */
+		
+		list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+								
+				String[] vals = columnPrefs.get(newValue.toString());
+				
+				int i = 0;
+				for (i = 0; i < types.length; i++) {
+					if (types[i].equals(vals[Constants.DATATYPE_INDEX])) {
+						System.out.println(i);
+						typeChoiceBox.getSelectionModel().select(i);
+					}
+				}
+				
+				for (i = 0; i < numberFill.length; i++) {
+					if (numberFill[i].equals(vals[Constants.AUTOFILLTYPE_INDEX])) {
+						System.out.println(i);
+						fillChoiceBox.getSelectionModel().select(i);
+					}
+				}			
+				
+				columnSelectedLabel.setText("Column: '" + (String) newValue + "' Selected");
+			}
+		});
+		
+		
+		/*
+		 * Type Selection
+		 * 
+		 */
+
 		typeChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				typeLabel.setText(types[newValue.intValue()]);
-				
+				typeLabel.setText("Java Type: " + types[newValue.intValue()]);
+
 				switch (newValue.intValue()) {
-	            case 0:
+	            case 0: 	// Is Number
 	            	fillChoiceBox.disableProperty().set(false);
+	            	fillChoiceBox.getSelectionModel().select(numberFill[1]);
 	                break;
-	            default: 	
+	            default: 	// Not Number
+	            	fillChoiceBox.getSelectionModel().select(numberFill[0]);
 	            	fillChoiceBox.disableProperty().set(true);
 	                break;
 				}
 			}
 		});
 		
-		HBox typeHBox = new HBox(20);
-		typeHBox.setAlignment(Pos.CENTER);
-		typeHBox.setPrefWidth(SIZE_W);
-		typeHBox.getChildren().addAll(typeChoiceBox, typeLabel);
 		
 		/*
-		 * UI Buttons to cancel or confirm
+		 * Autofill Choices
 		 * 
 		 */
 		
-		
+		fillChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				fillLabel.setText("Fill Algorithm: " + numberFill[newValue.intValue()]);
+			}
+		});
 		
 		/*
-		 * Inner container
+		 * UI Buttons to save column prefs
 		 * 
 		 */
 		
-		VBox container = new VBox(20);
+		saveColumn.setOnAction(e -> {
+			// Make sure this is even valid
+			if (typeChoiceBox.getSelectionModel().getSelectedIndex() == 0 &&
+					fillChoiceBox.getSelectionModel().getSelectedItem().equals(AutoFillType.TYPE_EMPTY)) {
+				fillChoiceBox.getSelectionModel().select(numberFill[1]);
+				fillLabel.setText("Cannot have blank chosen, set to zero");
+			}
+			
+			// Save it
+			String column = list.getSelectionModel().getSelectedItem();
+			String[] vals = {types[typeChoiceBox.getSelectionModel().getSelectedIndex()], fillChoiceBox.getSelectionModel().getSelectedItem()};
+			columnPrefs.replace(column, vals);
+		});
+		
+		/*
+		 * UI Buttons to confirm and cancel
+		 * 
+		 */
+		
+		closeDialog.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+            	System.out.print("Confirm...");
+            	newWindow.close();
+            }
+        });
+		
+		cancelDialog.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+            	columnPrefs = null;
+            	System.out.print("Cancel...");
+            	newWindow.close();
+            }
+        });
+		
+		// a spacer to push the visible elements up a little
+		Region spacer = new Region();
+		spacer.setPrefHeight(10);
+		
+		
+		/*
+		 * Column selection container
+		 * 
+		 */
+		
+		VBox colNameVBox = new VBox(20);
+		colNameVBox.setAlignment(Pos.CENTER);
+		colNameVBox.setPrefWidth(LIST_W);
+		colNameVBox.getChildren().addAll(columnSelectedLabel, list);
+				
+		
+		/*
+		 * Buttons and Choicebox container
+		 * 
+		 */
+		
+		VBox buttonsVBox = new VBox(20);
+		buttonsVBox.setAlignment(Pos.CENTER);
+		buttonsVBox.setPrefWidth(BUTTONS_W);
+		buttonsVBox.setPrefHeight(BUTTONS_H);
+		buttonsVBox.getChildren().addAll(spacer, typeChoiceBox, typeLabel, fillChoiceBox, fillLabel, saveColumn, new Separator(), closeDialog, new Separator(), cancelDialog);
+		
+		/*
+		 * Outer Container
+		 * 
+		 */
+		
+		HBox container = new HBox(20);
 		container.setAlignment(Pos.CENTER);
-		container.getChildren().addAll(colNameHBox, typeHBox, fillHBox);
-		
+		container.getChildren().addAll(colNameVBox, buttonsVBox);
 		
 		/*
-		 * 
+		 * Show the window we generated
 		 * 
 		 */
 		
-		Scene scene = new Scene(container,SIZE_W,SIZE_H);
+		Scene scene = new Scene(container,WINDOW_W,WINDOW_H);
 		
-		Stage newWindow = new Stage();
 		newWindow.setTitle("Column Type Selector");
-		newWindow.setWidth(SIZE_W);
-		newWindow.setHeight(SIZE_H);
+		newWindow.setWidth(WINDOW_W);
+		newWindow.setHeight(WINDOW_H);
 		newWindow.setScene(scene);
 		
 		newWindow.initOwner(parent);
 		newWindow.initModality(Modality.APPLICATION_MODAL); 
 		newWindow.showAndWait();
-		
 
-		System.out.println("SHIT");
+		System.out.println("Done");
 		return columnPrefs;
 	}
 
