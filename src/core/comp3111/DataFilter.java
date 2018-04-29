@@ -27,6 +27,8 @@ public class DataFilter {
 	 * 			   - table filtered with given retainValues hashmap
 	 */
 	public DataTable TextFilter(DataTable dataTable, HashMap<String, Set<Object>> retainValues) {
+		
+		//TO-DO: bug of selecting only one entry of the unique text
 		DataTable filteredTable = null;
 		ArrayList<Integer> index = new ArrayList<Integer>();
 		for(int i=0;i<dataTable.getNumRow();i++) index.add(i);
@@ -68,8 +70,8 @@ public class DataFilter {
 		int numRows = dataTable.getNumRow();
 		Integer[] randomIntegerArray = NonRepRandomIntegerGenerator(0,numRows);
 		int cutOff = (int)(((double)numRows)*splitRatio);
-		ArrayList<Integer> indexA = new ArrayList();
-		ArrayList<Integer> indexB = new ArrayList();
+		ArrayList<Integer> indexA = new ArrayList<>();
+		ArrayList<Integer> indexB = new ArrayList<>();
 		for(int i=0;i<cutOff;i++) indexA.add(randomIntegerArray[i]);
 		for(int i=cutOff;i<numRows;i++) indexB.add(randomIntegerArray[i]);
 		try {
@@ -135,7 +137,7 @@ public class DataFilter {
 	 * 			   - Unique text entries for each column in the dataTable
 	 */
 	public DataTable GetTableTextLabels(DataTable dataTable) {
-		HashMap<String, Set<Object>> tableTextSet = new HashMap();
+		HashMap<String, Set<Object>> tableTextSet = new HashMap<>();
 		String[] columnNames = dataTable.getColumnNames();
 		for(String columnName:columnNames) {
 			DataColumn dataColumn = dataTable.getCol(columnName);

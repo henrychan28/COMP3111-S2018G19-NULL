@@ -30,7 +30,7 @@ public class SampleDataGenerator {
 		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
 
 		// Sample: A array of String
-		String[] labels = new String[] { "P1", "P2", "P3", "P4", "P5", "P3", "P4", "P6" };
+		String[] labels = new String[] { "P1", "P2", "P3", "P4", "P5", "P5", "P2", "P6" };
 		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
 
 
