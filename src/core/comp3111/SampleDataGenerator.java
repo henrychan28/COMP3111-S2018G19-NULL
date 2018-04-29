@@ -10,7 +10,51 @@ import java.util.Random;
  *
  */
 public class SampleDataGenerator {
+	
+	/**
+	 * A sample data generation. It illustrates how to use the DataTable class
+	 * implemented in the base code
+	 * 
+	 * @return DataTable object
+	 */
+	public static DataTable generateSampleDataForDataFilter() {
 
+		DataTable t = new DataTable("Sample Data 1");
+
+		// Sample: An array of integer
+		Number[] xvalues = new Integer[] { 1, 2, 3, 4, 5, 5, 5, 5};
+		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
+
+		// Sample: Can also mixed Number types
+		Number[] yvalues = new Number[] { 30.0, 25, (short) 16, 8.0, (byte) 22, 22, 22, 22};
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+
+		// Sample: A array of String
+		String[] labels = new String[] { "P1", "P2", "P3", "P4", "P5", "P5", "P2", "P6" };
+		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
+
+
+		// Sample: A array of String
+		String[] labels2 = new String[] { "A1", "A2", "A3", "A4", "A5", "A5", "A2", "A6" };
+		DataColumn labelsCol2 = new DataColumn(DataType.TYPE_STRING, labels2);
+		
+		
+		try {
+
+			t.addCol("X", xvaluesCol);
+			t.addCol("Y", yvaluesCol);
+			t.addCol("label", labelsCol);
+			t.addCol("label2", labelsCol2);
+
+
+		} catch (DataTableException e) {
+			e.printStackTrace();
+
+		}
+
+		return t;
+	}
+	
 	/**
 	 * A sample data generation. It illustrates how to use the DataTable class
 	 * implemented in the base code
@@ -26,7 +70,7 @@ public class SampleDataGenerator {
 		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
 
 		// Sample: Can also mixed Number types
-		Number[] yvalues = new Number[] { 30.0, 25, (short) 16, 8.0, (byte) 22 };
+		Number[] yvalues = new Number[] { 30.0, 25, (short) 16, 8.0, (byte) 22};
 		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
 
 		// Sample: A array of String

@@ -1,0 +1,13 @@
+To-Do
+(i)[Henry] typename enforcement in DataColumn
+When you create a new DataColumn, the typeName must be the one inside the file DataType.java
+
+(ii)[Cherry] CoreData Graph storage
+modify the blah variable for storing the Graph with correct type name and a better variable name
+
+(iii)[Cherry] Add incremental id for graph
+add an incremental number which will increase by 1 whenever a graph is created and append to the graph 
+to ensure the uniquess of the graph
+
+(iv)[Michael] Enforce type safety for loading csv
+ensure the data loaded has the same datatype as the user selected in the selection manual 
