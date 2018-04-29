@@ -701,8 +701,11 @@ public class GenerateChartUI extends Application {
 	private class historyTableFactoryEventHandler implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent t) {
+			if(tvhistory.getSelectionModel().isEmpty()) {
+				return;
+			}
 			int selected = tvhistory.getSelectionModel().getSelectedIndex();
-			System.out.print(selected);
+			
 			xychart selectedchart = olhistory.get(selected);
 			// updated the selected chart to scene 6
 			chartShowChart = selectedchart.getXYChart();
