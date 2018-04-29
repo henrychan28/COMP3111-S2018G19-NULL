@@ -48,11 +48,14 @@ import javafx.stage.Stage;
 
 public class GenerateChartUI extends Application {
 	
-	
+	/**
+	 * Constructor for ChartUI. 
+	 * @tableIndex - Index of the table.
+	 * 
 	public GenerateChartUI(int[] tableIndex) {
 		this.selectedTableIndex = tableIndex;
 	}
-	
+	*/
 	//testing testing, delete it later
 	private void testingData() {
 		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2 number, 1string
@@ -62,7 +65,7 @@ public class GenerateChartUI extends Application {
 
 	@Override
 	public void start(Stage primarystage) {
-		//testingData();
+		testingData();
 		stage = primarystage;
 		initScenes();
 		initEventHandlers();
@@ -152,11 +155,14 @@ public class GenerateChartUI extends Application {
 		// if DataTable contains >= 2 Number Data Columns && >= 1 String Data Columns =>
 		// show ScatterChart
 		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 2
-				&& selectedDataTable.getNumColOfType(DataType.TYPE_STRING) >= 1) {
+				&& (selectedDataTable.getNumColOfType(DataType.TYPE_STRING))  >= 1) {
+						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 			cbChartType.getItems().add(ChartTypeValue.TYPE_SCATTER);
 		}
-		// if DataTable contains >= 1 Number Data Columns => show Dynamic Chart
-		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 1) {
+		// if DataTable contains >= 1 Number & 1 String Data Columns => show Dynamic Chart
+		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 1&& 
+				(selectedDataTable.getNumColOfType(DataType.TYPE_STRING))  >= 1) {
+						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 				cbChartType.getItems().addAll(ChartTypeValue.TYPE_DYNAMIC);
 			}
 		// 3. message for reminding the user
@@ -236,11 +242,6 @@ public class GenerateChartUI extends Application {
 		Xaxis.getChildren().addAll(lbLineXaxis, cbLineXaxis);
 		Xaxis.setAlignment(Pos.CENTER);
 
-		// TODO: add the key of all number type data columns of the DataTable to the
-		// ComboBox
-		DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-		String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
-		cbLineXaxis.getItems().addAll(keys);
 
 		// 4: y-axis
 		HBox Yaxis = new HBox(10);
@@ -249,9 +250,15 @@ public class GenerateChartUI extends Application {
 		Yaxis.getChildren().addAll(lbLineYaxis, cbLineYaxis);
 		Yaxis.setAlignment(Pos.CENTER);
 
-		// TODO: add the key of all number type data columns of the DataTable to the
-		// ComboBox
-		cbLineYaxis.getItems().addAll(keys);
+		//Add the key of all number type data columns of the DataTable to the
+		// ComboBoxes
+			DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+			String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
+			if(keys != null) { 
+					cbLineXaxis.getItems().addAll(keys);
+					cbLineYaxis.getItems().addAll(keys);
+
+				}
 
 		// 5. message for reminding the user
 		lblinemsg = new Label("");
@@ -300,11 +307,6 @@ public class GenerateChartUI extends Application {
 		Xaxis.getChildren().addAll(lbScatterXaxis, cbScatterXaxis);
 		Xaxis.setAlignment(Pos.CENTER);
 
-		// Add the key of all number type data columns of the DataTable to the
-		// ComboBox
-		DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-		String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
-		cbScatterXaxis.getItems().addAll(keys);
 
 		// 4: y-axis
 		HBox Yaxis = new HBox(10);
@@ -313,10 +315,6 @@ public class GenerateChartUI extends Application {
 		Yaxis.getChildren().addAll(lbScatterYaxis, cbScatterYaxis);
 		Yaxis.setAlignment(Pos.CENTER);
 
-		// Add the key of all number type data columns of the DataTable to the
-		// ComboBox
-		cbScatterYaxis.getItems().addAll(keys);
-
 		// 5 Category Axis
 		HBox Caxis = new HBox(10);
 		lbScatterCaxis = new Label("Categories");
@@ -324,9 +322,22 @@ public class GenerateChartUI extends Application {
 		Caxis.getChildren().addAll(lbScatterCaxis, cbScatterCaxis);
 		Caxis.setAlignment(Pos.CENTER);
 
-		// add the key of all String type data columns of the DataTable to the ComboBox
+		// add the key of all String & Object type data columns of the DataTable to the ComboBox
+		// Add the key of all number type data columns of the DataTable to the
+		// x, yComboBox
+		DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+		String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
+		if (keys != null) {
+			cbScatterXaxis.getItems().addAll(keys);
+			cbScatterYaxis.getItems().addAll(keys);
+		}
 		String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
-		cbScatterCaxis.getItems().addAll(keys2);
+		String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
+
+		if (keys != null) {
+			cbScatterCaxis.getItems().addAll(keys2);
+			//cbScatterCaxis.getItems().addAll(keys3);
+		}
 		// 6
 		lbscattermsg = new Label("");
 		// 7 Buttons
@@ -369,9 +380,12 @@ public class GenerateChartUI extends Application {
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
 				cbDynamicYaxis.getItems().addAll(keys);	
-		//String type to Category
+		//String & Object type to Category
 				String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
+				//String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
 				cbDynamicCaxis.getItems().addAll(keys2);
+				//cbDynamicCaxis.getItems().addAll(keys3);
+
 		
 		hbtitle.getChildren().addAll(lbDynamicTitile, tfDynamicTitle);
 		hbyaxis.getChildren().addAll(lbDynamicYaxis, cbDynamicYaxis);
