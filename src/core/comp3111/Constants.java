@@ -10,4 +10,6 @@ public class Constants {
 	public static final int AUTOFILLTYPE_INDEX = 1;
 
 	public static final String FILE_EX = ".COMP3111";
+	
+	public static final long SERIALIZABLE_VER = 2;
 }

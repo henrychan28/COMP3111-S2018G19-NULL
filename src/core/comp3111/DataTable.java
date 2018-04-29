@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class DataTable implements Serializable{
 
+	private static final long serialVersionUID = Constants.SERIALIZABLE_VER;
 	/**
 	 * Construct - Create an empty DataTable
 	 */

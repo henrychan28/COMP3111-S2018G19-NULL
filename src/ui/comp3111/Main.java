@@ -7,6 +7,9 @@ import core.comp3111.Constants;
 import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataImport;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -60,7 +64,7 @@ public class Main extends Application {
 	// createScene()
 
 	// Screen 1: paneMainScreen
-	private Button btSampleLineChartData, btSampleLineChartDataV2, btSampleLineChart, btImportDataLineChart;
+	private Button btSampleLineChartData, btSampleLineChartDataV2, btSampleLineChart, btImportDataLineChart, btExport, btLoad;
 	private Label lbSampleDataTable, lbMainScreenTitle;
 
 	// Screen 2: paneSampleLineChartScreen
@@ -185,7 +189,7 @@ public class Main extends Application {
 			// If a file is chosen process it
 			if (fileToImport.getFileForImport()) 
 			{
-				// Parse the selected file to temporary table
+				// Parse the selected file to temporary table, returning column headers
 				String[] columnHeaders = null;
 				columnHeaders = fileToImport.parseFile();
 				
@@ -193,21 +197,37 @@ public class Main extends Application {
 				ColumnTypeUI columnWindow = new ColumnTypeUI(columnHeaders);
 				HashMap<String, String[]> columnData = columnWindow.presentUI(stage);
 				
-				selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
-				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
-						coreData.getDataTable(selectedTableIndex).getNumCol()));
+				if (columnData != null) {
+					selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
+					lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
+							coreData.getDataTable(selectedTableIndex).getNumCol()));
 
-				populateSampleDataTableValuesToChart("Import Test");
-				
-				CoreDataIO io = new CoreDataIO();
-				io.saveCoreData(coreData, "/Users/michaelfrost/Desktop/","Someshit",Constants.FILE_EX);
-			} 
-						
+					populateSampleDataTableValuesToChart("Import Test");
+				}
+			} 		
 		});
 
 		// click handler
 		btSampleLineChart.setOnAction(e -> {
 			putSceneOnStage(SCENE_LINE_CHART);
+		});
+		
+		btExport.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File dest = fileChooser.showSaveDialog(null);
+			if (dest != null) {
+				CoreDataIO io = new CoreDataIO();
+				io.saveCoreData(coreData, dest.getAbsolutePath(),Constants.FILE_EX);
+			}
+		});
+		
+		btLoad.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File dest = fileChooser.showOpenDialog(null);
+			if (dest != null) {
+				CoreDataIO io = new CoreDataIO();
+				coreData = io.openCoreData(dest.getAbsolutePath());
+			}
 		});
 
 	}
@@ -257,15 +277,21 @@ public class Main extends Application {
 		btImportDataLineChart = new Button("Import Test");
 		btSampleLineChart = new Button("Sample Line Chart");
 		lbSampleDataTable = new Label("DataTable: empty");
+		btExport = new Button("Save Environment");
+		btLoad = new Button("Load Environment");
 
 		// Layout the UI components
 
 		HBox hc = new HBox(20);
 		hc.setAlignment(Pos.CENTER);
-		hc.getChildren().addAll(btSampleLineChartData, btSampleLineChartDataV2, btImportDataLineChart);
+		hc.getChildren().addAll(btSampleLineChartData, btSampleLineChartDataV2, btImportDataLineChart, btExport);
+		
+		HBox hc2 = new HBox(20);
+		hc2.setAlignment(Pos.CENTER);
+		hc2.getChildren().addAll(btExport, btLoad);
 
 		VBox container = new VBox(20);
-		container.getChildren().addAll(lbMainScreenTitle, hc, lbSampleDataTable, new Separator(), btSampleLineChart);
+		container.getChildren().addAll(lbMainScreenTitle, hc, hc2, lbSampleDataTable, new Separator(), btSampleLineChart);
 		container.setAlignment(Pos.CENTER);
 
 		BorderPane pane = new BorderPane();

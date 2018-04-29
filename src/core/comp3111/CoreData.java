@@ -15,14 +15,12 @@ import core.comp3111.DataTable;
 public class CoreData implements Serializable {
 	
 	// Defines
-	public static final long serialVersionUID = 1;
-	private static long serialchartid = 1;
+	public static final long serialVersionUID = Constants.SERIALIZABLE_VER;
+	private static long serialChartUID = 1;
 	
 	// Class variables
-	
-	private ArrayList<ArrayList<DataTable>> masterTableList; //👺
-	//TO-DO:After merge, change the Object type to xychart which is defined by Cherry
-	private HashMap<String, ArrayList<xychart>> masterChartList; 
+	private ArrayList<ArrayList<DataTable>> masterTableList;
+  private HashMap<String, ArrayList<xychart>> masterChartList;
 
 	// Initializer
 	public CoreData() {
