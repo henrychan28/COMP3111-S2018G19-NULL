@@ -16,15 +16,16 @@ public class CoreData implements Serializable {
 	
 	// Defines
 	public static final long serialVersionUID = Constants.SERIALIZABLE_VER;
+	private static long serialChartUID = 1;
 	
 	// Class variables
-	private ArrayList<ArrayList<DataTable>> masterTableList; //
-	//TO-DO:After merge, change the Object type to xychart which is defined by Cherry
-	private HashMap<String, ArrayList<Object>> blah;
+	private ArrayList<ArrayList<DataTable>> masterTableList;
+  private HashMap<String, ArrayList<xychart>> masterChartList;
 
 	// Initializer
 	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
+		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
 	
 	/**
@@ -186,4 +187,113 @@ public class CoreData implements Serializable {
 		
 		return indices;
 	}
+	/**
+	 * Add the Chart to the masterChartList.
+	 * 
+	 * @param DataTableName
+	 * 			- Corresponding DataTable
+	 * @param ChartName
+	 * 			- ChartName
+	 * @return true if success, false otherwise
+	 */
+	
+	public boolean addChart(String DataTableName, xychart xychart) {
+		boolean success = false;
+		if(this.masterChartList.containsKey(DataTableName)) {
+			masterChartList.get(DataTableName).add(xychart);
+			success = true;
+		}
+		else {
+			ArrayList<xychart> arraylist = new ArrayList<xychart>();
+			arraylist.add(xychart);
+			masterChartList.put(DataTableName, arraylist);
+			success = true;
+		}
+		return success;
+	}
+	/**
+	 * get the ArrayList of xychart for the specific DataTable.
+	 * 
+	 * 
+	 * @param DataTable
+	 * @return ArrayList<xychart> if there is charts for DataTable. null otherwise.
+	 */
+	public ArrayList<xychart> getCharts(String DataTable){
+		return masterChartList.get(DataTable);
+	}
+	/**
+	 * 
+	 */
+	public int getNumChartsWithType(String DataTableName, String ChartType){
+		int num = 0;
+
+		ArrayList<xychart> charts = masterChartList.get(DataTableName);
+		if (charts == null) {return num;}
+		for (xychart chart: charts) {
+			if (chart.getChartType().equals(ChartType)) {
+				num +=1; 
+			}
+		}
+		return num;
+		
+		
+	}
+	
+	public ArrayList<xychart> getChartsWithType(String DataTableName, String ChartType){
+		ArrayList<xychart> charts = masterChartList.get(DataTableName);
+		if (charts == null) {return null;}
+		ArrayList<xychart> chart_ChartType = new ArrayList<xychart>();
+		for (xychart chart: charts) {
+			if (chart.getChartType().equals(ChartType)) {
+				 chart_ChartType.add(chart);
+			}
+		}
+		if (chart_ChartType.size() == 0) {
+			return null;
+		}
+		else {
+		return chart_ChartType;
+		}
+		
+	}
+	/**
+	 * get the chart with ChartID known and DataTable known 
+	 * 
+	 * @param DataTableName
+	 * @param ChartID
+	 * @return the xychart if existed. null otherwise.
+	 */
+	
+	public xychart getChart(String DataTableName, String ChartID) {
+		if (masterChartList.containsKey(DataTableName)) {
+			ArrayList<xychart> Charts = masterChartList.get(DataTableName);
+			for (int i = 0; i < Charts.size(); i++) {
+				if (Charts.get(i).getChartID() == ChartID) {
+					return Charts.get(i);
+				}
+			}
+
+		}
+		return null;
+	}
+	/**
+	 * Get and update the chartid. 
+	 * 
+	 * @return long chartid
+	 */
+	public static long getchartid() {
+		
+		CoreData.serialchartid +=1;	
+		return CoreData.serialchartid -1;
+	}
+	/**
+	 * Get the chartid. No updating. 
+	 * 
+	 * @return long chartid
+	 */
+	public static long checkchartid() {
+		return CoreData.serialchartid;
+	}
+	
+	
 }

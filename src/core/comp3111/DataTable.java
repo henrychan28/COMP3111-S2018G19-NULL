@@ -110,7 +110,7 @@ public class DataTable implements Serializable{
 			dataColumns[index] = dc.get(key);
 			index++;
 		}
-		return null;
+		return dataColumns;
 	}
 	/**
 	 * Check whether the column exists by the given column name
@@ -201,38 +201,45 @@ public class DataTable implements Serializable{
 	 * @param colType
 	 * 			- Type of the column: Defined in DataType class
 	 * @return
+	 * 			- null if not exists
 	 * 			- String[] keys
 	 */
 	
 	public String[] getColKeysOfType(String colType) {
 		int size = getNumColOfType(colType);
-		
+		if (size == 0) {
+			return null;
+		}
 		String [] keys = new String[size];
+		System.out.print(size);
+
 		//iterate the HashMap dc
 		int i = 0;
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			String type = entry.getValue().getTypeName();
 			if (type == colType) {
+
 				keys[i] = entry.getKey();
+				i++;
+
 			}	
-			i++;
 		}
 		
 		return keys;
 	}
 	
 	public void printDataTable() {
+		System.out.println("---------printDataTable()---------");
 		for(String key: dc.keySet()) {
-			System.out.println(key);
 			DataColumn currentColumn = dc.get(key);
 			Object[] currentData = currentColumn.getData();
+			System.out.println(key + " " + currentColumn.getTypeName());
 			for(Object datum:currentData) {
 				System.out.print(datum + " ");
 			}
 			System.out.println();
 		}
-		System.out.println();
-		System.out.println("----------------------");
+		System.out.println("-------------------------------");
 	}
 	// attribute: A java.util.Map interface
 	// KeyType: String
