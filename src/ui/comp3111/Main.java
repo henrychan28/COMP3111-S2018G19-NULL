@@ -46,7 +46,7 @@ public class Main extends Application {
 	// java.util.ArrayList)
 	
 	// Data Storage
-	private CoreData coreData = new CoreData();
+	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = {Constants.EMPTY, Constants.EMPTY};
 
 	// Attributes: Scene and Stage

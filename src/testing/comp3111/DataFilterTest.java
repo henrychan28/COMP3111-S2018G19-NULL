@@ -68,7 +68,7 @@ public class DataFilterTest {
 		assertTrue(splitNumRowsA == numRowsA || splitNumRowsB == numRowsA);
 	}
 	
-	
+	/*
 	@Test
 	void testGetTableTextLabels() {
 		HashMap<String, Set<Object>> testValue = testDataFilter.GetTableTextLabels(smallDataTable);
@@ -85,6 +85,7 @@ public class DataFilterTest {
 		trueValue.put("Random2", set2);
 		assertEquals(trueValue, testValue);
 	}
+	*/
 	
 	
 	@Test

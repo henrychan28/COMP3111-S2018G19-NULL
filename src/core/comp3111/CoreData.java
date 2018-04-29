@@ -20,13 +20,21 @@ public class CoreData implements Serializable {
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
-  private HashMap<String, ArrayList<xychart>> masterChartList;
+	private HashMap<String, ArrayList<xychart>> masterChartList;
+	private static CoreData instance;
 
 	// Initializer
-	public CoreData() {
+	private CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
+	
+	public static CoreData getInstance(){
+        if(instance == null){
+            instance = new CoreData();
+        }
+        return instance;
+    }
 	
 	/**
 	 * Add a new inner list of data tables and a parent data table
@@ -187,6 +195,8 @@ public class CoreData implements Serializable {
 		
 		return indices;
 	}
+	
+	
 	/**
 	 * Add the Chart to the masterChartList.
 	 * 
@@ -221,6 +231,8 @@ public class CoreData implements Serializable {
 	public ArrayList<xychart> getCharts(String DataTable){
 		return masterChartList.get(DataTable);
 	}
+	
+	
 	/**
 	 * 
 	 */
@@ -283,8 +295,8 @@ public class CoreData implements Serializable {
 	 */
 	public static long getchartid() {
 		
-		CoreData.serialchartid +=1;	
-		return CoreData.serialchartid -1;
+		CoreData.serialChartUID +=1;	
+		return CoreData.serialChartUID -1;
 	}
 	/**
 	 * Get the chartid. No updating. 
@@ -292,7 +304,7 @@ public class CoreData implements Serializable {
 	 * @return long chartid
 	 */
 	public static long checkchartid() {
-		return CoreData.serialchartid;
+		return CoreData.serialChartUID;
 	}
 	
 	
