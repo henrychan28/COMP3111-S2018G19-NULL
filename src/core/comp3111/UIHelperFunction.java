@@ -20,7 +20,7 @@ public class UIHelperFunction {
 		 */
 	    public static ObservableList<DataTable> InjectDataTable(int axis, int parent) {
 	    	//To-Do: Once the CoreData is completed, retrieve data from there
-	    	CoreData coreData = getCoreData();
+	    	CoreData coreData = CoreData.getInstance();
 	    	ObservableList<DataTable> dataSet = FXCollections.observableArrayList();
 	    	if (axis == Constants.OUTER && parent == -1) {
 		    	int outerSize = coreData.getOuterSize();
