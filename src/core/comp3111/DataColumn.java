@@ -78,11 +78,19 @@ public class DataColumn implements Serializable {
 			return 0;
 		return data.length;
 	}
+	
+	/**
+	 * Compare two data columns by value
+	 * 
+	 * @return true if both column data and type is equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		DataColumn otherDataColumn = (DataColumn) obj;
 		return Arrays.equals(data,otherDataColumn.data) && typeName.equals(otherDataColumn.typeName);
 	}
+	
+	
 	// attributes
 	private Object[] data;
 	private String typeName;

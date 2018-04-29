@@ -196,16 +196,15 @@ public class Main extends Application {
 				// Ask the user about the method to handle the various columns
 				ColumnTypeUI columnWindow = new ColumnTypeUI(columnHeaders);
 				HashMap<String, String[]> columnData = columnWindow.presentUI(stage);
-								
-				selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
-				lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
-						coreData.getDataTable(selectedTableIndex).getNumCol()));
+				
+				if (columnData != null) {
+					selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
+					lbSampleDataTable.setText(String.format("SampleDataTable: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
+							coreData.getDataTable(selectedTableIndex).getNumCol()));
 
-				populateSampleDataTableValuesToChart("Import Test");
-				
-				
-			} 
-						
+					populateSampleDataTableValuesToChart("Import Test");
+				}
+			} 		
 		});
 
 		// click handler

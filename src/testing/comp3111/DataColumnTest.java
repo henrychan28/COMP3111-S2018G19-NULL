@@ -1,5 +1,7 @@
 package testing.comp3111;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -40,5 +42,40 @@ class DataColumnTest {
 		assert (dc.getTypeName().equals(""));
 		assert (dc.getData() == null);
 
+	}
+	
+	@Test
+	void testEquals_Not() {
+		Number[] arr = new Integer[] { 1, 2, 3, 4, 5 };
+		String[] arr2 = new String[] {"Heya","Heya","Heya","Heya","Heya"};
+		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
+		DataColumn dc2 = new DataColumn(DataType.TYPE_STRING,arr2);
+		assertEquals(false,dc.equals(dc2));
+	}
+	
+	@Test
+	void testEquals_SameDT() {
+		Number[] arr = new Integer[] { 1, 2, 3, 4, 5 };
+		Number[] arr2 = new Integer[] { 6, 7, 8, 9, 10 };
+		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
+		DataColumn dc2 = new DataColumn(DataType.TYPE_NUMBER,arr2);
+		assertEquals(false,dc.equals(dc2));
+	}
+	
+	@Test
+	void testEquals_DiffDT() {
+		Number[] arr = new Integer[] { 1, 2, 3, 4, 5 };
+		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
+		DataColumn dc2 = new DataColumn(DataType.TYPE_STRING,arr);
+		assertEquals(false,dc.equals(dc2));
+	}
+	
+	@Test
+	void testEquals_Same() {
+		String[] arr = new String[] { "Hey", "There", "Whats", "Up"};
+		String[] arr2 = new String[] { "Hey", "There", "Whats", "Up"};
+		DataColumn dc = new DataColumn(DataType.TYPE_STRING, arr);
+		DataColumn dc2 = new DataColumn(DataType.TYPE_STRING,arr2);
+		assertEquals(true,dc.equals(dc2));
 	}
 }
