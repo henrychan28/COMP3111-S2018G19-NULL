@@ -667,11 +667,7 @@ public class GenerateChartUI extends Application {
 		stage.show();
 	}
 
-	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2number, 1string
-		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
-		selectedTableIndex = a;
-	}
+
 
 	/**
 	 * A function to create the TableView
@@ -745,7 +741,17 @@ public class GenerateChartUI extends Application {
 
 		}
 	}
-
+	
+	private void testingData() {
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2number, 1string
+		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
+		selectedTableIndex = a;
+	}
+	public void setChartUI(Stage primarystage, int[] tableIndex, CoreData coreData) {
+		stage = primarystage;
+		
+		
+	}
 	
 
 	@Override
@@ -754,9 +760,7 @@ public class GenerateChartUI extends Application {
 		stage = primarystage;
 		initScenes();
 		initEventHandlers();
-		putSceneOnStage(0);
-		System.out.println(cbChartType.getValue());
-
+		putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 	}
 
 	public static void main(String[] args) {
