@@ -15,14 +15,21 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Separator;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -33,8 +40,11 @@ public class DataFilterUI extends Application {
 	private static TableView<String> columnTableView;
 	private static TableView<String> textTableView;
 	private static DataTable currentTable;
-	private static HashMap<String, Set<Object>> selectedRetainText;
+	private static HashMap<String, Set<Object>> selectedRetainText = new HashMap<>();
 	private static TextField tableNameTextField;
+	private static TextField randomTableNameTextField1;
+	private static TextField randomTableNameTextField2;
+
     
     private void InjectCurrentText(String columnName) throws Exception {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
@@ -71,7 +81,6 @@ public class DataFilterUI extends Application {
     }
     
     private void TestInitialize() {
-    	selectedRetainText = new HashMap<>();
     	DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
     	try{
     		SetCurrentTable(testTable);
@@ -85,20 +94,64 @@ public class DataFilterUI extends Application {
     	//Initialize the UI test data
     	TestInitialize();
 
-    	stage.setTitle("Table View Sample");
-        stage.setWidth(800);
+    	stage.setTitle("Data Filter Interface");
+        stage.setWidth(900);
         stage.setHeight(500);
+        
         columnTableView = createTableView("Column Name", columnNames);
-        columnTableView.setOnMouseClicked(new columnTableEventHandler());
+        columnTableView.setOnMouseClicked(new ColumnTableEventHandler());
+        columnTableView.getSelectionModel().select(0);;
+        
         textTableView = createTableView("Text", currentText);
         textTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        Button selectButton = new Button("Select");
+        
+        Text tableNameTextBox = new Text();
+        tableNameTextBox.setText("Enter Table Name:");
+        
+        Button selectButton = new Button("Select Text");
         selectButton.setOnMouseClicked(new SelectButtonEventHandler());
-        Button generateButton = new Button("Generate");
+        
+        Button generateButton = new Button("Generate Table");
         generateButton.setOnMouseClicked(new GenerateButtonEventHandler());
+        
         tableNameTextField = new TextField ();
-        final HBox hbox = new HBox();
-        hbox.getChildren().addAll(columnTableView, textTableView, selectButton, tableNameTextField, generateButton);
+        
+        Button backButton = new Button("Back");
+        HBox textFilterBox = new HBox();
+        textFilterBox.getChildren().addAll(selectButton, generateButton);
+        textFilterBox.setAlignment(Pos.CENTER);
+
+        Separator separator = new Separator();
+        separator.setOrientation(Orientation.VERTICAL);
+        
+        Text tableNamesTextBox = new Text();
+        tableNamesTextBox.setText("Enter Table Names:");
+        
+        randomTableNameTextField1 = new TextField ();
+        randomTableNameTextField2 = new TextField ();
+        
+        Slider splitSlider = new Slider();
+        splitSlider.setMin(0);
+        splitSlider.setMax(100);
+        splitSlider.setValue(50);
+        splitSlider.setShowTickLabels(true);
+        splitSlider.setShowTickMarks(true);
+        splitSlider.setMajorTickUnit(50);
+        splitSlider.setMinorTickCount(5);
+        splitSlider.setBlockIncrement(10);
+        
+        VBox randomFilterVbox = new VBox(10);
+        randomFilterVbox.setPadding(new Insets(10, 10, 10, 10));
+        randomFilterVbox.setAlignment(Pos.CENTER);
+        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, splitSlider);
+
+        VBox textFilterVbox = new VBox(10);
+        textFilterVbox.setPadding(new Insets(10, 10, 10, 10));
+        textFilterVbox.setAlignment(Pos.CENTER);
+        textFilterVbox.getChildren().addAll(tableNameTextBox, tableNameTextField, textFilterBox, backButton);
+        
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox, separator, randomFilterVbox);
         Scene scene = new Scene(hbox);
         stage.setScene(scene);
         stage.show();
@@ -119,7 +172,7 @@ public class DataFilterUI extends Application {
 		return table;
 	}
 	
-    private class columnTableEventHandler implements EventHandler<MouseEvent> {
+    private class ColumnTableEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
              String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();

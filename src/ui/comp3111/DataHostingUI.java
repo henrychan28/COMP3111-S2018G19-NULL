@@ -1,23 +1,18 @@
 package ui.comp3111;
 
 import core.comp3111.Constants;
-import core.comp3111.CoreData;
 import core.comp3111.DataTable;
 import core.comp3111.UIHelperFunction;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class DataHostingUI extends Application {
 		private static ObservableList<DataTable> parentTableList = null;
