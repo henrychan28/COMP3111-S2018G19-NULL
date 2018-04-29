@@ -1,13 +1,6 @@
 # HKUST COMP3111 Software Engineering (Spring 2018)
 
-Team Name: <NULL>
-
-Team Members:
-Chan Wing Kin, wkchanaj, Team Leader
-Chung Yuen Ting, ytchung
-Frost Michael, mffrost
-
-Team Name: NULL
+Team Name: "<NULL>"
 
 Team Members:
 - Chan, Wing Kin [wkchanaj@ust.hk](mailto:wkchanaj@ust.hk): Team Leader
