@@ -13,6 +13,8 @@ import java.util.Arrays;
  */
 public class DataColumn implements Serializable {
 
+	
+	private static final long serialVersionUID = Constants.SERIALIZABLE_VER;
 	/**
 	 * Constructor. Create an empty data column
 	 */
@@ -31,6 +33,11 @@ public class DataColumn implements Serializable {
 	 *            - any Java Object array
 	 */
 	public DataColumn(String typeName, Object[] values) {
+		if (!DataType.CheckInDataType(typeName)) {
+			System.err.println("Provided typeName is not included in the default DataType...");
+			System.err.println("The typeName is set to Object...");
+			set(DataType.TYPE_OBJECT, values);
+		};
 		set(typeName, values);
 	}
 
@@ -44,7 +51,8 @@ public class DataColumn implements Serializable {
 	 *            - any Java Object array
 	 */
 	public void set(String typeName, Object[] values) {
-		this.typeName = typeName;
+		if(DataType.CheckInDataType(typeName)) 	this.typeName = typeName;
+		else System.err.println("typeName not in DataType. typeName setting denied...");
 		data = values;
 	}
 
@@ -65,7 +73,7 @@ public class DataColumn implements Serializable {
 	public String getTypeName() {
 		return typeName;
 	}
-
+	
 	/**
 	 * Get the number of elements in the data array
 	 * 
@@ -76,11 +84,19 @@ public class DataColumn implements Serializable {
 			return 0;
 		return data.length;
 	}
+	
+	/**
+	 * Compare two data columns by value
+	 * 
+	 * @return true if both column data and type is equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		DataColumn otherDataColumn = (DataColumn) obj;
 		return Arrays.equals(data,otherDataColumn.data) && typeName.equals(otherDataColumn.typeName);
 	}
+	
+	
 	// attributes
 	private Object[] data;
 	private String typeName;

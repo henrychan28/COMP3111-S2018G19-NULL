@@ -75,7 +75,7 @@ public class GenerateChartUI extends Application {
 	}
 
 	// Data Storage
-	private CoreData coreData = new CoreData();
+	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = { Constants.EMPTY, Constants.EMPTY };
 
 	// View Chart
@@ -166,6 +166,7 @@ public class GenerateChartUI extends Application {
 		btHistory = new Button("View History");
 		btGenerateNew = new Button("Generate New");
 		btBackToDataTable = new Button("Back");
+		btBackToDataTable.setOnMouseClicked(new btBackToDataTableEventHandler());
 		HBox Buttons = new HBox(20);
 		Buttons.getChildren().addAll(btHistory, btGenerateNew, btBackToDataTable);
 		Buttons.setAlignment(Pos.CENTER);
@@ -920,6 +921,14 @@ public class GenerateChartUI extends Application {
 		return ok; 
 		
 	}
+	
+    private class btBackToDataTableEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stage);
+        }
+    }
 	
 
 

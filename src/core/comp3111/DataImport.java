@@ -1,7 +1,5 @@
 package core.comp3111;
 
-import core.comp3111.DataType;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -17,7 +14,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class DataImport {
 	
 	private File selectedFile = null;
-	private ArrayList<ArrayList<String>> importMatrix = null;
+	private ArrayList<ArrayList<Object>> importMatrix = null;
 	String[] columnHeaders = null;
 	
 	public DataImport() {
@@ -31,8 +28,8 @@ public class DataImport {
 	 * 
 	 * @return boolean notifying whether a file was chosen successfully
 	 */
-	public boolean getFileForImport() {
-		boolean success = false;
+	public String getFileForImport() {
+		String message = null;
 		
 		// Initialize the file chooser
 		FileChooser fileChooser = new FileChooser();
@@ -46,14 +43,10 @@ public class DataImport {
 		// Open the file chooser
 		selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-			System.out.println("File selected: " + selectedFile.getAbsolutePath());
-			success = true;
-		}
-		else {
-			System.out.println("File selection cancelled.");
+			message = "File selected: " + selectedFile.getAbsolutePath();
 		}
 		
-		return success;
+		return message;
 	}
 	
 	
@@ -73,28 +66,68 @@ public class DataImport {
 		try {
 			table = new DataTable("Default");
 			
-			String[] strArr = null;
+			Object[] objArr = null;
 			String[] colSettings = null;
 			for (int colNum = 0; colNum < columnHeaders.length; colNum++) {
-				strArr = (String[]) importMatrix.get(colNum).toArray(new String[importMatrix.get(colNum).size()]);
+				objArr = importMatrix.get(colNum).toArray(new Object[importMatrix.get(colNum).size()]);
 				colSettings = columns.get(columnHeaders[colNum]);
+				String type = colSettings[Constants.DATATYPE_INDEX];
+				
+				DataColumn column = null;
+				Number[] numCol = null;
 				
 				// Process this column's raw data, adding in blanks where needed
 				switch (colSettings[Constants.AUTOFILLTYPE_INDEX]) {
-				case AutoFillType.TYPE_AVG:
-					break;
 				case AutoFillType.TYPE_EMPTY:
+					// We're good, move on
+					column = new DataColumn(type, objArr);
 					break;
 				case AutoFillType.TYPE_MEAN:
+					// Find any blanks, then insert the average
+					try {
+						if (findEmpty(objArr)) {
+							String f = calcMean(objArr);
+							replaceEmpty(objArr,f);
+						}
+						numCol = castToNumber(objArr);
+						column = new DataColumn(type, numCol);
+					} catch (NumberFormatException e) {
+						type = DataType.TYPE_STRING;
+						column = new DataColumn(type, objArr);
+					}
+					break;
+				case AutoFillType.TYPE_MEDIAN:
+					// Find any blanks, then insert the mean
+					try {
+						if (findEmpty(objArr)) {
+							String f = calcMedian(objArr);
+							replaceEmpty(objArr,f);
+						}
+						numCol = castToNumber(objArr);
+						column = new DataColumn(type, numCol);
+					} catch (NumberFormatException e) {
+						type = DataType.TYPE_STRING;
+						column = new DataColumn(type, objArr);
+					}
 					break;
 				case AutoFillType.TYPE_ZERO:
+					// Find any blanks, then insert zeros
+					try {
+						if (findEmpty(objArr)) {
+							replaceEmptyWithZero(objArr);
+						}
+						numCol = castToNumber(objArr);
+						column = new DataColumn(type, numCol);
+					} catch (NumberFormatException e) {
+						type = DataType.TYPE_STRING;
+						column = new DataColumn(type, objArr);
+					}
 					break;
 				default:
 					break;
 				}						
 				
 				// Save to the DataTable
-				DataColumn column = new DataColumn(colSettings[Constants.DATATYPE_INDEX], strArr);
 				table.addCol(columnHeaders[colNum], column);
 			}
 			
@@ -103,6 +136,88 @@ public class DataImport {
 		}
 		
 		return table;
+	}
+	
+	public void replaceEmpty(Object[] vals, String f) {
+		for (int i = 0; i< vals.length; i++) {
+			if (((String) vals[i]).equals("")) {
+				vals[i] = (Object) f;
+			}
+		}
+	}
+	
+	public boolean findEmpty(Object[] vals) {
+		boolean found = false;
+		
+		for (int i = 0; i< vals.length && found == false; i++) {
+			if (((String) vals[i]).equals("")) {
+				found = true;
+			}
+		}
+		
+		return found;
+	}
+	
+	public String calcMean(Object[] nums) throws NumberFormatException {
+		double f = 0f;
+		int count = 0;
+		for (int i = 0; i< nums.length; i++) {
+			if (!((String) nums[i]).equals("")) {
+				f += Double.parseDouble((String) nums[i]);
+				System.out.println(f);
+				count++;
+			}
+		}
+		if (count == 0) {count++;}
+		return String.format("%.2f", f/count);
+	}
+	
+	public String calcMedian(Object[] nums) throws NumberFormatException {
+		String result;
+		
+		// Extract all the numbers
+		ArrayList<Double> arr = new ArrayList<Double>();
+		
+		for (int i = 0; i< nums.length; i++) {
+			if (!((String) nums[i]).equals("")) {
+				arr.add(Double.parseDouble((String) nums[i])); 
+			}
+		}
+		arr.sort(null);
+		
+		int middle = arr.size()/2;
+	    if (arr.size()%2 == 1) {
+	        result = String.format("%.2f", arr.get(middle).doubleValue());
+	    } else {
+	    	double temp = arr.get(middle-1).doubleValue() + arr.get(middle).doubleValue();
+	    	result = String.format("%.2f", temp/2.0);
+	    }
+		
+		return result;
+	}
+	
+	public Number[] castToNumber(Object[] obj) {
+		Number[] arr = new Number[obj.length];
+		
+		for (int i = 0; i < obj.length; i++) {
+			arr[i] = (Number) Double.parseDouble((String) obj[i]);
+		}
+		
+		return arr;
+	}
+	
+	public void replaceEmptyWithZero(Object[] vals) throws NumberFormatException {
+		for (int i = 0; i< vals.length; i++) {
+			if (!((String) vals[i]).equals("")) {
+				Double.parseDouble((String) vals[i]);
+			}
+		}
+		
+		for (int i = 0; i< vals.length; i++) {
+			if (((String) vals[i]).equals("")) {
+				vals[i] = (Object) new String("0");
+			} 
+		}
 	}
 	
 	/**
@@ -164,19 +279,19 @@ public class DataImport {
 	 * 			The number of columns the scratchpad needs to have
 	 * @return the initiated scratchpad
 	 */
-	private ArrayList<ArrayList<String>> buildImportScratchpad(int size) {
-		ArrayList<ArrayList<String>> outer = null;
+	private ArrayList<ArrayList<Object>> buildImportScratchpad(int size) {
+		ArrayList<ArrayList<Object>> outer = null;
 		
 		// Only initialize if there is a size
 		// We should never call this method for size = 0, but we're being safe
 		if (size > 0) {
-			outer = new ArrayList<ArrayList<String>>();
-			ArrayList<String> inner = null;
+			outer = new ArrayList<ArrayList<Object>>();
+			ArrayList<Object> inner = null;
 			int i = 0;
 			
 			// Continue adding new inner ArrayLists until we have the requisite matrix stub
 			do {
-				inner = new ArrayList<String>();
+				inner = new ArrayList<Object>();
 				outer.add(inner);
 				i++;
 			} while (i < size);
@@ -192,7 +307,7 @@ public class DataImport {
 	 * @param strArray
 	 * 			The content that needs to be added to the scratchpad
 	 */
-	private void addRowToScratchpad(ArrayList<ArrayList<String>> matrix, String[] strArray) {
+	private void addRowToScratchpad(ArrayList<ArrayList<Object>> matrix, String[] strArray) {
 		for (int i = 0; i < strArray.length; i++) {
 			matrix.get(i).add(strArray[i]);
 		}

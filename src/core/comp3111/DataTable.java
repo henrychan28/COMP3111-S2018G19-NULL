@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class DataTable implements Serializable{
 
+	private static final long serialVersionUID = Constants.SERIALIZABLE_VER;
 	/**
 	 * Construct - Create an empty DataTable
 	 */
@@ -109,7 +110,7 @@ public class DataTable implements Serializable{
 			dataColumns[index] = dc.get(key);
 			index++;
 		}
-		return null;
+		return dataColumns;
 	}
 	/**
 	 * Check whether the column exists by the given column name
@@ -228,17 +229,17 @@ public class DataTable implements Serializable{
 	}
 	
 	public void printDataTable() {
+		System.out.println("---------printDataTable()---------");
 		for(String key: dc.keySet()) {
-			System.out.println(key);
 			DataColumn currentColumn = dc.get(key);
 			Object[] currentData = currentColumn.getData();
+			System.out.println(key + " " + currentColumn.getTypeName());
 			for(Object datum:currentData) {
 				System.out.print(datum + " ");
 			}
 			System.out.println();
 		}
-		System.out.println();
-		System.out.println("----------------------");
+		System.out.println("-------------------------------");
 	}
 	// attribute: A java.util.Map interface
 	// KeyType: String
