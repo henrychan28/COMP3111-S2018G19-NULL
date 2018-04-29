@@ -48,11 +48,11 @@ import javafx.stage.Stage;
 
 public class GenerateChartUI extends Application {
 	
-	/*
+	
 	public GenerateChartUI(int[] tableIndex) {
 		this.selectedTableIndex = tableIndex;
 	}
-	*/
+	
 	//testing testing, delete it later
 	private void testingData() {
 		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2 number, 1string
@@ -62,7 +62,7 @@ public class GenerateChartUI extends Application {
 
 	@Override
 	public void start(Stage primarystage) {
-		testingData();
+		//testingData();
 		stage = primarystage;
 		initScenes();
 		initEventHandlers();
@@ -166,7 +166,7 @@ public class GenerateChartUI extends Application {
 		btHistory = new Button("View History");
 		btGenerateNew = new Button("Generate New");
 		btBackToDataTable = new Button("Back");
-		btBackToDataTable.setOnMouseClicked(new btBackToDataTableEventHandler());
+		btBackToDataTable.setOnMouseClicked(new btBackToDataTableEventHandler());//henry
 		HBox Buttons = new HBox(20);
 		Buttons.getChildren().addAll(btHistory, btGenerateNew, btBackToDataTable);
 		Buttons.setAlignment(Pos.CENTER);
