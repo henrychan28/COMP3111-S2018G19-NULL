@@ -10,12 +10,17 @@ import java.util.Optional;
 import core.comp3111.CoreData;
 import core.comp3111.CoreDataIO;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+<<<<<<< HEAD
 import javafx.scene.control.TextInputDialog;
+=======
+import javafx.scene.input.MouseEvent;
+>>>>>>> refs/remotes/origin/henry
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -163,7 +168,7 @@ public class Main extends Application {
 		btExport = new Button("Save Environment");
 		btLoad = new Button("Load Environment");
 		btViewTables = new Button("Select Table");
-
+		btViewTables.setOnMouseClicked(new btViewTablesEventHandler());
 		// Layout the UI components
 		
 		HBox hc = new HBox(20);
@@ -225,6 +230,14 @@ public class Main extends Application {
 		}
 	}
 
+    private class btViewTablesEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stage);
+        }
+    }
+    
 	/**
 	 * main method - only use if running via command line
 	 * 

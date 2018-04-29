@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import core.comp3111.CoreData;
 import core.comp3111.DataColumn;
 import core.comp3111.DataFilter;
 import core.comp3111.DataTable;
 import core.comp3111.SampleDataGenerator;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class DataFilterUI extends Application {
+	public static final int OUTER = 0;
 	private static String[] currentText;
 	private static String[] columnNames;
 	private static ObservableList<DataColumn> columnList;
@@ -45,6 +48,9 @@ public class DataFilterUI extends Application {
 	private static TextField randomTableNameTextField1;
 	private static TextField randomTableNameTextField2;
 
+    public DataFilterUI(DataTable dataTable) {
+    	currentTable = dataTable;
+    }
     
     private void InjectCurrentText(String columnName) throws Exception {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
@@ -92,7 +98,7 @@ public class DataFilterUI extends Application {
     @Override
     public void start(Stage stage) {
     	//Initialize the UI test data
-    	TestInitialize();
+    	//TestInitialize();
 
     	stage.setTitle("Data Filter Interface");
         stage.setWidth(900);
@@ -140,10 +146,21 @@ public class DataFilterUI extends Application {
         splitSlider.setMinorTickCount(5);
         splitSlider.setBlockIncrement(10);
         
+        Text splitRatio = new Text();
+        splitRatio.setText("50%");
+        
+        splitSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+            	splitRatio.setText(String.format("%.2f", new_val)+"%");
+            }
+        });
+        
+        
         VBox randomFilterVbox = new VBox(10);
         randomFilterVbox.setPadding(new Insets(10, 10, 10, 10));
         randomFilterVbox.setAlignment(Pos.CENTER);
-        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, splitSlider);
+        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, splitSlider, splitRatio);
 
         VBox textFilterVbox = new VBox(10);
         textFilterVbox.setPadding(new Insets(10, 10, 10, 10));
@@ -211,7 +228,11 @@ public class DataFilterUI extends Application {
         	//This is the dataTable that will be added to CoreData
         	DataTable filteredDataTable = filter.TextFilter(currentTable, selectedRetainText);
         	String userInput = tableNameTextField.getText();
-        	filteredDataTable.setName(userInput);
+        	filteredDataTable.setName(userInput);     	
+        	CoreData coreData = CoreData.getInstance();
+        	int[] tableIndex = coreData.searchForDataTable(currentTable.getTableName());
+        	coreData.addChildTable(filteredDataTable, tableIndex[OUTER]);
+        	
         	filteredDataTable.printDataTable();
 		}
     }

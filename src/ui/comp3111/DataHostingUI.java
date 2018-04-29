@@ -1,30 +1,40 @@
 package ui.comp3111;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import core.comp3111.Constants;
+import core.comp3111.CoreData;
 import core.comp3111.DataTable;
 import core.comp3111.UIHelperFunction;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class DataHostingUI extends Application {
 		private static ObservableList<DataTable> parentTableList = null;
 		private static ObservableList<DataTable> childTableList = null;
-		private static ObservableList<DataTable> graphTableList = null;
+		//private static ObservableList<DataTable> graphTableList = null;
 		private static int childIndex = 0;
 		private static TableView<DataTable> parentTable;
 		private static TableView<DataTable> childTable;
-		private static TableView<DataTable> graphTable;
+		//private static TableView<DataTable> graphTable;
 		private enum EventHandlerType {
 		    PARENT, CHILD, GRAPH
 		}
+		private Stage stageDataHostingUI;
 
 		/**
 		 * SetTable helps to set the parentTableList and childTableList in the class with the aid 
@@ -59,17 +69,35 @@ public class DataHostingUI extends Application {
 	        stage.setWidth(650);
 	        stage.setHeight(500);
 	        parentTable = CreateTableView("Parent Table", "tableName", parentTableList, EventHandlerType.PARENT);
-			parentTable.setOnMouseClicked(new parentTableFactoryEventHandler());
+			parentTable.setOnMouseClicked(new ParentTableFactoryEventHandler());
 	        childTable = CreateTableView("Child Table", "tableName", childTableList, EventHandlerType.CHILD);
-			childTable.setOnMouseClicked(new childTableFactoryEventHandler());
-	        graphTable = CreateTableView("Graph Table", "graphName", graphTableList, EventHandlerType.GRAPH);
-			graphTable.setOnMouseClicked(new graphFactoryEventHandler());
+			childTable.setOnMouseClicked(new ChildTableFactoryEventHandler());
+	        //graphTable = CreateTableView("Graph Table", "graphName", graphTableList, EventHandlerType.GRAPH);
+			//graphTable.setOnMouseClicked(new GraphFactoryEventHandler());
 
-	        final HBox hbox = new HBox();
-	        hbox.getChildren().addAll(parentTable, childTable, graphTable);
+	        HBox hbox = new HBox();
+	        
+	        VBox vbox = new VBox(10);
+	        vbox.setAlignment(Pos.CENTER);
+	        vbox.setPadding(new Insets(10, 10, 10, 10));
+
+	        
+	        Button filterButton = new Button("Filter");
+	        filterButton.setOnMouseClicked(new FilterEventHandler());
+
+	        Button chartButton = new Button("Chart");
+	        chartButton.setOnMouseClicked(new ChartEventHandler());
+	        
+	        Button backButton = new Button("Back");
+	        backButton.setOnMouseClicked(new BackEventHandler());
+	        
+	        vbox.getChildren().addAll(filterButton, chartButton, backButton);
+	        
+	        hbox.getChildren().addAll(parentTable, childTable, vbox);
+	        stageDataHostingUI = stage;
 	        Scene scene = new Scene(hbox);
-	        stage.setScene(scene);
-	        stage.show();
+	        stageDataHostingUI.setScene(scene);
+	        stageDataHostingUI.show();
 	    }
 	    
 		/**
@@ -96,7 +124,7 @@ public class DataHostingUI extends Application {
 	    }
 
 	    
-	    private class parentTableFactoryEventHandler implements EventHandler<MouseEvent> {
+	    private class ParentTableFactoryEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
 	             int index = parentTable.getSelectionModel().getSelectedIndex();
@@ -104,17 +132,43 @@ public class DataHostingUI extends Application {
 	            childTable.setItems(childTableList);
 	        }
 	    }
-	    private class childTableFactoryEventHandler implements EventHandler<MouseEvent> {
+	    private class ChildTableFactoryEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
 	        	System.out.println("This is the childTableFactoryEventHandler.");
 	        }
 	    }  
-	    private class graphFactoryEventHandler implements EventHandler<MouseEvent> {
+	    
+	    private class ChartEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
-	        	System.out.println("This is the graphFactoryEventHandler.");
+	        	
+            	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
+            	if(selectedTable==null) return;
+            	CoreData coreData = CoreData.getInstance();
+            	System.out.println("Check point");
+            	int[] dataTableIndex = coreData.searchForDataTable(selectedTable.getTableName());   
+                GenerateChartUI generateChartUI = new GenerateChartUI(dataTableIndex);
+                generateChartUI.start(stageDataHostingUI);
 	        }
-	    }   
-
+	    } 
+	    
+	    private class FilterEventHandler implements EventHandler<MouseEvent> {
+	        @Override
+	        public void handle(MouseEvent t) {
+            	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
+            	if(selectedTable==null) return;
+            	DataFilterUI dataFilterUI = new DataFilterUI(selectedTable);
+            	dataFilterUI.start(stageDataHostingUI);
+            }
+        }
+	    
+	    private class BackEventHandler implements EventHandler<MouseEvent> {
+	        @Override
+	        public void handle(MouseEvent t) {
+            	Main main = new Main();
+            	main.start(stageDataHostingUI);
+            }
+        }
 } 
+
