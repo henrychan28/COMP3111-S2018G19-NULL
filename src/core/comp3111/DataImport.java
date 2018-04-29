@@ -28,8 +28,8 @@ public class DataImport {
 	 * 
 	 * @return boolean notifying whether a file was chosen successfully
 	 */
-	public boolean getFileForImport() {
-		boolean success = false;
+	public String getFileForImport() {
+		String message = null;
 		
 		// Initialize the file chooser
 		FileChooser fileChooser = new FileChooser();
@@ -43,14 +43,10 @@ public class DataImport {
 		// Open the file chooser
 		selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
-			System.out.println("File selected: " + selectedFile.getAbsolutePath());
-			success = true;
-		}
-		else {
-			System.out.println("File selection cancelled.");
+			message = "File selected: " + selectedFile.getAbsolutePath();
 		}
 		
-		return success;
+		return message;
 	}
 	
 	
