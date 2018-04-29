@@ -15,6 +15,10 @@ import javafx.scene.chart.XYChart;
 
 public class linechart extends xychart{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5204086031235214239L;
+	/**
 	 * Constructor of the LineChart
 	 * Can extend it to more than one series
 	 * 

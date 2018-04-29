@@ -8,10 +8,17 @@ package core.comp3111;
  */
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
+
+import java.io.Serializable;
+
 import javafx.scene.Scene;
 
 
-public class xychart{
+public class xychart implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2;
 	/**
 	 * Constructor of the Chart class
 	 * @param DataTable

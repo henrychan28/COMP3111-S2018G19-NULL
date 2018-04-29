@@ -14,8 +14,9 @@ import javafx.scene.chart.XYChart.Data;
  * @author YuenTing
  */
 
-public class dynamichart extends xychart {
+public class dynamicchart extends xychart {
 
+	private static final long serialVersionUID = -302806700256373712L;
 	// attributes
 	protected double timespan; //from 0 to 1
 	protected double compact; // from 0 to 1 
@@ -40,7 +41,7 @@ public class dynamichart extends xychart {
 	 * @throws ChartException
 	 */
 
-	public dynamichart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
+	public dynamicchart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_DYNAMIC);
 		/** Check: Must passed 2 DataColumn with 1 Number Type and 1 String Type */
 
