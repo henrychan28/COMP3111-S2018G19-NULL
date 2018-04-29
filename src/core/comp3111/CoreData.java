@@ -37,6 +37,10 @@ public class CoreData implements Serializable {
         return instance;
     }
 	
+	public static void setInstance(CoreData data) {
+		instance = data;
+	}
+	
 	public static long getTransactID() {
 		return transactID;
 	}

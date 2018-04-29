@@ -16,11 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-<<<<<<< HEAD
 import javafx.scene.control.TextInputDialog;
-=======
 import javafx.scene.input.MouseEvent;
->>>>>>> refs/remotes/origin/henry
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -140,8 +137,8 @@ public class Main extends Application {
 			if (dest != null) {
 				CoreDataIO io = new CoreDataIO();
 				io.saveCoreData(coreData, dest.getAbsolutePath(),Constants.FILE_EX);
+				lbStatusLabel.setText("Environment saved to location: " + dest.getAbsolutePath() + Constants.FILE_EX);
 			}
-			lbStatusLabel.setText("Environment saved to location: " + dest.getAbsolutePath() + Constants.FILE_EX);
 		});
 		
 		btLoad.setOnAction(e -> {
@@ -149,9 +146,9 @@ public class Main extends Application {
 			File src = fileChooser.showOpenDialog(null);
 			if (src != null) {
 				CoreDataIO io = new CoreDataIO();
-				coreData = io.openCoreData(src.getAbsolutePath());
+				CoreData.setInstance(io.openCoreData(src.getAbsolutePath()));
+				lbStatusLabel.setText("Environment loaded from: " + src.getAbsolutePath());
 			}
-			lbStatusLabel.setText("Environment loaded from: " + src.getAbsolutePath());
 		});
 	}
 
