@@ -7,6 +7,7 @@ import core.comp3111.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -77,10 +79,11 @@ public class GenerateChartUI extends Application  {
 	private Label lbSelectType, lbmessage;
 
 	// screen 2: paneViewHistory
-	private Label lbViewHistory;
-	private TableColumn colChartType, colChartID;
+	private Label lbViewHistory, lbhistorymsg;
+	private TableColumn<xychart, String> colChartType, colChartID;
 	private Button btshow, btbackto1;
 	private ObservableList<xychart> olhistory;
+	private TableView tvhistory;
 
 	// screen 3: paneLineChartSelection
 	private Label lbSelectNewLineChart, lbLineTitle, lbLineXaxis, lbLineYaxis, lblinemsg;
@@ -160,32 +163,14 @@ public class GenerateChartUI extends Application  {
 		lbViewHistory = new Label("These are the history for DataTable");
 
 		// 2.
-		colChartID = new TableColumn("Chart ID");
-		colChartID.setMinWidth(100);
-		colChartID.setCellValueFactory(new PropertyValueFactory<xychart, String>("ChartID"));
-		
-		TableView tvhistory = new TableView();
-		tvhistory.getColumns().addAll(colChartID);
-		tvhistory.autosize();
-		
-		//TODO: add charts for (1) selected datatable (2) selected chart type 
-		//no chart during initialization
 		olhistory = FXCollections.observableArrayList();
 		DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
 		ArrayList<xychart> charts = coreData.getCharts(selecteDataTable.getTableName());
-		if (charts != null) {
-			for (xychart chart: charts) {
-				if (chart.getChartType() == ChartType) {
-					//TODO: add to the TableView
-					olhistory.add(chart);			
-				}
-			}
-			tvhistory.setItems(olhistory);
-			
-		}
-		
+		//no chart during initialization
+		tvhistory = CreateTableView("History", "ChartName", olhistory);
+		lbhistorymsg = new Label("");
 
-		// 3.
+		// 4.
 
 		btshow = new Button("show");
 		btbackto1 = new Button("Back");
@@ -195,7 +180,7 @@ public class GenerateChartUI extends Application  {
 		buttons.getChildren().addAll(btshow, btbackto1);
 
 		VBox container = new VBox(20);
-		container.getChildren().addAll(tvhistory, buttons);
+		container.getChildren().addAll(lbViewHistory, tvhistory, lbhistorymsg, new Separator(),buttons);
 		container.setAlignment(Pos.CENTER);
 
 		BorderPane pane = new BorderPane();
@@ -378,9 +363,10 @@ public class GenerateChartUI extends Application  {
 				ChartType = cbChartType.getValue().toString();
 				//default
 				cbChartType.setValue(null);
+				
 				//Then add the Charts to the History Pane
-				DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
-				ArrayList<xychart> charts = coreData.getChartsWithType(selecteDataTable.getTableName(), ChartType);
+				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+				ArrayList<xychart> charts = coreData.getChartsWithType(selectedDataTable.getTableName(), ChartType);
 				
 				if (charts == null) {	//if it is empty, then remain in this pane
 
@@ -391,17 +377,13 @@ public class GenerateChartUI extends Application  {
 					olhistory.clear();
 					
 					for (xychart chart: charts) {
-						if (chart.getChartType() == ChartType) {
 							//TODO: add to the TableView
 							olhistory.add(chart);
-						}
+							
 						
 				}
+					lbViewHistory.setText(String.format("These are the %s for DataTable %s", ChartType, selectedDataTable.getTableName()));
 					
-				
-				
-				
-				
 					putSceneOnStage(SCENE_VIEW_HISTORY);		
 
 			}
@@ -430,14 +412,23 @@ public class GenerateChartUI extends Application  {
 	};
 
 	private void initViewHistoryHandler() {
+		//history chart TableView
+    	tvhistory.setOnMouseClicked(new historyTableFactoryEventHandler());
+    	//back button
 		btbackto1.setOnAction(e -> {
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
-
+		//show button
 		btshow.setOnAction(e -> {
 			
+			
 			// TODO: select chart
+			
+			
 			// If not selected
+			if (tvhistory.getSelectionModel().isEmpty()) {
+				lbhistorymsg.setText("Please select a chart");
+			}
 			//lbhistorymsg: "Please selected your chart"
 			//else
 			
@@ -445,7 +436,7 @@ public class GenerateChartUI extends Application  {
 			//or already selected xychart
 			//chartShowChart = xychart
 			//create new scene
-
+			updateShowChartScene();
 			// and then show chart
 			putSceneOnStage(SCENE_SHOW_CHART);
 		});
@@ -670,7 +661,7 @@ public class GenerateChartUI extends Application  {
 	private void initShowChartHandler() {
 		
 		btbackto2.setOnAction(e -> {
-			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
+			putSceneOnStage(SCENE_VIEW_HISTORY);
 		});
 
 	}
@@ -724,7 +715,52 @@ public class GenerateChartUI extends Application  {
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
 		selectedTableIndex = a;
 	}
-
+	/**
+	 * A function to create the TableView
+	 * 
+	 * @author HenryChan
+	 * @param tableName
+	 * 			- Name of the TableView
+	 * @param propertyName
+	 * 			- Name of the TableColumn
+	 * @param tableList
+	 * 			- 
+	 * @return TableView<xychart> with Chart Name displayed
+	 */
+	
+    private TableView<xychart> CreateTableView(String tableName, String propertyName, ObservableList<xychart> olhistory) {
+    	TableView<xychart> table = new TableView<>();
+    	TableColumn<xychart, String> Dataset = new TableColumn<>(tableName);
+    	Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+    	table.setItems(olhistory);
+    	table.getColumns().add(Dataset);
+    	table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    	
+    	return table;	    	
+}
+	
+    
+	private  class historyTableFactoryEventHandler implements EventHandler<MouseEvent>{
+		@Override
+		public void handle(MouseEvent t) {
+			int selected = tvhistory.getSelectionModel().getSelectedIndex();
+			System.out.print(selected);
+			xychart selectedchart = olhistory.get(selected);
+			//updated the selected chart to scene 6
+			chartShowChart = selectedchart.getXYChart();
+		}
+	}
+	//create a new scene for the chart object
+	private void updateShowChartScene() {			
+		VBox container = new VBox(20);
+		container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
+		container.setAlignment(Pos.CENTER);
+		BorderPane pane = new BorderPane();
+		pane.setCenter(container);
+		scenes[SCENE_SHOW_CHART]= new Scene(pane, 500, 500);
+	}
+	
+	
 	@Override
 	public void start(Stage primarystage) {
 		testingData();
@@ -739,5 +775,6 @@ public class GenerateChartUI extends Application  {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 
 }

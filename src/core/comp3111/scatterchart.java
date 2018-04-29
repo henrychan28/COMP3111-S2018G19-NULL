@@ -82,7 +82,7 @@ public class scatterchart extends xychart{
 		}
 		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
-		//Initialize: Object[] from DataColumn
+		
 
 		//First two DataColumn must be Number Type
 		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
@@ -103,11 +103,13 @@ public class scatterchart extends xychart{
 		}
 		
 		
-		//Create the scatter chart from javafx
+		//Initialize: Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
 		Object[] carray = cdc.getData();
 		
+		//Create the scatter chart from javafx
+
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(this.xlabel);
