@@ -32,7 +32,7 @@ public class scatterchart extends xychart{
 	public scatterchart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		
 		
-		super(DataTable, AxisLabels, ChartName, "ScatterChart");
+		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_SCATTER);
 		
 		/**Check: Must passed 3 DataColumn with 2 Number Type and 1 String Type*/
 		
@@ -45,26 +45,44 @@ public class scatterchart extends xychart{
 		this.ylabel = AxisLabels[1];
 		this.category = AxisLabels[2];
 		//initialize the DataColumns
-		DataColumn[] dcs = {this.xdc, this.ydc, this.cdc};
 		
-		for (int i = 0; i < 3; i++) {
-			DataColumn dc = DataTable.getCol(AxisLabels[i]);
+			DataColumn dc = DataTable.getCol(this.xlabel);
 			//Check if the DataColumn exists
 			if (dc == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-																		AxisLabels[i], this.DataTableName)) ;
+						this.xlabel, this.DataTableName)) ;
 			}
 			else {
-				dcs[i] = DataTable.getCol(AxisLabels[i]);
+				this.xdc = dc;
 			}
-		}
+			DataColumn dc1 = DataTable.getCol(this.ylabel);
+			//Check if the DataColumn exists
+			if (dc1 == null) {
+				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
+						this.ylabel, this.DataTableName)) ;
+			}
+			else {
+				this.ydc = dc1;
+			}
+			DataColumn dc2 = DataTable.getCol(this.category);
+			//Check if the DataColumn exists
+			if (dc2 == null) {
+				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
+						this.category, this.DataTableName)) ;
+			}
+			else {
+				this.cdc = dc2;
+			}
+			
+			
+			
 		//Check if the size for every DataColumns are the same
 		if (xdc.getSize() != ydc.getSize() || xdc.getSize() != cdc.getSize()) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
 		}
 		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
-		//Initialize: Object[] from DataColumn
+		
 
 		//First two DataColumn must be Number Type
 		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
@@ -85,11 +103,13 @@ public class scatterchart extends xychart{
 		}
 		
 		
-		//Create the scatter chart from javafx
+		//Initialize: Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
 		Object[] carray = cdc.getData();
 		
+		//Create the scatter chart from javafx
+
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(this.xlabel);
@@ -127,10 +147,6 @@ public class scatterchart extends xychart{
 		
 
 	}
-	
-
-	//set xlabel -> NumberAxis name
-	//set ylabel -> NumberAxis name
 		
 	//Attributes
 	protected String xlabel; //for naming of the graph

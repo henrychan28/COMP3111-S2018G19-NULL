@@ -32,7 +32,7 @@ public class linechart extends xychart{
 	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException{		
 		//Constructor of the parent class
 
-		super(DataTable, AxisLabels, ChartName, "LineChart");
+		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_LINE);
 		
 		/** Check: Must passed 2 DataColumn with Number Type */
 
@@ -45,21 +45,27 @@ public class linechart extends xychart{
 		this.ylabel = AxisLabels[1];
 		
 		//initialize the DataColumns
-		DataColumn[] dcs = {this.xdc, this.ydc};
 		
-		for (int i = 0; i < 2; i++) {
-			DataColumn dc = DataTable.getCol(AxisLabels[i]);
+		DataColumn dc = DataTable.getCol(this.xlabel);
+		DataColumn dc2 = DataTable.getCol(this.ylabel);
 			//Check if the DataColumn exists
 			if (dc == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-																		AxisLabels[i], this.DataTableName)) ;
+						this.xlabel, this.DataTableName)) ;
 			}
 			else {
-				dcs[i] = DataTable.getCol(AxisLabels[i]);
+				this.xdc = DataTable.getCol(this.xlabel);
 			}
-		}
+			if (dc2 == null) {
+				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
+						this.xlabel, this.DataTableName)) ;
+			}
+			else {
+				this.ydc = DataTable.getCol(this.xlabel);
+			}
+		
 		//Check if the size for every DataColumns are the same
-		if (xdc.getSize() != ydc.getSize()) {
+		if (this.xdc.getSize() != this.ydc.getSize()) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
 		}
 		//Initialize: Keep track of the size of DataColumn
@@ -100,9 +106,10 @@ public class linechart extends xychart{
 		 this.xychart.getData().add(this.series);
 		 
 	}
-	//Can create a add line function
+	public XYChart.Series<Number, Number> getSeries(){
+		return series;
+	}
 	
-		
 	//Attributes
 	protected String xlabel;
 	protected String ylabel;
