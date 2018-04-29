@@ -94,7 +94,7 @@ public class DataHostingUI extends Application {
 	        vbox.getChildren().addAll(filterButton, chartButton, backButton);
 	        
 	        hbox.getChildren().addAll(parentTable, childTable, vbox);
-	        stageDataHostingUI = new Stage();
+	        stageDataHostingUI = stage;
 	        Scene scene = new Scene(hbox);
 	        stageDataHostingUI.setScene(scene);
 	        stageDataHostingUI.show();
@@ -166,7 +166,6 @@ public class DataHostingUI extends Application {
 	    private class BackEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
-	        	System.out.println("Inside BackEventHandler");
             	Main main = new Main();
             	main.start(stageDataHostingUI);
             }

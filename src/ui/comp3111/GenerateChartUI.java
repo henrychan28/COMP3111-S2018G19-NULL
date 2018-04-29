@@ -168,6 +168,7 @@ public class GenerateChartUI extends Application {
 		btHistory = new Button("View History");
 		btGenerateNew = new Button("Generate New");
 		btBackToDataTable = new Button("Back");
+		btBackToDataTable.setOnMouseClicked(new btBackToDataTableEventHandler());
 		HBox Buttons = new HBox(20);
 		Buttons.getChildren().addAll(btHistory, btGenerateNew, btBackToDataTable);
 		Buttons.setAlignment(Pos.CENTER);
@@ -773,6 +774,14 @@ public class GenerateChartUI extends Application {
 
 		}
 	}
+	
+    private class btBackToDataTableEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stage);
+        }
+    }
 	
 
 
