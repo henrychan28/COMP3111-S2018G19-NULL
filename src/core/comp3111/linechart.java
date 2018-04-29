@@ -65,7 +65,7 @@ public class linechart extends xychart{
 						this.xlabel, this.DataTableName)) ;
 			}
 			else {
-				this.ydc = DataTable.getCol(this.xlabel);
+				this.ydc = DataTable.getCol(this.ylabel);
 			}
 		
 		//Check if the size for every DataColumns are the same
