@@ -46,7 +46,7 @@ import javafx.stage.Stage;
 // getNumberOfDataColumn(Type)
 // getDataColumnsOf(Type)
 
-public class GenerateChartUI extends Application  {
+public class GenerateChartUI extends Application {
 
 	// Data Storage
 	private CoreData coreData = new CoreData();
@@ -80,10 +80,9 @@ public class GenerateChartUI extends Application  {
 
 	// screen 2: paneViewHistory
 	private Label lbViewHistory, lbhistorymsg;
-	private TableColumn<xychart, String> colChartType, colChartID;
 	private Button btshow, btbackto1;
 	private ObservableList<xychart> olhistory;
-	private TableView tvhistory;
+	private TableView<xychart> tvhistory;
 
 	// screen 3: paneLineChartSelection
 	private Label lbSelectNewLineChart, lbLineTitle, lbLineXaxis, lbLineYaxis, lblinemsg;
@@ -98,7 +97,8 @@ public class GenerateChartUI extends Application  {
 	private TextField tfScatterTitle;
 
 	// screen 5: paneDynamicChartSelection
-	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis, lbdynamicmsg;
+	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis,
+			lbdynamicmsg;
 	private Button btDynamicSave, btDynamicSaveandPreview, btbackto1___;
 	private ComboBox cbDynamicXaxis, cbDynamicYaxis, cbDynamicCaxis;
 	private TextField tfDynamicTitle;
@@ -164,9 +164,10 @@ public class GenerateChartUI extends Application  {
 
 		// 2.
 		olhistory = FXCollections.observableArrayList();
-		DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
-		ArrayList<xychart> charts = coreData.getCharts(selecteDataTable.getTableName());
-		//no chart during initialization
+		// DataTable selecteDataTable = coreData.getDataTable(selectedTableIndex);
+		// ArrayList<xychart> charts =
+		// coreData.getCharts(selecteDataTable.getTableName());
+		// no chart during initialization
 		tvhistory = CreateTableView("History", "ChartName", olhistory);
 		lbhistorymsg = new Label("");
 
@@ -180,7 +181,7 @@ public class GenerateChartUI extends Application  {
 		buttons.getChildren().addAll(btshow, btbackto1);
 
 		VBox container = new VBox(20);
-		container.getChildren().addAll(lbViewHistory, tvhistory, lbhistorymsg, new Separator(),buttons);
+		container.getChildren().addAll(lbViewHistory, tvhistory, lbhistorymsg, new Separator(), buttons);
 		container.setAlignment(Pos.CENTER);
 
 		BorderPane pane = new BorderPane();
@@ -227,7 +228,7 @@ public class GenerateChartUI extends Application  {
 		// TODO: add the key of all number type data columns of the DataTable to the
 		// ComboBox
 		cbLineYaxis.getItems().addAll(keys);
-		
+
 		// 5. message for reminding the user
 		lblinemsg = new Label("");
 
@@ -238,7 +239,7 @@ public class GenerateChartUI extends Application  {
 		btLineSaveandPreview = new Button("Save and View");
 		btbackto1_ = new Button("Back");
 
-		ButtonsSave.getChildren().addAll(btLineSave,btLineSaveandPreview, btbackto1_);
+		ButtonsSave.getChildren().addAll(btLineSave, btLineSaveandPreview, btbackto1_);
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
@@ -291,7 +292,7 @@ public class GenerateChartUI extends Application  {
 		// TODO: add the key of all number type data columns of the DataTable to the
 		// ComboBox
 		cbScatterYaxis.getItems().addAll(keys);
-		
+
 		// 5 Category Axis
 		HBox Caxis = new HBox(10);
 		lbScatterCaxis = new Label("Categories");
@@ -302,7 +303,7 @@ public class GenerateChartUI extends Application  {
 		// add the key of all String type data columns of the DataTable to the ComboBox
 		String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
 		cbScatterCaxis.getItems().addAll(keys2);
-		//6
+		// 6
 		lbscattermsg = new Label("");
 		// 7 Buttons
 		HBox ButtonsSave = new HBox(20);
@@ -315,8 +316,8 @@ public class GenerateChartUI extends Application  {
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
-		container.getChildren().addAll(lbSelectNewScatterChart, Title, Xaxis, Yaxis, Caxis, new Separator(), lbscattermsg,
-				ButtonsSave);
+		container.getChildren().addAll(lbSelectNewScatterChart, Title, Xaxis, Yaxis, Caxis, new Separator(),
+				lbscattermsg, ButtonsSave);
 
 		BorderPane pane = new BorderPane();
 		pane.setCenter(container);
@@ -327,7 +328,8 @@ public class GenerateChartUI extends Application  {
 		BorderPane pane = new BorderPane();
 		return pane;
 	}
-/**Show Chart pane*/
+
+	/** Show Chart pane */
 	private Pane paneShowChart() {
 		// heading
 		lbShowChart = new Label("This is the chart");
@@ -340,9 +342,9 @@ public class GenerateChartUI extends Application  {
 		yAxis.setLabel("undefined");
 		emptychart.setTitle("An empty line chart");
 		chartShowChart = emptychart;
-		
+
 		// button
-		btbackto2 = new Button("Back");
+		btbackto2 = new Button("Back to History.");
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
@@ -351,7 +353,8 @@ public class GenerateChartUI extends Application  {
 		pane.setCenter(container);
 		return pane;
 	}
-	/** Handlers*/
+
+	/** Handlers */
 	/** Chart selection handler */
 	private void initChartTypeSelectionHandler() {
 
@@ -359,34 +362,13 @@ public class GenerateChartUI extends Application  {
 			if (cbChartType.getValue() == null) {
 				lbmessage.setText("Please select a chart type");
 			} else {
-				//store the selected chart type to variable of the class
+				// store the selected chart type to variable of the class
 				ChartType = cbChartType.getValue().toString();
-				//default
+				// default
 				cbChartType.setValue(null);
-				
-				//Then add the Charts to the History Pane
-				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-				ArrayList<xychart> charts = coreData.getChartsWithType(selectedDataTable.getTableName(), ChartType);
-				
-				if (charts == null) {	//if it is empty, then remain in this pane
 
-					lbmessage.setText("No History Available. Create a new one.");
-					}
-				else {
-					lbmessage.setText("");
-					olhistory.clear();
-					
-					for (xychart chart: charts) {
-							//TODO: add to the TableView
-							olhistory.add(chart);
-							
-						
-				}
-					lbViewHistory.setText(String.format("These are the %s for DataTable %s", ChartType, selectedDataTable.getTableName()));
-					
-					putSceneOnStage(SCENE_VIEW_HISTORY);		
-
-			}
+				// Then add the Charts to the History Pane
+				updateHistoryScene();
 			}
 		});
 		btGenerateNew.setOnAction(e -> {
@@ -394,10 +376,10 @@ public class GenerateChartUI extends Application  {
 				lbmessage.setText("Please select a chart type");
 			} else {
 				ChartType = cbChartType.getValue().toString();
-				//default
+				// default
 				lbmessage.setText("");
 				cbChartType.setValue(null);
-				
+
 				if (ChartType == ChartTypeValue.TYPE_LINE) {
 					putSceneOnStage(SCENE_LINE_CHART_SELECTION);
 				} else if (ChartType == ChartTypeValue.TYPE_SCATTER) {
@@ -412,37 +394,29 @@ public class GenerateChartUI extends Application  {
 	};
 
 	private void initViewHistoryHandler() {
-		//history chart TableView
-    	tvhistory.setOnMouseClicked(new historyTableFactoryEventHandler());
-    	//back button
+		// history chart TableView
+		tvhistory.setOnMouseClicked(new historyTableFactoryEventHandler());
+		// back button
 		btbackto1.setOnAction(e -> {
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
-		//show button
+		// show button
 		btshow.setOnAction(e -> {
-			
-			
-			// TODO: select chart
-			
-			
+
 			// If not selected
 			if (tvhistory.getSelectionModel().isEmpty()) {
 				lbhistorymsg.setText("Please select a chart");
+			} else {
+				// chartShowChart updated by tvhistory
+				updateShowChartScene();
+				// and then show chart
+				putSceneOnStage(SCENE_SHOW_CHART);
 			}
-			//lbhistorymsg: "Please selected your chart"
-			//else
-			
-			//chartShowChart = coreData.getChart(DataTableName, selected chart name);
-			//or already selected xychart
-			//chartShowChart = xychart
-			//create new scene
-			updateShowChartScene();
-			// and then show chart
-			putSceneOnStage(SCENE_SHOW_CHART);
 		});
 
 	};
-/**Line Chart Handler*/
+
+	/** Line Chart Handler */
 	private void initLineChartSelectionHandler() {
 
 		btLineSave.setOnAction(e -> {
@@ -463,23 +437,21 @@ public class GenerateChartUI extends Application  {
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] AxisLabels = { cbLineXaxis.getValue().toString(), cbLineYaxis.getValue().toString() };
 				linechart lc;
-				
+
 				try {
 					lc = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
 					coreData.addChart(selectedDataTable.getTableName(), lc);
 					System.out.print("Check it in history!!! :) ");
-					//Set back to the default values
+					// Set back to the default values
 					tfLineTitle.clear();
 					cbLineXaxis.setValue(null);
 					cbLineYaxis.setValue(null);
-					
+
 				} catch (ChartException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					System.out.print("Ohohoh...fail...");
 				}
-				
-
 
 			}
 
@@ -488,47 +460,42 @@ public class GenerateChartUI extends Application  {
 		btLineSaveandPreview.setOnAction(e -> {
 			// TOOD: cut it or not
 			// Check the user enters value properly
-						if (tfLineTitle.getText().isEmpty()) {
-							lblinemsg.setText("Please enter the title");
-						} else if (cbLineXaxis.getValue() == null) {
-							System.out.print("Select the x-axis");
+			if (tfLineTitle.getText().isEmpty()) {
+				lblinemsg.setText("Please enter the title");
+			} else if (cbLineXaxis.getValue() == null) {
+				System.out.print("Select the x-axis");
 
-							lblinemsg.setText("Please select the x-axis");
-						} else if (cbLineYaxis.getValue() == null) {
-							System.out.print("Select the y-axis");
+				lblinemsg.setText("Please select the x-axis");
+			} else if (cbLineYaxis.getValue() == null) {
+				System.out.print("Select the y-axis");
 
-							lblinemsg.setText("Please select the y-axis");
-						} else {
-							System.out.print("Ok making the chart...");
+				lblinemsg.setText("Please select the y-axis");
+			} else {
+				System.out.print("Ok making the chart...");
 
-							DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-							String[] AxisLabels = { cbLineXaxis.getValue().toString(), cbLineYaxis.getValue().toString() };
-							linechart lc;
-							
-							try {
-								lc = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
-								coreData.addChart(selectedDataTable.getTableName(), lc);
-								System.out.print("Check it in history!!! :) ");
-								chartShowChart = lc.getXYChart();
-								//create a new scene for the chart object
-								VBox container = new VBox(20);
-								container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
-								container.setAlignment(Pos.CENTER);
-								BorderPane pane = new BorderPane();
-								pane.setCenter(container);
-								scenes[SCENE_SHOW_CHART]= new Scene(pane, 500, 500);
-								//Set back to the default values
-								tfLineTitle.clear();
-								cbLineXaxis.setValue(null);
-								cbLineYaxis.setValue(null);
+				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+				String[] AxisLabels = { cbLineXaxis.getValue().toString(), cbLineYaxis.getValue().toString() };
+				linechart lc;
 
-								putSceneOnStage(SCENE_SHOW_CHART);
-							} catch (ChartException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-								System.out.print("Ohohoh...fail...");
-							}
-					}
+				try {
+					lc = new linechart(selectedDataTable, AxisLabels, tfLineTitle.getText().toString());
+					coreData.addChart(selectedDataTable.getTableName(), lc);
+					System.out.print("Check it in history!!! :) ");
+					chartShowChart = lc.getXYChart();
+					// create a new scene for the chart object
+					updateShowChartScene();
+					// Set back to the default values
+					tfLineTitle.clear();
+					cbLineXaxis.setValue(null);
+					cbLineYaxis.setValue(null);
+
+					putSceneOnStage(SCENE_SHOW_CHART);
+				} catch (ChartException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.print("Ohohoh...fail...");
+				}
+			}
 
 		});
 		btbackto1_.setOnAction(e -> {
@@ -536,111 +503,98 @@ public class GenerateChartUI extends Application  {
 		});
 
 	}
-	/**Scatter Chart Handler*/
+
+	/** Scatter Chart Handler */
 
 	private void initScatterChartSelectionHandler() {
 		btScatterSave.setOnAction(e -> {
 			// Check the user enters value properly
-						if (tfScatterTitle.getText().isEmpty()) {
-							lbscattermsg.setText("Please enter the title");
-						} else if (cbScatterXaxis.getValue() == null) {
-							System.out.print("Select the x-axis");
+			if (tfScatterTitle.getText().isEmpty()) {
+				lbscattermsg.setText("Please enter the title");
+			} else if (cbScatterXaxis.getValue() == null) {
+				System.out.print("Select the x-axis");
 
-							lbscattermsg.setText("Please select the x-axis");
-						} else if (cbScatterYaxis.getValue() == null) {
-							System.out.print("Select the y-axis");
+				lbscattermsg.setText("Please select the x-axis");
+			} else if (cbScatterYaxis.getValue() == null) {
+				System.out.print("Select the y-axis");
 
-							lbscattermsg.setText("Please select the y-axis");
-						}else if (cbScatterCaxis.getValue() == null) {
-							lbscattermsg.setText("Select the categories");
-						}
-							
-						else {
-							System.out.print("Ok...Making the Scatter Chart...");
-							//TODO: make the scatter chart, 
-							
-							DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-							String[] AxisLabels = { cbScatterXaxis.getValue().toString(), 
-									cbScatterYaxis.getValue().toString(), cbScatterCaxis.getValue().toString()};
-							scatterchart sc;
-							
-							try {
-								sc = new scatterchart(selectedDataTable, AxisLabels, tfScatterTitle.getText().toString());
-								coreData.addChart(selectedDataTable.getTableName(), sc);
-								System.out.print("Check it in History!");
-								//Set back to the default values
-								tfScatterTitle.clear();
-								cbScatterXaxis.setValue(null);
-								cbScatterYaxis.setValue(null);
-								cbScatterCaxis.setValue(null);
-								
-								
-							} catch (ChartException e1) {
-								// TODO Auto-generated catch block
-								System.out.print("Ohohoh...failed...omg~~~");
-								e1.printStackTrace();
-							}
-							
-							
-							
-							
-			
-		}});
+				lbscattermsg.setText("Please select the y-axis");
+			} else if (cbScatterCaxis.getValue() == null) {
+				lbscattermsg.setText("Select the categories");
+			}
+
+			else {
+				System.out.print("Ok...Making the Scatter Chart...");
+				// TODO: make the scatter chart,
+
+				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+				String[] AxisLabels = { cbScatterXaxis.getValue().toString(), cbScatterYaxis.getValue().toString(),
+						cbScatterCaxis.getValue().toString() };
+				scatterchart sc;
+
+				try {
+					sc = new scatterchart(selectedDataTable, AxisLabels, tfScatterTitle.getText().toString());
+					coreData.addChart(selectedDataTable.getTableName(), sc);
+					System.out.print("Check it in History!");
+					// Set back to the default values
+					tfScatterTitle.clear();
+					cbScatterXaxis.setValue(null);
+					cbScatterYaxis.setValue(null);
+					cbScatterCaxis.setValue(null);
+
+				} catch (ChartException e1) {
+					// TODO Auto-generated catch block
+					System.out.print("Ohohoh...failed...omg~~~");
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		btScatterSaveandPreview.setOnAction(e -> {
-				// Check the user enters value properly
-							if (tfScatterTitle.getText().isEmpty()) {
-								lbscattermsg.setText("Please enter the title");
-							} else if (cbScatterXaxis.getValue() == null) {
-								System.out.print("Select the x-axis");
+			// Check the user enters value properly
+			if (tfScatterTitle.getText().isEmpty()) {
+				lbscattermsg.setText("Please enter the title");
+			} else if (cbScatterXaxis.getValue() == null) {
+				System.out.print("Select the x-axis");
 
-								lbscattermsg.setText("Please select the x-axis");
-							} else if (cbScatterYaxis.getValue() == null) {
-								System.out.print("Select the y-axis");
+				lbscattermsg.setText("Please select the x-axis");
+			} else if (cbScatterYaxis.getValue() == null) {
+				System.out.print("Select the y-axis");
 
-								lbscattermsg.setText("Please select the y-axis");
-							}else if (cbScatterCaxis.getValue() == null) {
-								lbscattermsg.setText("Select the categories");
-							}
-								
-							else {
-								System.out.print("Ok...Making the Scatter Chart...");
-								//TODO: make the scatter chart, 
-								
-								DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-								String[] AxisLabels = { cbScatterXaxis.getValue().toString(), 
-										cbScatterYaxis.getValue().toString(), cbScatterCaxis.getValue().toString()};
-								scatterchart sc;
-								
-								try {
-									sc = new scatterchart(selectedDataTable, AxisLabels, tfScatterTitle.getText().toString());
-									coreData.addChart(selectedDataTable.getTableName(), sc);
-									chartShowChart = sc.getXYChart();
-									//create a new scene for the chart object
-									VBox container = new VBox(20);
-									container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
-									container.setAlignment(Pos.CENTER);
-									BorderPane pane = new BorderPane();
-									pane.setCenter(container);
-									scenes[SCENE_SHOW_CHART]= new Scene(pane, 500, 500);
-									//Set back to the default values
-									tfScatterTitle.clear();
-									cbScatterXaxis.setValue(null);
-									cbScatterYaxis.setValue(null);
-									cbScatterCaxis.setValue(null);
+				lbscattermsg.setText("Please select the y-axis");
+			} else if (cbScatterCaxis.getValue() == null) {
+				lbscattermsg.setText("Select the categories");
+			}
 
-									putSceneOnStage(SCENE_SHOW_CHART);
+			else {
+				System.out.print("Ok...Making the Scatter Chart...");
+				// TODO: make the scatter chart,
 
-									
-								} catch (ChartException e1) {
-									// TODO Auto-generated catch block
-									System.out.print("Ohohoh...failed...omg~~~");
-									e1.printStackTrace();
-								}
-								
-								
-								
-								
-				
+				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+				String[] AxisLabels = { cbScatterXaxis.getValue().toString(), cbScatterYaxis.getValue().toString(),
+						cbScatterCaxis.getValue().toString() };
+				scatterchart sc;
+
+				try {
+					sc = new scatterchart(selectedDataTable, AxisLabels, tfScatterTitle.getText().toString());
+					coreData.addChart(selectedDataTable.getTableName(), sc);
+					chartShowChart = sc.getXYChart();
+					// create a new scene for the chart object
+					updateShowChartScene();
+					// Set back to the default values
+					tfScatterTitle.clear();
+					cbScatterXaxis.setValue(null);
+					cbScatterYaxis.setValue(null);
+					cbScatterCaxis.setValue(null);
+
+					putSceneOnStage(SCENE_SHOW_CHART);
+
+				} catch (ChartException e1) {
+					// TODO Auto-generated catch block
+					System.out.print("Ohohoh...failed...omg~~~");
+					e1.printStackTrace();
+				}
+
 			}
 		});
 
@@ -659,9 +613,12 @@ public class GenerateChartUI extends Application  {
 	}
 
 	private void initShowChartHandler() {
-		
+
 		btbackto2.setOnAction(e -> {
-			putSceneOnStage(SCENE_VIEW_HISTORY);
+			// update the view history scene, since not yet updated after creating chart
+
+			updateHistoryScene();
+			
 		});
 
 	}
@@ -715,52 +672,79 @@ public class GenerateChartUI extends Application  {
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
 		selectedTableIndex = a;
 	}
+
 	/**
 	 * A function to create the TableView
 	 * 
 	 * @author HenryChan
 	 * @param tableName
-	 * 			- Name of the TableView
+	 *            - Name of the TableView
 	 * @param propertyName
-	 * 			- Name of the TableColumn
+	 *            - Name of the TableColumn
 	 * @param tableList
-	 * 			- 
+	 *            -
 	 * @return TableView<xychart> with Chart Name displayed
 	 */
-	
-    private TableView<xychart> CreateTableView(String tableName, String propertyName, ObservableList<xychart> olhistory) {
-    	TableView<xychart> table = new TableView<>();
-    	TableColumn<xychart, String> Dataset = new TableColumn<>(tableName);
-    	Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-    	table.setItems(olhistory);
-    	table.getColumns().add(Dataset);
-    	table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-    	
-    	return table;	    	
-}
-	
-    
-	private  class historyTableFactoryEventHandler implements EventHandler<MouseEvent>{
+
+	private TableView<xychart> CreateTableView(String tableName, String propertyName,
+			ObservableList<xychart> olhistory) {
+		TableView<xychart> table = new TableView<>();
+		TableColumn<xychart, String> Dataset = new TableColumn<>(tableName);
+		Dataset.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+		table.setItems(olhistory);
+		table.getColumns().add(Dataset);
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+		return table;
+	}
+
+	private class historyTableFactoryEventHandler implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent t) {
 			int selected = tvhistory.getSelectionModel().getSelectedIndex();
 			System.out.print(selected);
 			xychart selectedchart = olhistory.get(selected);
-			//updated the selected chart to scene 6
+			// updated the selected chart to scene 6
 			chartShowChart = selectedchart.getXYChart();
 		}
 	}
-	//create a new scene for the chart object
-	private void updateShowChartScene() {			
+
+	// create a new scene for the chart object
+	private void updateShowChartScene() {
 		VBox container = new VBox(20);
 		container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
 		container.setAlignment(Pos.CENTER);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(container);
-		scenes[SCENE_SHOW_CHART]= new Scene(pane, 500, 500);
+		scenes[SCENE_SHOW_CHART] = new Scene(pane, 500, 500);
 	}
+	/**Update and set the View History Scene */
+	private void updateHistoryScene() {
+		DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
+		ArrayList<xychart> charts = coreData.getChartsWithType(selectedDataTable.getTableName(), ChartType);
+
+		if (charts == null) { // if it is empty, then remain in this pane
+
+			lbmessage.setText("No History Available. Create a new one.");
+		} else {
+			lbmessage.setText("");
+			olhistory.clear();
+
+			for (xychart chart : charts) {
+				// TODO: add to the TableView
+				olhistory.add(chart);
+
+			}
+			lbViewHistory.setText(
+					String.format("These are the %s for DataTable %s", ChartType, selectedDataTable.getTableName()));
+
+			putSceneOnStage(SCENE_VIEW_HISTORY);
+
+		}
+	}
+
 	
-	
+
 	@Override
 	public void start(Stage primarystage) {
 		testingData();
@@ -775,6 +759,5 @@ public class GenerateChartUI extends Application  {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
 
 }
