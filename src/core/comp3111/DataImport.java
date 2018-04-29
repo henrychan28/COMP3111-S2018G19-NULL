@@ -58,13 +58,20 @@ public class DataImport {
 	 * @return
 	 * 			A completed DataTable
 	 */
-	public DataTable buildDataTable(HashMap<String, String[]> columns) {
+	public DataTable buildDataTable(HashMap<String, String[]> columns, String nameOfTable) {
 		DataTable table = null;
 		
 		// We finished reading in the file, now we can put the data into a DataTable
 		// If this works we can return that the import succeeded
 		try {
-			table = new DataTable("Default");
+			if (CoreData.getInstance().doesTableExist(nameOfTable) == true) {
+				CoreData.getInstance();
+				table = new DataTable(nameOfTable + CoreData.getTransactID());
+				System.out.println("T:" + CoreData.getTransactID());
+			} else {
+				table = new DataTable(nameOfTable);
+				System.out.println("T:" + CoreData.getTransactID());
+			}
 			
 			Object[] objArr = null;
 			String[] colSettings = null;

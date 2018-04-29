@@ -5,6 +5,7 @@ import core.comp3111.DataImport;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Optional;
 
 import core.comp3111.CoreData;
 import core.comp3111.CoreDataIO;
@@ -14,11 +15,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -53,6 +56,7 @@ public class Main extends Application {
 	// Screen 1: paneMainScreen
 	private Button btViewTables, btImportDataLineChart, btExport, btLoad;
 	private Label lbStatusLabel, lbMainScreenTitle;
+	private TextInputDialog dialog;
 
 	/**
 	 * create all scenes in this application
@@ -94,19 +98,33 @@ public class Main extends Application {
 			if (importMessage != null) 
 			{
 				lbStatusLabel.setText(importMessage);
-						
-				// Parse the selected file to temporary table, returning column headers
-				String[] columnHeaders = null;
-				columnHeaders = fileToImport.parseFile();
 				
-				// Ask the user about the method to handle the various columns
-				ColumnTypeUI columnWindow = new ColumnTypeUI(columnHeaders);
-				HashMap<String, String[]> columnData = columnWindow.presentUI(stage);
+				// Ask for the file name
+				dialog = new TextInputDialog("Name Here");
+				dialog.setTitle("Import CSV");
+				dialog.setHeaderText("Before importing, please enter a unique name for the table");
+				dialog.setContentText("Please enter the name:");
+				dialog.initOwner(stage);
+				dialog.initModality(Modality.APPLICATION_MODAL); 
+
+				// Traditional way to get the response value.
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()){
+					lbStatusLabel.setText("Table being called: " + result.get());
 				
-				if (columnData != null) {
-					selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData));
-					lbStatusLabel.setText(String.format("DataTable Added: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
-							coreData.getDataTable(selectedTableIndex).getNumCol()));
+					// Parse the selected file to temporary table, returning column headers
+					String[] columnHeaders = null;
+					columnHeaders = fileToImport.parseFile();
+					
+					// Ask the user about the method to handle the various columns
+					ColumnTypeUI columnWindow = new ColumnTypeUI(columnHeaders);
+					HashMap<String, String[]> columnData = columnWindow.presentUI(stage);
+					
+					if (columnData != null) {
+						selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData,result.get()));
+						lbStatusLabel.setText(String.format("DataTable Added: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
+								coreData.getDataTable(selectedTableIndex).getNumCol()));
+					}
 				}
 			} 		
 		});

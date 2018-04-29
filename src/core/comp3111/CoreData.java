@@ -17,6 +17,7 @@ public class CoreData implements Serializable {
 	// Defines
 	public static final long serialVersionUID = Constants.SERIALIZABLE_VER;
 	private static long serialChartUID = 1;
+	private static long transactID = 0;
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
@@ -36,6 +37,10 @@ public class CoreData implements Serializable {
         return instance;
     }
 	
+	public static long getTransactID() {
+		return transactID;
+	}
+	
 	/**
 	 * Add a new inner list of data tables and a parent data table
 	 * 
@@ -54,6 +59,7 @@ public class CoreData implements Serializable {
 			newParentIndex[Constants.OUTER] = masterTableList.size() - 1;
 			newParentIndex[Constants.INNER] = 0;
 		}
+		transactID++;
 		
 		return newParentIndex;
 	}
@@ -74,6 +80,7 @@ public class CoreData implements Serializable {
 			newChildIndex[Constants.INNER] = masterTableList.get(parentIndex).size() - 1;
 			newChildIndex[Constants.OUTER] = parentIndex;
 		}
+		transactID++;
 		
 		return newChildIndex;
 	}
@@ -160,6 +167,7 @@ public class CoreData implements Serializable {
 			masterTableList.get(index[Constants.OUTER]).set(index[Constants.INNER], table);
 			success = true;
 		}
+		transactID++;
 		return success;
 	}
 	
@@ -194,6 +202,21 @@ public class CoreData implements Serializable {
 		}
 		
 		return indices;
+	}
+	
+	public boolean doesTableExist(String name) {
+		boolean exists = false;
+		int[] indices = {Constants.EMPTY,Constants.EMPTY};
+		
+		indices = searchForDataTable(name);
+		
+		if (indices[Constants.INNER] == Constants.EMPTY && indices[Constants.OUTER] == Constants.EMPTY) {
+			exists = false;
+		} else {
+			exists = true;
+		}
+			
+		return exists;
 	}
 	
 	
