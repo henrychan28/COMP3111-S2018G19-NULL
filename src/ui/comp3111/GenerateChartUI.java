@@ -703,6 +703,7 @@ public class GenerateChartUI extends Application {
 						System.out.print("Check it in history!!! :) ");
 
 						// create a new scene for the chart object
+						chartShowChart = dc.getXYChart();
 						updateShowChartScene();
 						// Set back to the default values
 						tfDynamicTitle.clear();
