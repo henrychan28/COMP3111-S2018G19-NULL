@@ -37,7 +37,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * UI for generating chart
+ * UI for generating chart. 
+ * Everything included. 
  * 
  * @author YuenTing
  *
@@ -492,10 +493,12 @@ public class GenerateChartUI extends Application {
 	private void initViewHistoryHandler() {
 		// history chart TableView
 		tvhistory.setOnMouseClicked(new historyTableFactoryEventHandler());
+		
 		// back button
 		btbackto1.setOnAction(e -> {
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
+		
 		// show button
 		btshow.setOnAction(e -> {
 
@@ -512,9 +515,9 @@ public class GenerateChartUI extends Application {
 
 	};
 
-	/** Line Chart Handler */
+	/** 2. Line Chart Handler */
 	private void initLineChartSelectionHandler() {
-
+		//"Save" for Line Chart
 		btLineSave.setOnAction(e -> {
 			// Check the user enters value properly
 			if(checkLineChartSelection()) {
@@ -541,7 +544,8 @@ public class GenerateChartUI extends Application {
 
 			}
 
-		});
+		});		
+		//"Save and Preview" for Line Chart
 
 		btLineSaveandPreview.setOnAction(e -> {
 			// Check the user enters value properly
@@ -573,15 +577,18 @@ public class GenerateChartUI extends Application {
 			}
 
 		});
+		//Back for Line Chart
 		btbackto1_.setOnAction(e -> {
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
 
 	}
 
-	/** Scatter Chart Handler */
+	/** 3. Scatter Chart Handler */
 
 	private void initScatterChartSelectionHandler() {
+		
+		// "Save" for Scatter chart
 		btScatterSave.setOnAction(e -> {
 			// Check the user enters value properly and proceed if fine
 			if ( checkScatterChartSelection()) {
@@ -608,6 +615,7 @@ public class GenerateChartUI extends Application {
 
 			}
 		});
+		// "Save and Preview" for scatter chart
 		btScatterSaveandPreview.setOnAction(e -> {
 			// Check the user enters value properly
 			if ( checkScatterChartSelection()) {
@@ -641,27 +649,16 @@ public class GenerateChartUI extends Application {
 
 			}
 		});
-
+		//back button for scatter chart
 		btbackto1__.setOnAction(e -> {
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
 
 	}
-
+/**4. Handler for Dynamic Chart*/
 	private void initDynamicChartSelectionHandler() {
 		
-		/*
-		 * 
-	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis,
-			lbdynamicmsg;
-	private Button btDynamicSave, btDynamicSaveandPreview, btbackto1___;
-	private ComboBox cbDynamicXaxis, cbDynamicYaxis, cbDynamicCaxis;
-	private TextField tfDynamicTitle;
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
+		// Save Button for dynamic chat
 		btDynamicSave.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
 				System.out.print("Ok making the chart...");
@@ -687,6 +684,7 @@ public class GenerateChartUI extends Application {
 			}
 			
 		});
+		// "Save and Preview" for dynamic chart
 		btDynamicSaveandPreview.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
 				//TODO: create chart and go to show chart scene
@@ -722,12 +720,12 @@ public class GenerateChartUI extends Application {
 			}
 		});		
 		
-		//back button
+		//back button for dynamic chart
 		 btbackto1___.setOnAction(e->{ putSceneOnStage(SCENE_Chart_TYPE_SELECTION); });
 		 
 
 	}
-
+/** 5. Handler for showing chart*/
 	private void initShowChartHandler() {
 
 		btbackto2.setOnAction(e -> {
