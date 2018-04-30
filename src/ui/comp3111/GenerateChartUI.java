@@ -59,9 +59,9 @@ public class GenerateChartUI extends Application {
 	*/
 	//testing testing, delete it later
 	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2 number, 1string
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 2 number, 1string
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
-		selectedTableIndex = b;
+		selectedTableIndex = a;
 	}
 
 	@Override
@@ -128,10 +128,10 @@ public class GenerateChartUI extends Application {
 	private TextField tfScatterTitle;
 
 	// screen 5: paneDynamicChartSelection
-	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis,
+	private Label lbSelectNewDynamicChart, lbDynamicTitile, lbDynamicTaxis, lbDynamicXaxis, lbDynamicYaxis, lbDynamicCaxis,
 			lbdynamicmsg;
 	private Button btDynamicSave, btDynamicSaveandPreview, btbackto1___;
-	private ComboBox<String> cbDynamicXaxis, cbDynamicYaxis, cbDynamicCaxis;
+	private ComboBox<String> cbDynamicTaxis,  cbDynamicXaxis, cbDynamicYaxis, cbDynamicCaxis;
 	private TextField tfDynamicTitle;
 
 	// screen 6: paneShowChart
@@ -371,14 +371,20 @@ public class GenerateChartUI extends Application {
 		lbSelectNewDynamicChart = new Label("Select the Dynamic Chart Setting");
 		//2 Selection
 		HBox hbtitle = new HBox(20);
+		HBox hbtaxis = new HBox(20);
+		HBox hbxaxis = new HBox(20);
 		HBox hbyaxis = new HBox(20);
 		HBox hbcaxis = new HBox(20);
 
 		lbDynamicTitile = new Label("Title");
+		lbDynamicTaxis = new Label("Time-axis");
+		lbDynamicXaxis = new Label("X-axis");
 		lbDynamicYaxis = new Label("Y-axis");
 		lbDynamicCaxis = new Label("Categories");
 		tfDynamicTitle = new TextField();
 		tfDynamicTitle.setPromptText("Enter the title");
+		cbDynamicTaxis = new ComboBox<String>();
+		cbDynamicXaxis = new ComboBox<String>();
 		cbDynamicYaxis = new ComboBox<String>();
 		cbDynamicCaxis = new ComboBox<String>();
 		//add the choice to the comboboxes
@@ -386,7 +392,10 @@ public class GenerateChartUI extends Application {
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
 				if(keys != null) {
+					cbDynamicTaxis.getItems().addAll(keys);	//TODO: Taxis should be increasing
+					cbDynamicXaxis.getItems().addAll(keys);	
 					cbDynamicYaxis.getItems().addAll(keys);	
+
 				}
 		//String & Object type to Category
 				String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
@@ -396,8 +405,9 @@ public class GenerateChartUI extends Application {
 				}
 				//cbDynamicCaxis.getItems().addAll(keys3);
 
-		
 		hbtitle.getChildren().addAll(lbDynamicTitile, tfDynamicTitle);
+		hbtaxis.getChildren().addAll(lbDynamicTaxis, cbDynamicTaxis);
+		hbxaxis.getChildren().addAll(lbDynamicXaxis, cbDynamicXaxis);
 		hbyaxis.getChildren().addAll(lbDynamicYaxis, cbDynamicYaxis);
 		hbcaxis.getChildren().addAll(lbDynamicCaxis, cbDynamicCaxis);
 		hbtitle.setAlignment(Pos.CENTER);
@@ -419,7 +429,7 @@ public class GenerateChartUI extends Application {
 		//container
 		VBox container= new VBox(20);
 		container.setAlignment(Pos.CENTER);
-		container.getChildren().addAll(lbSelectNewDynamicChart, hbtitle, hbyaxis, hbcaxis, 
+		container.getChildren().addAll(lbSelectNewDynamicChart, hbtitle, hbtaxis,hbxaxis,hbyaxis, hbcaxis, 
 				lbdynamicmsg, new Separator(), buttons);
 		
 		BorderPane pane = new BorderPane();
@@ -666,9 +676,9 @@ public class GenerateChartUI extends Application {
 		
 		// Save Button for dynamic chat
 		btDynamicSave.setOnAction(e->{
-			if(checkDynamicChartSelection() ) {
+			/*if(checkDynamicChartSelection() ) {
 				System.out.print("Ok making the chart...");
-				/*
+				
 				DataTable selectedDataTable = coreData.getDataTable(this.selectedTableIndex);
 				String[] AxisLabels = { cbDynamicYaxis.getValue().toString(), cbDynamicCaxis.getValue().toString() };
 				dynamicchart dc;
@@ -687,18 +697,20 @@ public class GenerateChartUI extends Application {
 					e1.printStackTrace();
 					System.out.print("Ohohoh...fail...");
 				}
-			}*/
-			
-		}});
+			}
+		}*/});
 		// "Save and Preview" for dynamic chart
 		btDynamicSaveandPreview.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
 				//TODO: create chart and go to show chart scene
 				if(checkDynamicChartSelection() ) {
 					System.out.print("Ok making the chart...");
-/*
+
 					DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
-					String[] AxisLabels = { cbDynamicYaxis.getValue().toString(), cbDynamicCaxis.getValue().toString() };
+					String[] AxisLabels = { cbDynamicTaxis.getValue().toString(),
+							cbDynamicXaxis.getValue().toString(),
+							cbDynamicYaxis.getValue().toString(), 
+							cbDynamicCaxis.getValue().toString() };
 					dynamicchart dc;
 
 					try {
@@ -720,7 +732,7 @@ public class GenerateChartUI extends Application {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						System.out.print("Ohohoh...fail...");
-					}*/
+					}
 				}
 				
 			}
