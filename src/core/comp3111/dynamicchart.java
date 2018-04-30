@@ -27,6 +27,7 @@ public class dynamicchart extends xychart {
 	private final ScheduledExecutorService service;
 	private ScheduledFuture future;
 	protected double timespan; //from 0 to 1
+	protected int maxTime;
 	protected int pointer;
 	protected boolean Updating;
 	protected int timeAxisType;
@@ -81,7 +82,6 @@ public class dynamicchart extends xychart {
 		
 		// initialize the DataColumns
 		DataColumn dc0 = DataTable.getCol(this.time);
-
 		DataColumn dc1 = DataTable.getCol(this.xlabel);
 		DataColumn dc2 = DataTable.getCol(this.ylabel);
 		DataColumn dc3 = DataTable.getCol(this.category);
@@ -91,14 +91,14 @@ public class dynamicchart extends xychart {
 			throw new ChartException(this.ChartType, String.format(
 					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.time, this.DataTableName));
 		} else {
-			this.ydc = dc0;
+			this.tdc = dc0;
 		}
 		// Check if the DataColumn exists
 		if (dc1 == null) {
 			throw new ChartException(this.ChartType, String.format(
 					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.xlabel, this.DataTableName));
 		} else {
-			this.cdc = dc1;
+			this.xdc = dc1;
 		}// Check if the DataColumn exists
 		if (dc2 == null) {
 			throw new ChartException(this.ChartType, String.format(
@@ -115,7 +115,7 @@ public class dynamicchart extends xychart {
 		}
 
 		// Check if the size for every DataColumns are the same
-		if (tdc.getSize() != xdc.getSize() || xdc.getSize() != ydc.getSize() || ydc.getSize() != cdc.getSize()) {
+		if (tdc.getSize() != xdc.getSize() || xdc.getSize() != ydc.getSize() || ydc.getSize() != cdc.getSize() ) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
 		}
 		// Initialize: Keep track of the size of DataColumn
@@ -159,7 +159,7 @@ public class dynamicchart extends xychart {
 		
 		this.timespan = 0.5;
 		this.pointer = 0;
-		
+		this.maxTime = this.getMaxTime();
 		this.timeAxisType = checkTimeAxisType();
 		initcreatechart();
 	}
@@ -215,7 +215,7 @@ public class dynamicchart extends xychart {
 				  () -> {
 		        try {
 		            // simulate some delay caused by the io operation
-		            Thread.sleep(1000);
+		            Thread.sleep(500);
 		        } catch (InterruptedException ex) {
 		        }
 
@@ -232,10 +232,19 @@ public class dynamicchart extends xychart {
 	            // update every second
 	            future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
 	        } else {
+	        	//Return back to initial state as in constructor
+	        	this.pointer = 0;
+	        	ArrayList<Integer> indexes = getIndex();
+	            indexesToAllSeries(indexes, this.allSeries);
+	    		addAllSeriesToChart(this.allSeries);
+
 	            // stop updates
+
 	            future.cancel(true);
 	            future = null;
 	        }
+		    
+		    xychart.setAnimated(false);
 		
 	}
 	/**
@@ -243,14 +252,16 @@ public class dynamicchart extends xychart {
 	 * 
 	 * @return current time value
 	 */
+	
 	private int getPointer() {
-		if (this.pointer < SizeOfdc-1) {
+		System.out.print(this.pointer);
+		if (this.pointer < maxTime) {
 			this.pointer += 1;
 			return this.pointer -1;
 		}
 		else {
 			this.pointer = 0;
-			return SizeOfdc-1;
+			return maxTime;
 		}
 		
 	}
@@ -307,11 +318,29 @@ public class dynamicchart extends xychart {
 		}
 		
 	}
+	
+	/**
+	 * 
+	 */
+	private int getMaxTime() {
+		Object[] tarray = this.tdc.getData();
+		int max_time = 0;
+		for (int i = 0; i < tarray.length; i++) {
+			if((int) tarray[i] > max_time) {
+				max_time = (int) tarray[i];
+			}
+		}
+		return max_time;
+		
+		
+	}
 	/**
 	 * Add all series in the input HashMap to the XYChart
 	 * @param allSeries
 	 */
 	private void addAllSeriesToChart(HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
+		
+		xychart.getData().clear();
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
 			this.xychart.getData().add(entry.getValue());
 			System.out.print(entry.getKey());
