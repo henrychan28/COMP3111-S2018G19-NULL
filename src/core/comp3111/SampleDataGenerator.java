@@ -124,4 +124,40 @@ public class SampleDataGenerator {
 
 		return t;
 	}
+	
+	/**
+	 * A sample data generation. It illustrates how to use the DataTable class
+	 * implemented in the base code
+	 * 
+	 * @return DataTable object
+	 */
+	public static DataTable generateSampleLineDataV3() {
+
+		DataTable t = new DataTable("Sample Data 1");
+
+		// Sample: An array of integer
+		Number[] xvalues = new Integer[] { 0,0, 1,1,1, 2,2, 3, 4, 5 };
+		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
+
+		// Sample: Can also mixed Number types
+		Number[] yvalues = new Number[] { 30.0, 30, 25, (short) 16, 8.0,9, 1,3,4, (byte) 22};
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+
+		// Sample: A array of String
+		String[] labels = new String[] { "P1", "P2", "P3","P3","P2", "P3", "P5", "P4","P3", "P5" };
+		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
+
+		try {
+
+			t.addCol("X", xvaluesCol);
+			t.addCol("Y", yvaluesCol);
+			t.addCol("label", labelsCol);
+
+		} catch (DataTableException e) {
+			e.printStackTrace();
+
+		}
+
+		return t;
+	}
 }

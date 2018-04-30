@@ -59,9 +59,9 @@ public class GenerateChartUI extends Application {
 	*/
 	//testing testing, delete it later
 	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2 number, 1string
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 2 number, 1string
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
-		selectedTableIndex = a;
+		selectedTableIndex = b;
 	}
 
 	@Override
@@ -73,10 +73,12 @@ public class GenerateChartUI extends Application {
 		putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 	}
 
-	
+	/**
+	 * main */
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 
 	// Data Storage
 	private CoreData coreData = CoreData.getInstance();
@@ -482,9 +484,6 @@ public class GenerateChartUI extends Application {
 		btBackToDataTable.setOnAction(e->{
 			lbmessage.setText("");
 			cbChartType.setValue(null);
-			//TODO: back to datatable selection
-			
-			
 			
 		});
 
@@ -662,7 +661,7 @@ public class GenerateChartUI extends Application {
 		btDynamicSave.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
 				System.out.print("Ok making the chart...");
-
+				/*
 				DataTable selectedDataTable = coreData.getDataTable(this.selectedTableIndex);
 				String[] AxisLabels = { cbDynamicYaxis.getValue().toString(), cbDynamicCaxis.getValue().toString() };
 				dynamicchart dc;
@@ -681,7 +680,7 @@ public class GenerateChartUI extends Application {
 					e1.printStackTrace();
 					System.out.print("Ohohoh...fail...");
 				}
-			}
+			}*/
 			
 		});
 		// "Save and Preview" for dynamic chart
@@ -690,7 +689,7 @@ public class GenerateChartUI extends Application {
 				//TODO: create chart and go to show chart scene
 				if(checkDynamicChartSelection() ) {
 					System.out.print("Ok making the chart...");
-
+/*
 					DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 					String[] AxisLabels = { cbDynamicYaxis.getValue().toString(), cbDynamicCaxis.getValue().toString() };
 					dynamicchart dc;
@@ -707,14 +706,14 @@ public class GenerateChartUI extends Application {
 						tfDynamicTitle.clear();
 						cbDynamicYaxis.setValue(null);
 						cbDynamicCaxis.setValue(null);
-
+						dc.Animate(true);
 						putSceneOnStage(SCENE_SHOW_CHART);
 
 					} catch (ChartException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						System.out.print("Ohohoh...fail...");
-					}
+					}*/
 				}
 				
 			}
