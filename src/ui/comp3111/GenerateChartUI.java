@@ -99,7 +99,7 @@ public class GenerateChartUI extends Application {
 			"Generate New Line Chart", "Generate New Scatter Chart", "Generate New Dynamic Chart", "Show Chart" };
 	private Stage stage = null;
 	private Scene[] scenes = null;
-
+	private int currentScene;
 	// To keep this application more structural,
 	// The following UI components are used to keep references after invoking
 	// createScene()
@@ -136,7 +136,9 @@ public class GenerateChartUI extends Application {
 
 	// screen 6: paneShowChart
 	private Label lbShowChart;
+	private dynamicchart dChart = null;//keep track of the dynamicchart and close animation.
 	private XYChart<Number, Number> chartShowChart = null;
+	private xychart chartShowChart1 = null;
 	private Button btbackto2; // back to history
 
 	// Methods
@@ -411,6 +413,10 @@ public class GenerateChartUI extends Application {
 		hbyaxis.getChildren().addAll(lbDynamicYaxis, cbDynamicYaxis);
 		hbcaxis.getChildren().addAll(lbDynamicCaxis, cbDynamicCaxis);
 		hbtitle.setAlignment(Pos.CENTER);
+		hbtaxis.setAlignment(Pos.CENTER);
+
+		hbxaxis.setAlignment(Pos.CENTER);
+
 		hbyaxis.setAlignment(Pos.CENTER);
 		hbcaxis.setAlignment(Pos.CENTER);
 
@@ -524,6 +530,10 @@ public class GenerateChartUI extends Application {
 			} else {
 				// chartShowChart updated by tvhistory
 				updateShowChartScene();
+				if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+					//show animation
+					dChart.Animate(true);
+				}
 				// and then show chart
 				putSceneOnStage(SCENE_SHOW_CHART);
 			}
@@ -676,11 +686,14 @@ public class GenerateChartUI extends Application {
 		
 		// Save Button for dynamic chat
 		btDynamicSave.setOnAction(e->{
-			/*if(checkDynamicChartSelection() ) {
+			if(checkDynamicChartSelection() ) {
 				System.out.print("Ok making the chart...");
 				
 				DataTable selectedDataTable = coreData.getDataTable(this.selectedTableIndex);
-				String[] AxisLabels = { cbDynamicYaxis.getValue().toString(), cbDynamicCaxis.getValue().toString() };
+				String[] AxisLabels = { cbDynamicTaxis.getValue().toString(),
+						cbDynamicXaxis.getValue().toString(),
+						cbDynamicYaxis.getValue().toString(), 
+						cbDynamicCaxis.getValue().toString() };
 				dynamicchart dc;
 
 				try {
@@ -698,7 +711,7 @@ public class GenerateChartUI extends Application {
 					System.out.print("Ohohoh...fail...");
 				}
 			}
-		}*/});
+		});
 		// "Save and Preview" for dynamic chart
 		btDynamicSaveandPreview.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
@@ -717,7 +730,8 @@ public class GenerateChartUI extends Application {
 						dc = new dynamicchart(selectedDataTable, AxisLabels, tfDynamicTitle.getText().toString());
 						coreData.addChart(selectedDataTable.getTableName(), dc);
 						System.out.print("Check it in history!!! :) ");
-
+						//
+						dChart = dc;
 						// create a new scene for the chart object
 						chartShowChart = dc.getXYChart();
 						updateShowChartScene();
@@ -748,7 +762,10 @@ public class GenerateChartUI extends Application {
 
 		btbackto2.setOnAction(e -> {
 			// update the view history scene, since not yet updated after creating chart
-
+			if(dChart != null) {
+				dChart.Animate(false);
+				dChart = null;
+			}
 			updateHistoryScene();
 			
 		});
@@ -791,7 +808,7 @@ public class GenerateChartUI extends Application {
 		// ensure the sceneID is valid
 		if (sceneID < 0 || sceneID >= SCENE_CHART_NUM)
 			return;
-
+		currentScene = sceneID;
 		stage.hide();
 		stage.setTitle(SCENE_CHART_TITLES[sceneID]);
 		stage.setScene(scenes[sceneID]);
@@ -837,6 +854,10 @@ public class GenerateChartUI extends Application {
 			xychart selectedchart = olhistory.get(selected);
 			// updated the selected chart to scene 6
 			chartShowChart = selectedchart.getXYChart();
+			if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+				//keep track of it for animation
+				dChart = (dynamicchart) selectedchart;
+			}
 		}
 	}
 
