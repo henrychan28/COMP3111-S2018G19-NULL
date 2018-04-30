@@ -67,10 +67,8 @@ public class DataImport {
 			if (CoreData.getInstance().doesTableExist(nameOfTable) == true) {
 				CoreData.getInstance();
 				table = new DataTable(nameOfTable + CoreData.getTransactID());
-				System.out.println("T:" + CoreData.getTransactID());
 			} else {
 				table = new DataTable(nameOfTable);
-				System.out.println("T:" + CoreData.getTransactID());
 			}
 			
 			Object[] objArr = null;
@@ -145,6 +143,14 @@ public class DataImport {
 		return table;
 	}
 	
+	/**
+	 * Replaces empty string values in array with the passed string
+	 * 
+	 * @param vals 
+	 * 			The array to increment over
+	 * @param f
+	 * 			The replacement for empties
+	 */
 	public void replaceEmpty(Object[] vals, String f) {
 		for (int i = 0; i< vals.length; i++) {
 			if (((String) vals[i]).equals("")) {
@@ -153,6 +159,14 @@ public class DataImport {
 		}
 	}
 	
+	/**
+	 * Searches for the presence of empty strings in the passed array
+	 * 
+	 * @param vals
+	 * 			the array to increment over
+	 * @return
+	 * 			The presence of empty elements
+	 */
 	public boolean findEmpty(Object[] vals) {
 		boolean found = false;
 		
@@ -165,13 +179,20 @@ public class DataImport {
 		return found;
 	}
 	
+	/**
+	 * 
+	 * @param nums
+	 * 			The array to increment over
+	 * 
+	 * @return Returns the mean as a string
+	 * @throws NumberFormatException
+	 */
 	public String calcMean(Object[] nums) throws NumberFormatException {
 		double f = 0f;
 		int count = 0;
 		for (int i = 0; i< nums.length; i++) {
 			if (!((String) nums[i]).equals("")) {
 				f += Double.parseDouble((String) nums[i]);
-				System.out.println(f);
 				count++;
 			}
 		}
@@ -179,6 +200,14 @@ public class DataImport {
 		return String.format("%.2f", f/count);
 	}
 	
+	/**
+	 * 
+	 * @param nums
+	 * 			The array to increment over
+	 * 
+	 * @return Returns the median as a string
+	 * @throws NumberFormatException
+	 */
 	public String calcMedian(Object[] nums) throws NumberFormatException {
 		String result;
 		
@@ -203,6 +232,12 @@ public class DataImport {
 		return result;
 	}
 	
+	/**
+	 * Creates a new array that conforms to Number
+	 * @param obj
+	 * 			Generic object array
+	 * @return the Number array
+	 */
 	public Number[] castToNumber(Object[] obj) {
 		Number[] arr = new Number[obj.length];
 		
@@ -213,13 +248,22 @@ public class DataImport {
 		return arr;
 	}
 	
+	/**
+	 * Run through the array and replace empties with zero
+	 * 
+	 * @param vals
+	 * 			The array to run over
+	 * @throws NumberFormatException
+	 */
 	public void replaceEmptyWithZero(Object[] vals) throws NumberFormatException {
+		//Run over the array and blow up if we can't turn into a Number
 		for (int i = 0; i< vals.length; i++) {
 			if (!((String) vals[i]).equals("")) {
 				Double.parseDouble((String) vals[i]);
 			}
 		}
 		
+		// Find empties and replace with zero as a string
 		for (int i = 0; i< vals.length; i++) {
 			if (((String) vals[i]).equals("")) {
 				vals[i] = (Object) new String("0");
@@ -266,6 +310,8 @@ public class DataImport {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e){
+        	e.printStackTrace();
         } finally {
             if (reader != null) {
                 try {
@@ -327,5 +373,11 @@ public class DataImport {
 	 */
 	public String getAbsolutePath() {
 		return (selectedFile != null ) ? selectedFile.getAbsolutePath() : null;
+	}
+	
+	public void setFile(String str) {
+		if (str != null) {
+			selectedFile = new File(str);
+		}
 	}
 }
