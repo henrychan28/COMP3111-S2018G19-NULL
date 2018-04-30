@@ -59,7 +59,7 @@ public class GenerateChartUI extends Application {
 	*/
 	//testing testing, delete it later
 	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 2 number, 1string
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2 number, 1string
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
 		selectedTableIndex = b;
 	}
@@ -337,10 +337,13 @@ public class GenerateChartUI extends Application {
 		String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
 		String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
 
-		if (keys != null) {
+		if (keys2 != null) {
 			cbScatterCaxis.getItems().addAll(keys2);
+		}
+		if (keys3 != null) {
 			//cbScatterCaxis.getItems().addAll(keys3);
 		}
+		
 		// 6
 		lbscattermsg = new Label("");
 		// 7 Buttons
@@ -382,11 +385,15 @@ public class GenerateChartUI extends Application {
 		//Number type to Yaxis
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
-				cbDynamicYaxis.getItems().addAll(keys);	
+				if(keys != null) {
+					cbDynamicYaxis.getItems().addAll(keys);	
+				}
 		//String & Object type to Category
 				String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
 				//String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
-				cbDynamicCaxis.getItems().addAll(keys2);
+				if (keys2 != null) {
+					cbDynamicCaxis.getItems().addAll(keys2);
+				}
 				//cbDynamicCaxis.getItems().addAll(keys3);
 
 		
@@ -682,7 +689,7 @@ public class GenerateChartUI extends Application {
 				}
 			}*/
 			
-		});
+		}});
 		// "Save and Preview" for dynamic chart
 		btDynamicSaveandPreview.setOnAction(e->{
 			if(checkDynamicChartSelection() ) {
