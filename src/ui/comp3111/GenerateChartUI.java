@@ -707,6 +707,9 @@ public class GenerateChartUI extends Application {
 					System.out.print("Check it in history!!! :) ");
 					// Set back to the default values
 					tfDynamicTitle.clear();
+					cbDynamicTaxis.setValue(null);
+					cbDynamicXaxis.setValue(null);
+
 					cbDynamicYaxis.setValue(null);
 					cbDynamicCaxis.setValue(null);
 
@@ -742,6 +745,8 @@ public class GenerateChartUI extends Application {
 						updateShowChartScene();
 						// Set back to the default values
 						tfDynamicTitle.clear();
+						cbDynamicTaxis.setValue(null);
+						cbDynamicXaxis.setValue(null);
 						cbDynamicYaxis.setValue(null);
 						cbDynamicCaxis.setValue(null);
 						dc.Animate(true);
