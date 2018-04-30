@@ -393,9 +393,13 @@ public class GenerateChartUI extends Application {
 				DataTable selectedDataTable = coreData.getDataTable(selectedTableIndex);
 				String[] keys = selectedDataTable.getColKeysOfType(DataType.TYPE_NUMBER);
 				if(keys != null) {
-					cbDynamicTaxis.getItems().addAll(keys);	//TODO: Taxis should be increasing
 					cbDynamicXaxis.getItems().addAll(keys);	
 					cbDynamicYaxis.getItems().addAll(keys);	
+					for(String key: keys) {
+						if (selectedDataTable.getCol(key).isInteger()) {
+							cbDynamicTaxis.getItems().add(key);	//TODO: Taxis should be increasing
+						}
+					}
 
 				}
 		//String & Object type to Category

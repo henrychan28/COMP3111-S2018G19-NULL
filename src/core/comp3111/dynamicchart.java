@@ -152,6 +152,15 @@ public class dynamicchart extends xychart {
 									+ "Categories should be String Type (Current: &s DataColumn with type &s))",
 							category, this.cdc.getTypeName()));
 		}
+		//check if the time data column is integer type
+				if(!checkTimeAxisType()) {
+					throw new ChartException(this.ChartType,
+							String.format(
+									"Inconsistent Data Column type: "
+											+ "Time Axis should be Integer Type (Current: (&s) DataColumn with type Number))",
+									time));
+				}
+		
 		// defining a series for each category
 		service = Executors.newSingleThreadScheduledExecutor();
 
@@ -160,19 +169,26 @@ public class dynamicchart extends xychart {
 		this.timespan = 0.5;
 		this.pointer = 0;
 		this.maxTime = this.getMaxTime();
-		this.timeAxisType = checkTimeAxisType();
+		
 		initcreatechart();
 	}
 	/**
-	 * Check the input Time Axis Type
-	 * @return
+	 * Check the input Time Axis Type is integer type
+	 * @return true if yes, false otherwise
 	 */
-	private int checkTimeAxisType() {
+	private boolean checkTimeAxisType() {
 		Object[] tarray = tdc.getData();
+		/*
 		for (int i = 0; i < tarray.length; i ++) {
 			//if (tarray[i] < )
 		}
-		return 0;
+		return 0;*/
+		for (Object t: tarray) {
+			if (! (t instanceof Integer)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -254,7 +270,7 @@ public class dynamicchart extends xychart {
 	 */
 	
 	private int getPointer() {
-		System.out.print(this.pointer);
+		//System.out.print(this.pointer);
 		if (this.pointer < maxTime) {
 			this.pointer += 1;
 			return this.pointer -1;
@@ -343,7 +359,7 @@ public class dynamicchart extends xychart {
 		xychart.getData().clear();
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
 			this.xychart.getData().add(entry.getValue());
-			System.out.print(entry.getKey());
+			//System.out.print(entry.getKey());
 		}
 	}
 
