@@ -136,9 +136,8 @@ public class GenerateChartUI extends Application {
 
 	// screen 6: paneShowChart
 	private Label lbShowChart;
-	private dynamicchart dChart = null;//keep track of the dynamicchart and close animation.
+	private dynamicchart dChart = null;//keep track of the displaying dynamicchart for animation. equal null if not displaying dynamicchart.
 	private XYChart<Number, Number> chartShowChart = null;
-	private xychart chartShowChart1 = null;
 	private Button btbackto2; // back to history
 
 	// Methods
@@ -518,6 +517,8 @@ public class GenerateChartUI extends Application {
 		
 		// back button
 		btbackto1.setOnAction(e -> {
+			//cancel the selected dynamic chart !!! Otherwise would be bugged! 
+			dChart = null;
 			putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 		});
 		
