@@ -37,16 +37,17 @@ import javafx.util.Callback;
 
 public class DataFilterUI extends Application {
 	public static final int OUTER = 0;
-	private static String[] currentText;
-	private static String[] columnNames;
-	private static ObservableList<DataColumn> columnList;
-	private static TableView<String> columnTableView;
-	private static TableView<String> textTableView;
-	private static DataTable currentTable;
-	private static HashMap<String, Set<Object>> selectedRetainText = new HashMap<>();
-	private static TextField tableNameTextField;
-	private static TextField randomTableNameTextField1;
-	private static TextField randomTableNameTextField2;
+	private String[] currentText;
+	private String[] columnNames;
+	private ObservableList<DataColumn> columnList;
+	private TableView<String> columnTableView;
+	private TableView<String> textTableView;
+	private DataTable currentTable;
+	private HashMap<String, Set<Object>> selectedRetainText = new HashMap<>();
+	private TextField tableNameTextField;
+	private TextField randomTableNameTextField1;
+	private TextField randomTableNameTextField2;
+	private Stage stageDataFilterUI;
 
     public DataFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
@@ -86,23 +87,18 @@ public class DataFilterUI extends Application {
         launch(args);
     }
     
-    private void TestInitialize() {
-    	DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
-    	try{
-    		SetCurrentTable(testTable);
-    	} catch (Exception e) {
-    		e.getMessage();
-    	}
-    }
  
     @Override
     public void start(Stage stage) {
-    	//Initialize the UI test data
-    	//TestInitialize();
-
-    	stage.setTitle("Data Filter Interface");
-        stage.setWidth(900);
-        stage.setHeight(500);
+    	try {
+			SetCurrentTable(currentTable);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	stageDataFilterUI = stage;
+		stageDataFilterUI.setTitle("Data Filter Interface");
+		stageDataFilterUI.setWidth(900);
+		stageDataFilterUI.setHeight(500);
         
         columnTableView = createTableView("Column Name", columnNames);
         columnTableView.setOnMouseClicked(new ColumnTableEventHandler());
@@ -123,6 +119,8 @@ public class DataFilterUI extends Application {
         tableNameTextField = new TextField ();
         
         Button backButton = new Button("Back");
+        backButton.setOnMouseClicked(new BackButtonEventHandler());
+
         HBox textFilterBox = new HBox();
         textFilterBox.getChildren().addAll(selectButton, generateButton);
         textFilterBox.setAlignment(Pos.CENTER);
@@ -170,8 +168,8 @@ public class DataFilterUI extends Application {
         HBox hbox = new HBox();
         hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox, separator, randomFilterVbox);
         Scene scene = new Scene(hbox);
-        stage.setScene(scene);
-        stage.show();
+        stageDataFilterUI.setScene(scene);
+        stageDataFilterUI.show();
     }
     
 	private TableView<String> createTableView(String tableName, String[] data) {
@@ -235,6 +233,14 @@ public class DataFilterUI extends Application {
         	
         	filteredDataTable.printDataTable();
 		}
+    }
+    
+    private class BackButtonEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stageDataFilterUI);
+        }
     }
     
     private void PrintSelectedRetainText() {
