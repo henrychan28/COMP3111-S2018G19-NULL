@@ -84,6 +84,19 @@ public class DataColumn implements Serializable {
 			return 0;
 		return data.length;
 	}
+	/**
+	 * Check if the data is integer[] type
+	 * @return true if yes, false otherwise
+	 */
+	
+	public boolean isInteger() {
+		for (Object d: data) {
+			if (!(d instanceof Integer)) {
+				return  false;
+			}
+		}
+		return true;
+	}
 	
 	/**
 	 * Compare two data columns by value

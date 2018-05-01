@@ -1,6 +1,7 @@
 package core.comp3111;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -172,6 +173,26 @@ public class DataTable implements Serializable{
 		DataTable otherDataTable = (DataTable) obj;
 		return dc.equals(otherDataTable.dc);
 	}
+	/**
+	 * Get number of columns of integer type.
+	 * @return - integer 
+	 */
+	public int getNumColOfInteger() {
+		
+		int Num = 0;
+		
+		//Iterate every element in dc
+		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
+			DataColumn temdc = entry.getValue();
+			if (temdc.isInteger()) {
+				Num +=1;
+			}	
+		}
+		
+		return Num;
+		
+	}
+
   
   /**
 	 * Return the number of columns with the input column type.
@@ -211,7 +232,7 @@ public class DataTable implements Serializable{
 			return null;
 		}
 		String [] keys = new String[size];
-		System.out.print(size);
+		//System.out.print(size);
 
 		//iterate the HashMap dc
 		int i = 0;
