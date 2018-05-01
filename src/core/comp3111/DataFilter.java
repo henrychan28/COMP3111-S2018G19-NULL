@@ -28,17 +28,17 @@ public class DataFilter {
 	 * @return newDataTable
 	 * 			   - table filtered with given retainValues hashmap
 	 */
-	public DataTable TextFilter(DataTable dataTable, HashMap<String, Set<Object>> retainValues) {
+	public DataTable TextFilter(DataTable dataTable, HashMap<String, Set<String>> retainValues) {
 		
 		//TO-DO: bug of selecting only one entry of the unique text
 		DataTable filteredTable = null;
 		ArrayList<Integer> index = new ArrayList<Integer>();
-		for(int i=0;i<dataTable.getNumRow();i++) index.add(i);
+		if (retainValues.keySet().size() != 0) for(int i=0;i<dataTable.getNumRow();i++) index.add(i);
 		for(String columnName:retainValues.keySet()) {
 			if(!dataTable.containsColumn(columnName)) continue;
 			else {
 				DataColumn currentColumn = dataTable.getCol(columnName);
-				Set<Object> retainValue = retainValues.get(columnName);
+				Set<String> retainValue = retainValues.get(columnName);
 				Object[] currentData = currentColumn.getData();
 				for(int i=0;i<currentData.length;i++) {
 					if(!retainValue.contains(currentData[i])) {
@@ -70,8 +70,11 @@ public class DataFilter {
 	public DataTable[] RandomSplitTable(DataTable dataTable, double splitRatio) {
 		DataTable[] splitedTables = new DataTable[2];
 		int numRows = dataTable.getNumRow();
+		System.out.println("numRows: " + numRows);
 		Integer[] randomIntegerArray = NonRepRandomIntegerGenerator(0,numRows);
 		int cutOff = (int)(((double)numRows)*splitRatio);
+		System.out.println("curOff: " + cutOff);
+
 		ArrayList<Integer> indexA = new ArrayList<>();
 		ArrayList<Integer> indexB = new ArrayList<>();
 		for(int i=0;i<cutOff;i++) indexA.add(randomIntegerArray[i]);
@@ -138,25 +141,18 @@ public class DataFilter {
 	 * @return textLabelTable
 	 * 			   - Unique text entries for each column in the dataTable
 	 */
-	public DataTable GetTableTextLabels(DataTable dataTable) {
-		HashMap<String, Set<Object>> tableTextSet = new HashMap<>();
+	public HashMap<String, Set<String>> GetTableTextLabels(DataTable dataTable) {
+		HashMap<String, Set<String>> tableTextSet = new HashMap<>();
 		String[] columnNames = dataTable.getColumnNames();
 		for(String columnName:columnNames) {
 			DataColumn dataColumn = dataTable.getCol(columnName);
 			if(!dataColumn.getTypeName().equals(DataType.TYPE_STRING)) continue; //ignore non-String column
-			Set<Object> columnTextSet = new HashSet<Object>(Arrays.asList(dataColumn.getData()));
+			Object[] columnTextObject = dataColumn.getData();
+			String[] columnTextString = Arrays.copyOf(columnTextObject, columnTextObject.length, String[].class);
+			Set<String> columnTextSet = new HashSet<String>(Arrays.asList(columnTextString));
 			tableTextSet.put(columnName, columnTextSet);
 		}
-		DataTable newTable = new DataTable("Unique Text Table");
-		for(String key:tableTextSet.keySet()) {
-			DataColumn newColumn = new DataColumn(DataType.TYPE_STRING, tableTextSet.get(key).toArray());
-			try {
-				newTable.addCol(key, newColumn);
-			} catch(Exception e) {
-				System.out.println(e.getMessage());
-			};
-		}
-		return newTable;
+		return tableTextSet;
 	}
 }
 
