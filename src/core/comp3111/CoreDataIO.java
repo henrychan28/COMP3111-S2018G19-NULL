@@ -9,6 +9,14 @@ import java.io.ObjectOutputStream;
 
 public class CoreDataIO {
 	
+	/**
+	 * Saves the CoreData object to disk at the given folder and extension 
+	 * @param coreData
+	 * 			the instance to assign
+	 * @param folder
+	 * 			
+	 * @param extention
+	 */
 	public void saveCoreData(CoreData coreData, String folder, String extention) {
 		String address = folder + Constants.FILE_EX;
 		try {
@@ -25,6 +33,13 @@ public class CoreDataIO {
 		}
 	}
 	
+	/**
+	 * Fetches a serialized CoreData from disk
+	 * @param address
+	 * 			Filesystem address of the file
+	 * @return
+	 * 			The CoreData object
+	 */
 	public CoreData openCoreData(String address) {
 		CoreData result = null;
 		

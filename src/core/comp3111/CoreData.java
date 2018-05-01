@@ -7,7 +7,9 @@ import java.util.HashMap;
 import core.comp3111.DataTable;
 
 /**
- * Data storage class for the application.  Main property is a 2D matrix of DataTable objects.
+ * Data storage class for the application.  
+ * 
+ * It is a 2D matrix of DataTable objects, Hashtable of Charts and a singular instance of CoreData.
  * 
  * @author michaelfrost
  *
@@ -37,10 +39,20 @@ public class CoreData implements Serializable {
         return instance;
     }
 	
+	/**
+	 * Set the singular instance to the passed CoreData instance
+	 * @param data
+	 * 			the core data object
+	 */
 	public static void setInstance(CoreData data) {
 		instance = data;
 	}
 	
+	/**
+	 * Gets the number of table adds performed, this is to allow automatic creation of unique table names
+	 * 
+	 * @return the number (long)
+	 */
 	public static long getTransactID() {
 		return transactID;
 	}
@@ -208,6 +220,14 @@ public class CoreData implements Serializable {
 		return indices;
 	}
 	
+	
+	/**
+	 * Checks whether the file 'name' exists in the CoreData
+	 * 
+	 * @param name
+	 * 			TableName to search for
+	 * @return boolean
+	 */
 	public boolean doesTableExist(String name) {
 		boolean exists = false;
 		int[] indices = {Constants.EMPTY,Constants.EMPTY};
@@ -233,7 +253,6 @@ public class CoreData implements Serializable {
 	 * 			- ChartName
 	 * @return true if success, false otherwise
 	 */
-	
 	public boolean addChart(String DataTableName, xychart xychart) {
 		boolean success = false;
 		if(this.masterChartList.containsKey(DataTableName)) {
@@ -248,6 +267,8 @@ public class CoreData implements Serializable {
 		}
 		return success;
 	}
+	
+	
 	/**
 	 * get the ArrayList of xychart for the specific DataTable.
 	 * 
@@ -295,6 +316,7 @@ public class CoreData implements Serializable {
 		}
 		
 	}
+	
 	/**
 	 * get the chart with ChartID known and DataTable known 
 	 * 
@@ -302,7 +324,6 @@ public class CoreData implements Serializable {
 	 * @param ChartID
 	 * @return the xychart if existed. null otherwise.
 	 */
-	
 	public xychart getChart(String DataTableName, String ChartID) {
 		if (masterChartList.containsKey(DataTableName)) {
 			ArrayList<xychart> Charts = masterChartList.get(DataTableName);
@@ -315,6 +336,7 @@ public class CoreData implements Serializable {
 		}
 		return null;
 	}
+	
 	/**
 	 * Get and update the chartid. 
 	 * 
@@ -325,6 +347,8 @@ public class CoreData implements Serializable {
 		CoreData.serialChartUID +=1;	
 		return CoreData.serialChartUID -1;
 	}
+	
+	
 	/**
 	 * Get the chartid. No updating. 
 	 * 
@@ -334,6 +358,10 @@ public class CoreData implements Serializable {
 		return CoreData.serialChartUID;
 	}
 	
+	/**
+	 * Deletes all data store in CoreData
+	 * 
+	 */
 	public void destroyData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
