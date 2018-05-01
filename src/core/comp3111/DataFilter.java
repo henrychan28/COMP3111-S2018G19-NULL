@@ -132,7 +132,7 @@ public class DataFilter {
 			
 		}
 		return newDataTable;
-	}
+	} 
 	/**
 	 * GetTableTextLabels takes a dataTable and return DataColumns with data type "String"
 	 * 
