@@ -159,4 +159,42 @@ public class SampleDataGenerator {
 
 		return t;
 	}
+
+	/**
+	 * A sample data generation. For testing dynamic chart
+	 * 
+	 * @return DataTable object
+	 */
+	public static DataTable generateSampleLineDataV4() {
+
+		DataTable t = new DataTable("Sample Data 1");
+
+		// Sample: An array of integer
+		Number[] xvalues = new Number[] { 3, 5, 2, 2, 4, 2, 4, 6, 0.2, 5 };
+		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
+		// Sample: An array of integer
+		Number[] tvalues = new Number[] { 0, 0, 1, 1, 1, 2, 2, 3, 4, 0.8 };
+		DataColumn tvaluesCol = new DataColumn(DataType.TYPE_NUMBER, tvalues);
+		// Sample: Can also mixed Number types
+		Number[] yvalues = new Number[] { 30.0, 30, 25, (short) 16, 8.0, 9, 1, 3, 4, (byte) 22 };
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+
+		// Sample: A array of String
+		String[] labels = new String[] { "P1", "P2", "P3", "P3", "P2", "P3", "P5", "P4", "P3", "P5" };
+		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
+
+		try {
+
+			t.addCol("X", xvaluesCol);
+			t.addCol("Y", yvaluesCol);
+			t.addCol("label", labelsCol);
+			t.addCol("time", tvaluesCol);
+
+		} catch (DataTableException e) {
+			e.printStackTrace();
+
+		}
+
+		return t;
+	}
 }

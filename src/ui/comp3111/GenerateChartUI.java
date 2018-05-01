@@ -59,9 +59,12 @@ public class GenerateChartUI extends Application {
 	*/
 	//testing testing, delete it later
 	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 2 number, 1string
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 3 number, 1string
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
-		selectedTableIndex = a;
+		int[] c = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); //2 number, 1string
+		int[] d = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV4()); //2 number, 1string
+
+		selectedTableIndex = d;
 	}
 
 	@Override
@@ -163,8 +166,9 @@ public class GenerateChartUI extends Application {
 						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 			cbChartType.getItems().add(ChartTypeValue.TYPE_SCATTER);
 		}
-		// if DataTable contains >= 1 Number & 1 String Data Columns => show Dynamic Chart
-		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 1&& 
+		// if DataTable contains >= 3 Number (with 1 Integer) & >=1 String Data Columns => show Dynamic Chart
+		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 3 && 
+				selectedDataTable.getNumColOfInteger() >=1 &&
 				(selectedDataTable.getNumColOfType(DataType.TYPE_STRING))  >= 1) {
 						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 				cbChartType.getItems().addAll(ChartTypeValue.TYPE_DYNAMIC);
