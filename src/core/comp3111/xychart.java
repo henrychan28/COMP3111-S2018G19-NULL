@@ -29,48 +29,19 @@ public class xychart implements Serializable{
 	
 	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
 		this.DataTable = DataTable;
-		//this.DataTableName = DataTable.getName();
 		this.AxisLabels = AxisLabels;
 		this.ChartName = ChartName;
 		this.ChartType = ChartType;
 		long serialID = CoreData.getchartid();
-		this.ChartID = ChartName + '_' +ChartName +Long.toString(serialID);
+		this.ChartID = ChartName + '_' +Long.toString(serialID);
 	}
-	
 
 	/**
-	 * Set the ChartName. 
 	 * 
-	 * @param ChartName
-	 * 		- the name of the line chart
-	 * @return void
-	 */
-	public void SetChartName(String ChartName) {
-		this.ChartName = ChartName;
-		this.xychart.setTitle(ChartName);
-		return;
-		
-	}
-	/**
-	 * Show the chart on the screen
+	 * get the XYChart <Number, Number> xychart. 
 	 * 
-	 * @param stage - pass the Stage stage
 	 * 
-	 */
-	
-	public void showChart(Stage stage) {
-		
-		
-        Scene scene  = new Scene(xychart, 500, 400);
-        stage.setScene(scene);
-        stage.show();	
-        
-	}
-	
-	/**
-	 * 
-	 * get the xychart for UI
-	 * @return
+	 * @return XYChart <Number, Number> xychart
 	 */
 	public XYChart<Number, Number> getXYChart(){
 		return xychart;
@@ -114,14 +85,13 @@ public class xychart implements Serializable{
 	 * @ return String DataTableName
 	 */
 	public String getDataTableName() {
-		return DataTableName;
+		return DataTable.getTableName();
 	}
 
 	
 	//Attributes
 	
 	protected DataTable DataTable;
-	protected String DataTableName;
 	protected String[] AxisLabels;
 	protected String ChartName;
 	protected String ChartID;  //unique
