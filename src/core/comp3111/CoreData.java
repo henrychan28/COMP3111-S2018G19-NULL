@@ -25,7 +25,7 @@ public class CoreData implements Serializable {
 	private static CoreData instance;
 
 	// Initializer
-	private CoreData() {
+	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
@@ -332,6 +332,12 @@ public class CoreData implements Serializable {
 	 */
 	public static long checkchartid() {
 		return CoreData.serialChartUID;
+	}
+	
+	public void destroyData() {
+		masterTableList = new ArrayList<ArrayList<DataTable>>();
+		masterChartList = new HashMap<String, ArrayList<xychart>>();
+		transactID = 0;
 	}
 	
 	

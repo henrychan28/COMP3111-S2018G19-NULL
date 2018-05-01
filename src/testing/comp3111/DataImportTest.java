@@ -4,11 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Optional;
 
+import core.comp3111.AutoFillType;
+import core.comp3111.CoreData;
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataTableException;
 import core.comp3111.DataType;
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.Modality;
+import ui.comp3111.ColumnTypeUI;
 import core.comp3111.DataImport;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -110,6 +117,180 @@ public class DataImportTest {
 		i.setFile(null);
 		i.parseFile();
 		assertEquals(null,i.getAbsolutePath());
+	}
+	
+	@Test
+	void testBuildTable_NumberZero() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTable.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_ZERO};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");
+		CoreData.getInstance().addParentTable(table);
+	}
+	
+	@Test
+	void testBuildTable_NumberZeroBad() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTableBad.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_ZERO};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		CoreData.getInstance().addParentTable(table);
+	}
+	
+	@Test
+	void testBuildTable_NumberMedian() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTable.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_MEDIAN};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	@Test
+	void testBuildTable_NumberMedianBad() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTableBad.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_MEDIAN};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	@Test
+	void testBuildTable_NumberMean() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTable.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_MEAN};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	@Test
+	void testBuildTable_NumberMeanBad() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTableBad.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_MEAN};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	@Test
+	void testBuildTable_String() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTable.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_STRING, AutoFillType.TYPE_EMPTY};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	@Test
+	void testBuildTable_StringAsNumber() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testNumberTableBad.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_EMPTY};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
+	}
+	
+	
+	@Test
+	void testBuildTable_BadCol() {
+		// Present file chooser to the user and store result
+		DataImport imp = new DataImport();
+		imp.setFile("Documents/testBadColName.csv");
+		
+		// Parse the selected file to temporary table, returning column headers
+		String[] columnHeaders = null;
+		columnHeaders = imp.parseFile();
+		
+		// Hashmap
+		HashMap<String, String[]> columnData = new HashMap<String, String[]>();
+		String[] str = {DataType.TYPE_NUMBER, AutoFillType.TYPE_EMPTY};
+		columnData.put(columnHeaders[0], str);
+		columnData.put(columnHeaders[1], str);
+		
+		DataTable table = imp.buildDataTable(columnData, "Test");		
 	}
 	
 	

@@ -28,6 +28,7 @@ public class CoreDataTest {
 	@BeforeEach
 	void init() {
 		coreData = CoreData.getInstance();
+		coreData.destroyData();
 		table = new DataTable("Test");
 		testNumColumn = new DataColumn(DataType.TYPE_NUMBER, new Number[] {1,2,3});
 	}
@@ -262,5 +263,24 @@ public class CoreDataTest {
 		coreData.addParentTable(table);
 		
 		assertEquals(1,coreData.getInnerSize(0));
+	}
+	
+	@Test
+	void testSetInstance() {
+		CoreData cd = new CoreData();
+		CoreData.setInstance(cd);
+	}
+	
+	@Test
+	void getTransactionID() {
+		assertEquals(0,CoreData.getTransactID());
+	}
+	
+	@Test
+	void testExistanceOfTableName() {
+		assertEquals(false, coreData.doesTableExist("nomz"));
+		DataTable dt = new DataTable("nom");
+		coreData.addParentTable(dt);
+		assertEquals(true, coreData.doesTableExist("nom"));
 	}
 }

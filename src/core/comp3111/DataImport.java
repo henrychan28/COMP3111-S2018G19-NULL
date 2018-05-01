@@ -85,6 +85,7 @@ public class DataImport {
 				switch (colSettings[Constants.AUTOFILLTYPE_INDEX]) {
 				case AutoFillType.TYPE_EMPTY:
 					// We're good, move on
+					if (type.equals(DataType.TYPE_NUMBER)) {type = DataType.TYPE_STRING;}
 					column = new DataColumn(type, objArr);
 					break;
 				case AutoFillType.TYPE_MEAN:
