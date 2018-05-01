@@ -13,6 +13,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+
 public class linechart extends xychart{
 	/**
 	 * 
@@ -55,23 +56,24 @@ public class linechart extends xychart{
 			//Check if the DataColumn exists
 			if (dc == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.xlabel, this.DataTableName)) ;
+						this.xlabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.xdc = DataTable.getCol(this.xlabel);
 			}
 			if (dc2 == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.xlabel, this.DataTableName)) ;
+						this.xlabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.ydc = DataTable.getCol(this.ylabel);
 			}
 		
 		//Check if the size for every DataColumns are the same
+			/*
 		if (this.xdc.getSize() != this.ydc.getSize()) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
-		}
+		}*/
 		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
 
@@ -93,6 +95,8 @@ public class linechart extends xychart{
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
 		
+		//final NumberAxis xAxis = new NumberAxis();
+		//final NumberAxis yAxis = new NumberAxis();
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(this.xlabel);
@@ -110,11 +114,9 @@ public class linechart extends xychart{
 		 this.xychart.getData().add(this.series);
 		 
 	}
-	public XYChart.Series<Number, Number> getSeries(){
-		return series;
-	}
-	
+
 	//Attributes
+
 	protected String xlabel;
 	protected String ylabel;
 	protected DataColumn xdc;
@@ -122,9 +124,5 @@ public class linechart extends xychart{
 	protected XYChart.Series<Number, Number> series;
 	protected int SizeOfdc;
 
-	
-	
-	
-	
 	
 }
