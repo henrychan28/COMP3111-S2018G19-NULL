@@ -15,7 +15,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 
 /**
- * The implementation of the Dynamic Scatter Chart class.
+ * The implementation of the dynamicchart class.
+ * It is a Dynamic Scatter Chart. 
  * 
  * 
  * @author YuenTing
@@ -50,16 +51,20 @@ public class dynamicchart extends xychart {
 	 * @param DataTable
 	 *            - DataTable reference
 	 * @param AxisLabels[]
-	 *            - Must passed four AxisLabels. - 1st: TimeAxis－ Integer,
-	 *            increasing. 2nd: XLabel 3rd: YLabel 4th: Categories
+	 *            - Must passed four AxisLabels. 
+	 *            - 1st: TimeAxis－ Integer,
+	 *            - 2nd: XLabel, Number
+	 *            - 3rd: YLabel, Number 
+	 *            - 4th: Categories, String
 	 * 
-	 *            - SAMPLE DATASET: - TIME:000000011111112233333455777 -
+	 *            - SAMPLE DATASET: 
+	 *            TIME:000000011111112233333455777 -
 	 *            XLAB:238492112983912939129392334 -
 	 *            YLAB:212387912739812739812739812 -
 	 *            CATE:ABDCCBBAABBDCBABCDDBAAABCDB
 	 * 
 	 * @param ChartName
-	 *            - The name of the chart (i.e. titile)
+	 *            - The name of the chart 
 	 * @throws ChartException
 	 */
 
@@ -173,7 +178,7 @@ public class dynamicchart extends xychart {
 	}
 
 	/**
-	 * Initialize: Create Line Chart
+	 * Initialize the ScatterChart in javafx.scene.chart.ScatterChart. 
 	 *
 	 */
 	private void initcreatechart() {
@@ -204,9 +209,11 @@ public class dynamicchart extends xychart {
 	}
 
 	/**
-	 * Set Animation
+	 * Set Animation of the dynamic chart. 
 	 * 
 	 * @param animate
+	 * 			- if true, then animation would start
+	 * 			- if false, the animation would stop
 	 */
 	public void Animate(boolean animate) {
 		Runnable dataGetter = () -> {
@@ -242,7 +249,8 @@ public class dynamicchart extends xychart {
 	/**
 	 * update and return the time pointer.
 	 * 
-	 * @return current time value
+	 * @return int
+	 * 			- the current time value
 	 */
 
 	private int getPointer() {
@@ -283,8 +291,7 @@ public class dynamicchart extends xychart {
 	}
 
 	/**
-	 * Set up the HashMap<Object, XYChart.Series<Number, Number>> allSeries with
-	 * input indexes
+	 * Set up the allSeries with input indexes.
 	 * 
 	 */
 	private void indexesToAllSeries(ArrayList<Integer> indexes,
@@ -318,6 +325,7 @@ public class dynamicchart extends xychart {
 	}
 
 	/**
+	 * Get the max value of the TimeAxis. 
 	 * 
 	 */
 	private int getMaxTime() {
@@ -341,6 +349,8 @@ public class dynamicchart extends xychart {
 	 * Add all series in the input HashMap to the XYChart
 	 * 
 	 * @param allSeries
+	 * 			- HashMap<Object, XYChart.Series<Number, Number>> that storing all the series
+	 * 				 and corresponding category
 	 */
 	private void addAllSeriesToChart(HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
 

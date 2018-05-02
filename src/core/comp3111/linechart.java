@@ -2,8 +2,7 @@ package core.comp3111;
 
 
 /**
- *  The implementation of the LineChart class. 
- *  It store the line chart in javafx.scene.chart.LineChart.
+ *  The implementation of the linechart class. 
  * 
  * @author YuenTing
  *
