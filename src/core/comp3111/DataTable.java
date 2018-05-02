@@ -72,13 +72,14 @@ public class DataTable implements Serializable{
 		}
 	}
 
+	
 	/**
 	 * Remove a column from the data table
 	 * 
 	 * @param colName
-	 *            - The column name. It should be a unique identifier
-	 * @throws DataTableException.
-	 *             It throws DataTableException if the column does not exist
+	 * 			The column name. It should be a unique identifier
+	 * @throws DataTableException
+	 * 			It throws DataTableException if the column does not exist
 	 */
 	public void removeCol(String colName) throws DataTableException {
 		if (containsColumn(colName)) {
@@ -116,6 +117,7 @@ public class DataTable implements Serializable{
 	 * Check whether the column exists by the given column name
 	 * 
 	 * @param colName
+	 * 			String that represents the column name
 	 * @return true if the column exists, false otherwise
 	 */
 	public boolean containsColumn(String colName) {

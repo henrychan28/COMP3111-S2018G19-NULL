@@ -15,8 +15,9 @@ public class CoreDataIO {
 	 * @param coreData
 	 * 			the instance to assign
 	 * @param folder
-	 * 			
+	 * 			path of the file and file name
 	 * @param extention
+	 * 			file extension to use
 	 */
 	public void saveCoreData(CoreData coreData, String folder, String extention) {
 		String address = folder + Constants.FILE_EX;

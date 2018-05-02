@@ -245,11 +245,6 @@ public class Main extends Application {
 	 * 
 	 * @return the absolute path of the selected file, or null if none was selected
 	 */
-    
-    /**
-     * 
-     * @return
-     */
 	public String getFileForImport() {
 		String filePath = null;
 		
