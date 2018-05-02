@@ -2,6 +2,8 @@ package testing.comp3111;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,6 +16,9 @@ import core.comp3111.ChartTypeValue;
 import core.comp3111.CoreData;
 import core.comp3111.DataType;
 import core.comp3111.linechart;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 
 /**
  * Test cases for linechart class.
@@ -70,7 +75,7 @@ public class LineChartTest {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
-		String[] AxisLabels = { "testNumColumn_1", "testNumColumn_1" };
+		String[] AxisLabels = { "testNumColumn_9", "testNumColumn_1" };
 
 		assertThrows(ChartException.class, () -> new linechart(dataTable, AxisLabels, "123"));
 	}
@@ -178,7 +183,26 @@ public class LineChartTest {
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
 		String[] AxisLabels = { "testNumColumn_0", "testNumColumn_1" };
 		linechart x = new linechart(dataTable, AxisLabels, "123");
-		assertNotNull(x.getXYChart());
+		ObservableList<Series<Number, Number>> series = x.getXYChart().getData();
+		assertAll(()-> assertNotNull(x.getXYChart()),
+				()->assertEquals(series.size(), 1),
+				()->assertEquals(series.get(0).getName(), "testNumColumn_1"),
+				()->assertEquals(series.get(0).getData().size(), 6),
+				()->assertEquals(series.get(0).getData().get(0).getXValue(), 1),
+				()->assertEquals(series.get(0).getData().get(1).getXValue(), 2),
+				()->assertEquals(series.get(0).getData().get(2).getXValue(), 3),
+				()->assertEquals(series.get(0).getData().get(3).getXValue(), 4),
+				()->assertEquals(series.get(0).getData().get(4).getXValue(), 5),
+				()->assertEquals(series.get(0).getData().get(5).getXValue(), 6),
+				()->assertEquals(series.get(0).getData().get(0).getYValue(), 1.5),
+				()->assertEquals(series.get(0).getData().get(1).getYValue(), 2.2),
+				()->assertEquals(series.get(0).getData().get(2).getYValue(), 3.3),
+				()->assertEquals(series.get(0).getData().get(3).getYValue(), 2.2),
+				()->assertEquals(series.get(0).getData().get(4).getYValue(), 1.5),
+				()->assertEquals(series.get(0).getData().get(5).getYValue(), 2)
+
+				);
+		
 	}
 
 	@Test
