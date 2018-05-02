@@ -13,6 +13,9 @@ Team Members:
 | Chung, Yuen Ting | ytchung@ust.hk  | 2,6 | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/bc476e53575b466d6a8c53ef7efeb7f3b84656ce, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/ffbc15ef892845342d5c1735aca6c95ee1ebc580, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/e44a0f4cbf98d858ccbddf80d35e2a33f26ac800  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/19  |
 | Frost, Michael   | mffrost@ust.hk  | 1,4  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/384c12f584092bbd3af450765b24ce3c926e622d, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/68d7cc4d0ed118bf27cc04589164c7a7ea9e2b95, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/0752940f26083f2373922f19b02dcd8547c2d62a  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/17 |
 
+Reference:
+  https://stackoverflow.com/questions/39126331/how-do-you-create-an-animated-linechart-in-javafx
+
 Quick reference links:
 
 - [Project Sign Up](https://docs.google.com/spreadsheets/d/1NKxQflvfnRKmjrX8E_HLnRCC6kr4spUST_9fcyZIgFo/edit#gid=0)
