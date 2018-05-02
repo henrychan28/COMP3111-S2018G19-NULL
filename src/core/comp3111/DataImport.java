@@ -24,8 +24,10 @@ public class DataImport {
 	 * 
 	 * @param columns
 	 * 			HashMap with column names as key to a value pair of {data type, autofill type}
+	 * @param nameOfTable
+	 * 			String which represents table name
 	 * @return
-	 * 			A completed DataTable
+	 * 			The created Datatable
 	 */
 	public DataTable buildDataTable(HashMap<String, String[]> columns, String nameOfTable) {
 		DataTable table = null;

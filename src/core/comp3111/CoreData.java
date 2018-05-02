@@ -96,6 +96,8 @@ public class CoreData implements Serializable {
 	 * 
 	 * @param table
 	 *            The DataTable
+	 * @param parentIndex
+	 * 			Index of the parent datatable on outer Arraylist
 	 * @return child table index
 	 */
 	public int[] addChildTable(DataTable table, int parentIndex) {
@@ -115,7 +117,7 @@ public class CoreData implements Serializable {
 	/**
 	 * Fetch the ArrayList of DataTables by outer index 
 	 * 
-	 * @param index
+	 * @param outerIndex
 	 * 			The index of the data table ArrayList in outer Arraylist
 	 * @return the inner ArrayList
 	 */
@@ -133,10 +135,8 @@ public class CoreData implements Serializable {
 	/**
 	 * Fetch the DataTable by inner and outer index
 	 * 
-	 * @param outerIndex 
-	 * 				int that represents outer ArrayList index to access 
-	 * @param innerIndex 
-	 * 				int that represents inner ArrayList index to access
+	 * @param index 
+	 * 				int[] that represents outer 2D ArrayList index to access 
 	 * @return the DataTable
 	 */
 	public DataTable getDataTable(int[] index) {
@@ -159,7 +159,7 @@ public class CoreData implements Serializable {
 	 * 
 	 * @param innerIndex
 	 * 			The array index on the outer ArrayList
-	 * @return
+	 * @return szie of inner arraylist
 	 */
 	public int getInnerSize(int innerIndex) {
 		int size = Constants.EMPTY;
