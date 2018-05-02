@@ -217,25 +217,20 @@ public class dynamicchart extends xychart {
 		indexesToAllSeries(indexes, this.allSeries);
 		// Add all series to the ScatterChart
 		addAllSeriesToChart(this.allSeries);
-		
+		//setAnimated false!!!
+	    xychart.setAnimated(false);
+
 	}
 	/**
 	 * Set Animation
 	 * @param animate
 	 */
 	public void Animate(boolean animate) {
-		
 		  Runnable dataGetter =
 				  () -> {
-		        try {
-		            // simulate some delay caused by the io operation
-		            Thread.sleep(500);
-		        } catch (InterruptedException ex) {
-		        }
-
-				ArrayList<Integer> indexes = getIndex();
 		        Platform.runLater(() -> {
 		            // update ui
+					ArrayList<Integer> indexes = getIndex();
 		            indexesToAllSeries(indexes, this.allSeries);
 		    		// Add all series to the ScatterChart
 		    		addAllSeriesToChart(this.allSeries);
@@ -243,10 +238,12 @@ public class dynamicchart extends xychart {
 		        });
 		    };
 		    if (animate) {
+
 	            // update every second
 	            future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
 	        } else {
 	        	//Return back to initial state as in constructor
+	       
 	        	this.pointer = 0;
 	        	ArrayList<Integer> indexes = getIndex();
 	            indexesToAllSeries(indexes, this.allSeries);
@@ -258,7 +255,6 @@ public class dynamicchart extends xychart {
 	            future = null;
 	        }
 		    
-		    xychart.setAnimated(false);
 		
 	}
 	/**
@@ -354,11 +350,11 @@ public class dynamicchart extends xychart {
 	 */
 	private void addAllSeriesToChart(HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
 		
-		
 		xychart.getData().clear();
+
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
+
 			this.xychart.getData().add(entry.getValue());
-			//System.out.print(entry.getKey());
 		}
 	}
 
