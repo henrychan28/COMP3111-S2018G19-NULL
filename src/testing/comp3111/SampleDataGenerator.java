@@ -1,6 +1,11 @@
-package core.comp3111;
+package testing.comp3111;
 
 import java.util.Random;
+
+import core.comp3111.DataColumn;
+import core.comp3111.DataTable;
+import core.comp3111.DataTableException;
+import core.comp3111.DataType;
 
 /**
  * A helper class to illustrate how to generate data and store it into a
