@@ -18,7 +18,6 @@ import core.comp3111.DataFilter;
 
 
 public class DataFilterTest {
-	DataFilter testDataFilter;
 	DataTable smallDataTable;
 	Object[] column1 = {"Hello", "Bye", "GoToSchool"};
 	Object[] column2 = {"No!", "Yes", "Yes"};
@@ -58,9 +57,18 @@ public class DataFilterTest {
 	}
 	
 	@Test
+	void testTextFilterNull() {
+		DataTable nullDataTable = new DataTable();
+		HashMap<String, Set<String>> retainValues = new HashMap<>(); 
+		DataTable testDataTable = DataFilter.TextFilter(nullDataTable, retainValues);
+		DataTable expectDataTable = new DataTable();
+		assertEquals(testDataTable,expectDataTable);
+	}
+	
+	@Test
 	void testRandomSplitTable() {
 		double splitRatio = 0.4;
-		DataTable[] testDataTable = testDataFilter.RandomSplitTable(smallDataTable, splitRatio);
+		DataTable[] testDataTable = DataFilter.RandomSplitTable(smallDataTable, splitRatio);
 		int splitNumRowsA = testDataTable[0].getNumRow();
 		int splitNumRowsB = testDataTable[1].getNumRow();
 		int numRows = smallDataTable.getNumRow();
@@ -68,31 +76,12 @@ public class DataFilterTest {
 		assertTrue(splitNumRowsA == numRowsA || splitNumRowsB == numRowsA);
 	}
 	
-	/*
-	@Test
-	void testGetTableTextLabels() {
-		HashMap<String, Set<Object>> testValue = testDataFilter.GetTableTextLabels(smallDataTable);
-		HashMap<String,Set<Object>> trueValue = new HashMap<String, Set<Object>>();
-		Set<Object> set1 = new HashSet<Object>();
-		Set<Object> set2 = new HashSet<Object>();
-		for(Object value:column1) {
-			set1.add(value);
-		}
-		for(Object value:column2) {
-			set2.add(value);
-		}
-		trueValue.put("Random1", set1);
-		trueValue.put("Random2", set2);
-		assertEquals(trueValue, testValue);
-	}
-	*/
-	
 	
 	@Test
 	void testFilterTablebyIndex() {
 		DataTable filterTable = new DataTable();
 		try {
-			filterTable = testDataFilter.FilterTableByIndex(smallDataTable, new ArrayList<Integer>() {{add(new Integer(0));}});
+			filterTable = DataFilter.FilterTableByIndex(smallDataTable, new ArrayList<Integer>() {{add(new Integer(0));}});
 		} catch (Exception e) {}
 		DataTable trueTable = new DataTable();
 		try{
