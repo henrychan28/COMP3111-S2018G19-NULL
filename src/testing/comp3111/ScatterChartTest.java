@@ -1,5 +1,6 @@
 package testing.comp3111;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,6 +16,11 @@ import core.comp3111.DataTable;
 import core.comp3111.DataTableException;
 import core.comp3111.DataType;
 import core.comp3111.scatterchart;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
+import java.util.HashMap;
+
 /**
  * Test cases for scatterchart class. 
  * 
@@ -248,11 +254,84 @@ public class ScatterChartTest{
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
-		dataTable.addCol("testNumColumn_2", testNumColumn_2);
 		dataTable.addCol("testStrColumn_0", testStrColumn_0);
 		String[] AxisLabels = { "testNumColumn_0" ,  "testNumColumn_1", "testStrColumn_0"};
 		scatterchart sc  = new scatterchart(dataTable, AxisLabels, "LHC");
-		assertNotNull(sc.getXYChart());
+		//get the series from the getXYChart()
+		XYChart<Number, Number> y = sc.getXYChart();
+		ObservableList<Series<Number, Number>> allSeries = y.getData();
+		//create reference for the testing
+		HashMap<String, int[][]> hm2 = new HashMap<String, int[][]>();
+		int[][] x1 = {{1, 12}, {3, 12}};
+		int[][] x2 = {{2, 14}, {7, 10}};
+		int[][] x4 = {{4, 17}};
+		int[][] x6 = {{5, 14}};
+		int[][] x3 = {{6, 13}};
+
+		hm2.put("One", x1);
+		hm2.put("Two", x2);
+		hm2.put("Four", x4);
+		hm2.put("Six", x6);
+		hm2.put("Three", x3);
+		
+		int[] PosOfhm = new int[5];
+		int i = 0;
+		for (HashMap.Entry<String, int[][]> entry: hm2.entrySet()) {
+			if (entry.getKey() == "One") {
+				PosOfhm[0] = i;
+				}
+			else if (entry.getKey() == "Two") {
+				PosOfhm[1] = i;
+			}
+			else if (entry.getKey() == "Three") {
+				PosOfhm[2] = i;
+			}
+			else if (entry.getKey() == "Four") {
+				PosOfhm[3] = i;
+			}
+			else if (entry.getKey() == "Six") {
+				PosOfhm[4] = i;
+			}
+
+			
+			i++;
+		}
+		
+		
+
+
+		assertAll(()->assertNotNull(sc.getXYChart()),
+				()->assertNotNull(sc.getXYChart().getData()),
+				() -> assertEquals(allSeries.size(), 5),
+				()->assertEquals("One", allSeries.get(PosOfhm[0]).getName()),
+				()->assertEquals("Two", allSeries.get(PosOfhm[1]).getName()),
+				()->assertEquals("Three", allSeries.get(PosOfhm[2]).getName()),
+				()->assertEquals("Four", allSeries.get(PosOfhm[3]).getName()),
+				()->assertEquals( "Six", allSeries.get(PosOfhm[4]).getName()),
+				
+				()->assertEquals(2, allSeries.get(PosOfhm[0]).getData().size()),
+				()->assertEquals(2, allSeries.get(PosOfhm[1]).getData().size()),
+				()->assertEquals(1, allSeries.get(PosOfhm[2]).getData().size()),
+				()->assertEquals(1, allSeries.get(PosOfhm[3]).getData().size()),
+				()->assertEquals(1, allSeries.get(PosOfhm[4]).getData().size()),
+
+				()->assertEquals(hm2.get("One")[0][0], allSeries.get(PosOfhm[0]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("One")[0][1], allSeries.get(PosOfhm[0]).getData().get(0).getYValue()),
+				()->assertEquals(hm2.get("One")[1][0], allSeries.get(PosOfhm[0]).getData().get(1).getXValue()),
+				()->assertEquals(hm2.get("One")[1][1], allSeries.get(PosOfhm[0]).getData().get(1).getYValue()),
+				()->assertEquals(hm2.get("Two")[0][0], allSeries.get(PosOfhm[1]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Two")[0][1], allSeries.get(PosOfhm[1]).getData().get(0).getYValue()),
+				()->assertEquals(hm2.get("Two")[1][0], allSeries.get(PosOfhm[1]).getData().get(1).getXValue()),
+				()->assertEquals(hm2.get("Two")[1][1], allSeries.get(PosOfhm[1]).getData().get(1).getYValue()),
+				()->assertEquals(hm2.get("Three")[0][0], allSeries.get(PosOfhm[2]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Three")[0][1], allSeries.get(PosOfhm[2]).getData().get(0).getYValue()),
+				()->assertEquals(hm2.get("Four")[0][0], allSeries.get(PosOfhm[3]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Four")[0][1], allSeries.get(PosOfhm[3]).getData().get(0).getYValue()),
+				()->assertEquals(hm2.get("Six")[0][0], allSeries.get(PosOfhm[4]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Six")[0][1], allSeries.get(PosOfhm[4]).getData().get(0).getYValue()) 
+			
+				
+				);
 	}
 	
 	
