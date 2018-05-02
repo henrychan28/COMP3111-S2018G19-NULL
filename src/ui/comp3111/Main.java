@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
  * The Main class of this GUI application
@@ -93,13 +94,14 @@ public class Main extends Application {
 						
 			// Present file chooser to the user and store result
 			DataImport fileToImport = new DataImport();
-			String importMessage = null;
+			String importFilePath = null;
 			
 			// If a file is chosen process it
-			importMessage = fileToImport.getFileForImport();
-			if (importMessage != null) 
+			importFilePath = getFileForImport();
+			if (importFilePath != null) 
 			{
-				lbStatusLabel.setText(importMessage);
+				fileToImport.setFile(importFilePath);
+				lbStatusLabel.setText("File Selected: " + importFilePath);
 				
 				// Ask for the file name
 				dialog = new TextInputDialog("Name Here");
@@ -234,6 +236,41 @@ public class Main extends Application {
         	dataHostingUI.start(stage);
         }
     }
+    
+    /**
+	 * Presents the system file choosing dialog so the user can choose a file for eventual import
+	 * Link to the file is contained in this class
+	 * 
+	 * Defaults to the desktop
+	 * 
+	 * @return the absolute path of the selected file, or null if none was selected
+	 */
+    
+    /**
+     * 
+     * @return
+     */
+	public String getFileForImport() {
+		String filePath = null;
+		
+		// Initialize the file chooser
+		FileChooser fileChooser = new FileChooser();
+		File selectedFile = null;
+		// We only are looking for CSV, but allow all (*) too
+		fileChooser.getExtensionFilters().addAll(
+		         new ExtensionFilter("CSV Data Files", "*.csv"),
+		         new ExtensionFilter("All Files", "*.*"));
+		// Default to the user's desktop
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
+		
+		// Open the file chooser
+		selectedFile = fileChooser.showOpenDialog(null);
+		if (selectedFile != null) {
+			filePath = selectedFile.getAbsolutePath();
+		}
+		
+		return filePath;
+	}
     
 	/**
 	 * main method - only use if running via command line

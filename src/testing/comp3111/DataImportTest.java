@@ -1,24 +1,16 @@
 package testing.comp3111;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 import core.comp3111.AutoFillType;
 import core.comp3111.CoreData;
-import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
-import core.comp3111.DataTableException;
 import core.comp3111.DataType;
-import javafx.scene.control.TextInputDialog;
-import javafx.stage.Modality;
-import ui.comp3111.ColumnTypeUI;
 import core.comp3111.DataImport;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DataImportTest {
@@ -137,13 +129,16 @@ public class DataImportTest {
 		
 		DataTable table = imp.buildDataTable(columnData, "Test");
 		CoreData.getInstance().addParentTable(table);
+		
+		Number[] nums = (Number[]) table.getCol(columnHeaders[0]).getData();
+		assertEquals(1,nums[0].doubleValue());
 	}
 	
 	@Test
-	void testBuildTable_NumberZeroBad() {
+	void testBuildTable_NumberZeroHasString() {
 		// Present file chooser to the user and store result
 		DataImport imp = new DataImport();
-		imp.setFile("Documents/testNumberTableBad.csv");
+		imp.setFile("Documents/testNumberTableHasString.csv");
 		
 		// Parse the selected file to temporary table, returning column headers
 		String[] columnHeaders = null;
@@ -157,6 +152,9 @@ public class DataImportTest {
 		
 		DataTable table = imp.buildDataTable(columnData, "Test");	
 		CoreData.getInstance().addParentTable(table);
+		
+		String[] strRet = Arrays.copyOf(table.getCol(columnHeaders[1]).getData(), table.getCol(columnHeaders[1]).getData().length,String[].class);
+		assertEquals("E",strRet[1]);
 	}
 	
 	@Test
@@ -175,14 +173,17 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		
+		Number[] nums = (Number[]) table.getCol(columnHeaders[1]).getData();
+		assertEquals(4,nums[1].doubleValue());
 	}
 	
 	@Test
-	void testBuildTable_NumberMedianBad() {
+	void testBuildTable_NumberMedianHasString() {
 		// Present file chooser to the user and store result
 		DataImport imp = new DataImport();
-		imp.setFile("Documents/testNumberTableBad.csv");
+		imp.setFile("Documents/testNumberTableHasString.csv");
 		
 		// Parse the selected file to temporary table, returning column headers
 		String[] columnHeaders = null;
@@ -194,7 +195,10 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		
+		String[] strRet = Arrays.copyOf(table.getCol(columnHeaders[1]).getData(), table.getCol(columnHeaders[1]).getData().length,String[].class);
+		assertEquals("E",strRet[1]);
 	}
 	
 	@Test
@@ -214,13 +218,16 @@ public class DataImportTest {
 		columnData.put(columnHeaders[1], str);
 		
 		DataTable table = imp.buildDataTable(columnData, "Test");		
+		
+		Number[] nums = (Number[]) table.getCol(columnHeaders[1]).getData();
+		assertEquals(4.4,nums[1].doubleValue());
 	}
 	
 	@Test
-	void testBuildTable_NumberMeanBad() {
+	void testBuildTable_NumberMeanHasString() {
 		// Present file chooser to the user and store result
 		DataImport imp = new DataImport();
-		imp.setFile("Documents/testNumberTableBad.csv");
+		imp.setFile("Documents/testNumberTableHasString.csv");
 		
 		// Parse the selected file to temporary table, returning column headers
 		String[] columnHeaders = null;
@@ -232,7 +239,9 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		String[] strRet = Arrays.copyOf(table.getCol(columnHeaders[1]).getData(), table.getCol(columnHeaders[1]).getData().length,String[].class);
+		assertEquals("E",strRet[1]);
 	}
 	
 	@Test
@@ -251,14 +260,17 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		
+		String[] strRet = Arrays.copyOf(table.getCol(columnHeaders[0]).getData(), table.getCol(columnHeaders[0]).getData().length,String[].class);
+		assertEquals("1",strRet[0]);
 	}
 	
 	@Test
 	void testBuildTable_StringAsNumber() {
 		// Present file chooser to the user and store result
 		DataImport imp = new DataImport();
-		imp.setFile("Documents/testNumberTableBad.csv");
+		imp.setFile("Documents/testNumberTableHasString.csv");
 		
 		// Parse the selected file to temporary table, returning column headers
 		String[] columnHeaders = null;
@@ -270,12 +282,15 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		
+		String[] strRet = Arrays.copyOf(table.getCol(columnHeaders[0]).getData(),table.getCol(columnHeaders[0]).getData().length,String[].class);
+		assertEquals("1",strRet[0]);
 	}
 	
 	
 	@Test
-	void testBuildTable_BadCol() {
+	void testBuildTable_ColNameDuplicate() {
 		// Present file chooser to the user and store result
 		DataImport imp = new DataImport();
 		imp.setFile("Documents/testBadColName.csv");
@@ -290,33 +305,8 @@ public class DataImportTest {
 		columnData.put(columnHeaders[0], str);
 		columnData.put(columnHeaders[1], str);
 		
-		DataTable table = imp.buildDataTable(columnData, "Test");		
+		DataTable table = imp.buildDataTable(columnData, "Test");	
+		assertEquals(1,table.getCol().length);
 	}
-	
-	
-	/*
-	@Test
-	void testmedian() {
-		System.out.println("\n\nMedian");
-		Object[] o = (Object[]) ((Object) new String[] {"1", "", "2","3.4", "0", "9","-3", "-4", "-5"});
-		DataImport i = new DataImport();
-		System.out.println(Arrays.toString(o));
-		System.out.println(i.findEmpty(o));
-		System.out.println(i.calcMedian(o));
-		i.replaceEmpty(o, i.calcMedian(o));
-		System.out.println(Arrays.toString(o));
-	}
-	
-	@Test
-	void testZero() {
-		System.out.println("\n\nZero");
-		Object[] o = (Object[]) ((Object) new String[] {"1", "", "2","3.4", "0", "9","-3", "-4", "-5", "d"});
-		DataImport i = new DataImport();
-		System.out.println(Arrays.toString(o));
-		System.out.println(i.findEmpty(o));
-		i.replaceEmptyWithZero(o);
-		System.out.println(Arrays.toString(o));
-	}
-	*/
 	
 }

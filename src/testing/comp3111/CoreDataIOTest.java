@@ -16,6 +16,7 @@ public class CoreDataIOTest {
 	@Test
 	public void loadSave() {
 		CoreDataIO io = new CoreDataIO();
+		@SuppressWarnings("unused")
 		CoreData cd = io.openCoreData(System.getProperty("user.dir") + "/Documents/Hey.Comp3111");
 		
 	}

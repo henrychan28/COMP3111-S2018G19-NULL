@@ -26,12 +26,22 @@ public class CoreData implements Serializable {
 	private HashMap<String, ArrayList<xychart>> masterChartList;
 	private static CoreData instance;
 
-	// Initializer
+	// Initializers
+	
+	/**
+	 * Instantiates a CoreData object with new empty chart and DataTable lists
+	 * 
+	 */
 	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
 	
+	/**
+	 * Used to fetch the singular instance of CoreData
+	 * 
+	 * @return the CoreData instance
+	 */
 	public static CoreData getInstance(){
         if(instance == null){
             instance = new CoreData();
@@ -81,7 +91,8 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Add a new child table to the specified outer list
+	 * Add a new child table to the specified outer list.
+	 * Null tables are not added
 	 * 
 	 * @param table
 	 *            The DataTable
@@ -161,6 +172,13 @@ public class CoreData implements Serializable {
 		return size;
 	}
 	
+	/**
+	 * Returns the number of top level (parent) DataTables being stored
+	 * 
+	 * DataTables can be null and thus store no usable information
+	 * 
+	 * @return Number of parent tables
+	 */
 	public int getOuterSize() {
 		return masterTableList.size();
 	}
@@ -172,6 +190,7 @@ public class CoreData implements Serializable {
 	 * 			Outer and Inner index of the DataTable in question
 	 * @param table
 	 * 			The DataTable that will be stored
+	 * @return true if the table could be set, false if it could not 
 	 */
 	public boolean setDataTable(int[] index, DataTable table) {
 		boolean success = false;
@@ -188,7 +207,7 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Searches through the contained DataTables for a table of the supplied name. 
+	 * Searches through the contained DataTables for a table of the supplied name, not case sensitive. 
 	 * 
 	 * @param name
 	 * 			DataTable name that is being searched for
@@ -222,11 +241,12 @@ public class CoreData implements Serializable {
 	
 	
 	/**
-	 * Checks whether the file 'name' exists in the CoreData
+	 * Checks whether the file 'name' exists in the CoreData, not case sensitive
 	 * 
 	 * @param name
 	 * 			TableName to search for
 	 * @return boolean
+	 * 			true if it exists, false if not
 	 */
 	public boolean doesTableExist(String name) {
 		boolean exists = false;
@@ -359,7 +379,7 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Deletes all data store in CoreData
+	 * Deletes all data stored in CoreData, sets transaction count to zero
 	 * 
 	 */
 	public void destroyData() {

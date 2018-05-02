@@ -2,52 +2,21 @@ package core.comp3111;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-
+/**
+ * Class to handle the import of CSV files into the program
+ * 
+ * @author michaelfrost
+ *
+ */
 public class DataImport {
 	
 	private File selectedFile = null;
 	private ArrayList<ArrayList<Object>> importMatrix = null;
 	String[] columnHeaders = null;
-	
-	public DataImport() {
-		
-	}
-	
-	/**
-	 * Presents the system file choosing dialog so the user can choose a file for eventual import
-	 * 
-	 * Defaults to the desktop
-	 * 
-	 * @return boolean notifying whether a file was chosen successfully
-	 */
-	public String getFileForImport() {
-		String message = null;
-		
-		// Initialize the file chooser
-		FileChooser fileChooser = new FileChooser();
-		// We only are looking for CSV, but allow all (*) too
-		fileChooser.getExtensionFilters().addAll(
-		         new ExtensionFilter("CSV Data Files", "*.csv"),
-		         new ExtensionFilter("All Files", "*.*"));
-		// Default to the user's desktop
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Desktop"));
-		
-		// Open the file chooser
-		selectedFile = fileChooser.showOpenDialog(null);
-		if (selectedFile != null) {
-			message = "File selected: " + selectedFile.getAbsolutePath();
-		}
-		
-		return message;
-	}
 	
 	
 	/**
@@ -181,11 +150,14 @@ public class DataImport {
 	}
 	
 	/**
+	 * Calculates the mean value of the number column, does calculations based on the number of non-empty rows
+	 * Rounded to two digits after the decimal
 	 * 
 	 * @param nums
 	 * 			The array to increment over
 	 * 
 	 * @return Returns the mean as a string
+	 * 
 	 * @throws NumberFormatException
 	 */
 	public String calcMean(Object[] nums) throws NumberFormatException {
@@ -202,6 +174,9 @@ public class DataImport {
 	}
 	
 	/**
+	 * Calculates the median value of the number column, does calculations based on the number of non-empty rows
+	 * For columns with even number of non-empty rows, the median is the average of middle two values
+	 * Rounded to two digits after the decimal
 	 * 
 	 * @param nums
 	 * 			The array to increment over
@@ -220,8 +195,11 @@ public class DataImport {
 				arr.add(Double.parseDouble((String) nums[i])); 
 			}
 		}
+		
+		// Sort the array 
 		arr.sort(null);
 		
+		// Do calculation based on even or odd number of rows
 		int middle = arr.size()/2;
 	    if (arr.size()%2 == 1) {
 	        result = String.format("%.2f", arr.get(middle).doubleValue());
@@ -235,11 +213,13 @@ public class DataImport {
 	
 	/**
 	 * Creates a new array that conforms to Number
+	 * 
 	 * @param obj
 	 * 			Generic object array
 	 * @return the Number array
+	 * @throws NumberFormatException
 	 */
-	public Number[] castToNumber(Object[] obj) {
+	public Number[] castToNumber(Object[] obj)  throws NumberFormatException {
 		Number[] arr = new Number[obj.length];
 		
 		for (int i = 0; i < obj.length; i++) {
@@ -303,21 +283,20 @@ public class DataImport {
 	    			
 	    			// Use specified separator to parse into same number of columns as we had headers
 	    			lineArray = line.split(",", columnHeaders.length);
-	    			addRowToScratchpad(importMatrix,lineArray);
+	    			
+	    			// Add the split line to the matrix
+	    			for (int i = 0; i < lineArray.length; i++) {
+	    				importMatrix.get(i).add(lineArray[i]);
+	    			}
             	}	
             }
-            
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e){
+        } catch (Exception e) {
         	e.printStackTrace();
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -354,21 +333,9 @@ public class DataImport {
 		return outer;
 	}
 	
-	/**
-	 * 
-	 * @param matrix
-	 * 			The scratchpad to build onto
-	 * @param strArray
-	 * 			The content that needs to be added to the scratchpad
-	 */
-	private void addRowToScratchpad(ArrayList<ArrayList<Object>> matrix, String[] strArray) {
-		for (int i = 0; i < strArray.length; i++) {
-			matrix.get(i).add(strArray[i]);
-		}
-	}
 	
 	/**
-	 * Gets the file name and its path on the disk of the previously selected 
+	 * Gets the file name and its path on the disk of the previously selected file
 	 * 
 	 * @return a string describing the path and file name, or null if no file selected
 	 */
@@ -376,6 +343,11 @@ public class DataImport {
 		return (selectedFile != null ) ? selectedFile.getAbsolutePath() : null;
 	}
 	
+	/**
+	 * Set the referenced file to the passed string
+	 * @param str
+	 * 			file name and path
+	 */
 	public void setFile(String str) {
 		if (str != null) {
 			selectedFile = new File(str);

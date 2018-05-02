@@ -11,6 +11,7 @@ public class CoreDataIO {
 	
 	/**
 	 * Saves the CoreData object to disk at the given folder and extension 
+	 * 
 	 * @param coreData
 	 * 			the instance to assign
 	 * @param folder
@@ -35,6 +36,7 @@ public class CoreDataIO {
 	
 	/**
 	 * Fetches a serialized CoreData from disk
+	 * 
 	 * @param address
 	 * 			Filesystem address of the file
 	 * @return
