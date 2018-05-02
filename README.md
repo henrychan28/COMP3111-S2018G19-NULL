@@ -7,10 +7,11 @@ Team Members:
 - Chung, Yuen Ting [ytchung@ust.hk](mailto:ytchung@ust.hk): Team Member
 - Frost, Michael [mffrost@ust.hk](mailto:mffrost@ust.hk): Team Member
 
-| Name | Email | | Features | Best Commit | Best Pull |
-| --- | --- | --- | --- | --- |
-| git status | List all new or modified files | Content | Content | Content |
-| git diff | Show file differences that haven't been staged | Content | Content | Content |
+| Name | Email | Features | Best Commit | Best Pull |
+|---|---|---|---|---|
+| Chan, Wing Kin | wkchanaj@ust.hk | 3,5 |   |   |
+| Chung, Yuen Ting | ytchung@ust.hk  | 2,6 |   |   |
+| Frost, Michael   | mffrost@ust.hk  | 1,4  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/384c12f584092bbd3af450765b24ce3c926e622d, | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/17 |
 
 Quick reference links:
 
