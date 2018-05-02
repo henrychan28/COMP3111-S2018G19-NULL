@@ -43,52 +43,38 @@ import javafx.stage.Stage;
  * @author YuenTing
  *
  */
-// extends the DataTable:
-// getNumberOfDataColumn(Type)
-// getDataColumnsOf(Type)
 
 public class GenerateChartUI extends Application {
 	
 	/**
-	 * Constructor for ChartUI. 
-	 * @tableIndex - Index of the table.
+	 * Constructor for GenerateChartUI. 
+	 * 
+	 * @tableIndex 
+	 * 		- int[] Index of the DataTable used for chart generating.
 	 */
 	public GenerateChartUI(int[] tableIndex) {
 		this.selectedTableIndex = tableIndex;
 	}
-	
-	//testing testing, delete it later
-	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 3 number, 1string
-		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
-		int[] c = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); //2 number, 1string
-		int[] d = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV5()); //3 number, 1string
-
-		selectedTableIndex = d;
-	}
-
+	/**
+	 * Initialize all the scenes for GenerateChartUI,
+	 * Initialize all event handles for the scenes.
+	 * Set up the primary stage for selecting chart type 
+	 * And select to view the chart history or create 
+	 * The new chart. 
+	 * 
+	 */
 	@Override
 	public void start(Stage primarystage) {
-		//testingData();
 		stage = primarystage;
 		initScenes();
 		initEventHandlers();
 		putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
 	}
 
-	/**
-	 * main */
-	public static void main(String[] args) {
-		launch(args);
-	}
-	
-
-	// Data Storage
+	// Data Storage and selected ChartType. 
 	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = { Constants.EMPTY, Constants.EMPTY };
-
-	// View Chart
-	private String ChartType; // "Line Chart", "Scatter Chart", "Dynamic Chart"
+	private String ChartType; // defined in ChartTypeValue
 
 	// Attributes: Scene and Stage
 	public static final int SCENE_CHART_NUM = 6;
@@ -98,14 +84,16 @@ public class GenerateChartUI extends Application {
 	public static final int SCENE_SCATTER_CHART_SELECTION = 3;
 	public static final int SCENE_DYNAMIC_CHART_SELECTION = 4;
 	public static final int SCENE_SHOW_CHART = 5;
-	public static final String[] SCENE_CHART_TITLES = { "Chart Type Selection", "View History Charts",
-			"Generate New Line Chart", "Generate New Scatter Chart", "Generate New Dynamic Chart", "Show Chart" };
+	public static final String[] SCENE_CHART_TITLES = { "Chart Type Selection", 
+			"View History Charts", "Generate New Line Chart", 
+			"Generate New Scatter Chart", "Generate New Dynamic Chart", 
+			"Show Chart" };
 	private Stage stage = null;
 	private Scene[] scenes = null;
-	private int currentScene;
+	
 	// To keep this application more structural,
-	// The following UI components are used to keep references after invoking
-	// createScene()
+	// The following UI components are used to keep references 
+	// of their stored values
 
 	// screen 1: paneChartSelection
 	private Button btHistory, btGenerateNew, btBackToDataTable;
@@ -143,9 +131,12 @@ public class GenerateChartUI extends Application {
 	private XYChart<Number, Number> chartShowChart = null;
 	private Button btbackto2; // back to history
 
-	// Methods
-	/** Pane made: */
-	/** scene 0: Chart Type Selection, SCENE_Chart_TYPE_SELECTION */
+	/**
+	 * Create the Pane for the Chart Type Selection UI. 
+	 * 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_Chart_TYPE_SELECTION]
+	 */
 	private Pane paneChartTypeSelection() {
 		// 1. title
 		lbSelectType = new Label("Select the Chart Type: ");
@@ -195,7 +186,12 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 
-	/** screen 1 . View History */
+	/**
+	 * Create the Pane for the Viewing Chart History UI. 
+	 * 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_VIEW_HISTORY]
+	 */
 	private Pane paneViewHistory() {
 		// 1. heading
 		lbViewHistory = new Label("These are the history for DataTable");
@@ -227,8 +223,13 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 
-	/** screen 2: SCENE_LINE_CHART_SELECTION */
-
+	/**
+	 * Create the Pane for the Creating New Line Chart UI,
+	 * for users to select the line chart attributes. 
+	 * 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_LINE_CHART_SELECTION]
+	 */
 	private Pane paneLineChartSelection() {
 
 		// 1: heading
@@ -290,7 +291,13 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 
-	/** screen 3: Scatter Chart */
+	/**
+	 * Create the Pane for the Creating New Scatter Chart UI,
+	 * for users to select the scatter chart attributes. 
+	 * 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_SCATTER_CHART_SELECTION]
+	 */
 	private Pane paneScatterChartSelection() {
 		// screen 4: paneScatterChartSelection
 		// private Label , , , , ;
@@ -369,7 +376,13 @@ public class GenerateChartUI extends Application {
 		pane.setCenter(container);
 		return pane;
 	}
-	/** screen 4: paneDynamicChartSelection*/
+	/**
+	 * Create the Pane for the Creating New Dynamic Chart UI,
+	 * for users to select the dynamic chart attributes. 
+	 * 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_DYNAMIC_CHART_SELECTION]
+	 */
 	private Pane paneDynamicChartSelection() {
 
 		//1 Heading
@@ -453,11 +466,14 @@ public class GenerateChartUI extends Application {
 		return pane;
 	}
 
-	/** screen 5: Show Chart pane */
+	/**
+	 * Create the Pane for the Chart Showing UI
+	 * 	 
+	 * @return 
+	 * 		- a Pane component to be displayed on scenes[SCENE_SHOW_CHART]
+	 */
 	private Pane paneShowChart() {
-		// heading
-		lbShowChart = new Label("This is the chart");
-		lbShowChart.setFont(new Font("Arial", 20));
+
 		// chart
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
@@ -472,14 +488,17 @@ public class GenerateChartUI extends Application {
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
-		container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
+		container.getChildren().addAll(chartShowChart, btbackto2);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(container);
 		return pane;
 	}
 
-	/** Handlers */
-	/** 0. Chart selection handler */
+
+	/**
+	 * Initialize the event handlers of the Chart Type Selection UI. 
+	 * 
+	 */
 	private void initChartTypeSelectionHandler() {
 
 		btHistory.setOnAction(e -> {
@@ -521,7 +540,10 @@ public class GenerateChartUI extends Application {
 		});
 
 	};
-	/** 1. Handler- view history*/
+	/**
+	 * Initialize the event handlers of the Viewing Chart History UI
+	 * 
+	 */
 	private void initViewHistoryHandler() {
 		// history chart TableView
 		tvhistory.setOnMouseClicked(new historyTableFactoryEventHandler());
@@ -553,7 +575,10 @@ public class GenerateChartUI extends Application {
 
 	};
 
-	/** 2. Line Chart Handler */
+	/**
+	 * Initialize the event handlers of Creating New Line Chart UI
+	 * 
+	 */
 	private void initLineChartSelectionHandler() {
 		//"Save" for Line Chart
 		btLineSave.setOnAction(e -> {
@@ -622,7 +647,10 @@ public class GenerateChartUI extends Application {
 
 	}
 
-	/** 3. Scatter Chart Handler */
+	/**
+	 * Initialize the event handlers of Creating New Scatter Chart UI
+	 * 
+	 */
 
 	private void initScatterChartSelectionHandler() {
 		
@@ -693,7 +721,10 @@ public class GenerateChartUI extends Application {
 		});
 
 	}
-/**4. Handler for Dynamic Chart*/
+	/**
+	 * Initialize the event handlers of Creating New Dynamic Chart UI
+	 * 
+	 */
 	private void initDynamicChartSelectionHandler() {
 		
 		// Save Button for dynamic chat
@@ -774,7 +805,10 @@ public class GenerateChartUI extends Application {
 		 
 
 	}
-/** 5. Handler for showing chart*/
+	/**
+	 * Initialize the event handlers of Chart Showing UI
+	 * 
+	 */
 	private void initShowChartHandler() {
 
 		btbackto2.setOnAction(e -> {
@@ -788,6 +822,11 @@ public class GenerateChartUI extends Application {
 		});
 
 	}
+	/**
+	 * Creating all the Scene(s) for this GenerateChartUI. 
+	 * All are stored in scenes
+	 * 
+	 */
 
 	private void initScenes() {
 		scenes = new Scene[SCENE_CHART_NUM];
@@ -805,6 +844,10 @@ public class GenerateChartUI extends Application {
 			}
 		}
 	}
+	/**
+	 * Initialize all the event handlers for this GenerateChartUI.
+	 * 
+	 */
 
 	private void initEventHandlers() {
 
@@ -820,12 +863,20 @@ public class GenerateChartUI extends Application {
 		return;
 	}
 
+	/**
+	 * This method is used to pick anyone of the scene on the stage. It handles the
+	 * hide and show order. In this application, only one active scene should be
+	 * displayed on stage.
+	 * 
+	 * @param sceneID
+	 *            - The sceneID defined above 
+	  */
+	
 	private void putSceneOnStage(int sceneID) {
 
 		// ensure the sceneID is valid
 		if (sceneID < 0 || sceneID >= SCENE_CHART_NUM)
 			return;
-		currentScene = sceneID;
 		stage.hide();
 		stage.setTitle(SCENE_CHART_TITLES[sceneID]);
 		stage.setScene(scenes[sceneID]);
@@ -843,9 +894,11 @@ public class GenerateChartUI extends Application {
 	 *            - Name of the TableView
 	 * @param propertyName
 	 *            - Name of the TableColumn
-	 * @param tableList
-	 *            -
-	 * @return TableView<xychart> with Chart Name displayed
+	 * @param olhistory
+	 *            - ObservableList<xychart> of the xychart(s) that 
+	 *            - Intended to show on the TableView
+	 * @return TableView<xychart> 
+	 * 			  - the TableView with one TableColumn in which the Chart Name displayed
 	 */
 
 	private TableView<xychart> CreateTableView(String tableName, String propertyName,
@@ -859,6 +912,13 @@ public class GenerateChartUI extends Application {
 
 		return table;
 	}
+	/**
+	 * The event handler for the DataView in Viewing History UI. 
+	 * Used for handling user's selection on the chart 
+	 * 
+	 * @author HenryChan
+	 *
+	 */
 
 	private class historyTableFactoryEventHandler implements EventHandler<MouseEvent> {
 		@Override
@@ -879,9 +939,10 @@ public class GenerateChartUI extends Application {
 	}
 
 	/**
-	 * create a new scene for the chart object
-	 * with the updated chartShowChart (Before calling this function)
-	 * (NOT direct to the new scene! Do it by your own! )
+	 * Create a new scene for the Chart Showing UI with the current chartShowChart.
+	 * (Remark: (1) Update the chartShowChart before calling this function
+	 * 			(2) The new scene is updated but this function 
+	 * 				DO NOT put the new scene on stage)
 	 */
 	private void updateShowChartScene() {
 		VBox container = new VBox(20);
@@ -892,7 +953,8 @@ public class GenerateChartUI extends Application {
 		scenes[SCENE_SHOW_CHART] = new Scene(pane, 500, 500);
 	}
 	/**
-	 * Update and set the View History Scene 
+	 * Update the Viewing Chart History Scene 
+	 * And put it on stage
 	 * 
 	 */
 	private void updateHistoryScene() {
@@ -919,8 +981,10 @@ public class GenerateChartUI extends Application {
 		}
 	}
 	/**
-	 * Check if the user 's selection for scatter chart is enough
-	 * @return true if ok, false otherwise
+	 * Check if the user's selection on UI for creating a scatter chart is enough.
+	 * 
+	 * @return boolean
+	 * 			- true if enough to make a scatter chart, false otherwise
 	 */
 	
 	private boolean checkScatterChartSelection() {
@@ -945,8 +1009,10 @@ public class GenerateChartUI extends Application {
 		
 	}
 	/**
-	 * Check if the user 's selection for line chart is enough
-	 * @return true if ok, false otherwise
+	 * Check if the user's selection on UI for creating a line chart is enough.
+	 * 
+	 * @return boolean
+	 * 			- true if enough to make a line chart, false otherwise
 	 */
 	private boolean checkLineChartSelection() {
 		//check if the user enters value properly
@@ -967,8 +1033,10 @@ public class GenerateChartUI extends Application {
 		return ok;
 	}
 	/**
-	 * Check if the user 's selection for dynamic chart is enough
-	 * @return true if ok, false otherwise
+	 * Check if the user's selection on UI for creating a dynamic chart is enough.
+	 * 
+	 * @return boolean
+	 * 			- true if enough to make a dynamic chart, false otherwise
 	 */
 	private boolean checkDynamicChartSelection() {
 		//check if the user enters value properly
@@ -990,7 +1058,12 @@ public class GenerateChartUI extends Application {
 		return ok; 
 		
 	}
-	
+	/**
+	 * An event handler for going back to the DataTable Selection UI class. 
+	 * 
+	 * @author HenryChan
+	 *
+	 */
     private class btBackToDataTableEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
