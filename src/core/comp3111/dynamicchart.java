@@ -89,36 +89,34 @@ public class dynamicchart extends xychart {
 		// Check if the DataColumn exists
 		if (dc0 == null) {
 			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.time, this.DataTableName));
+					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.time, this.DataTable.getTableName()));
 		} else {
 			this.tdc = dc0;
 		}
 		// Check if the DataColumn exists
 		if (dc1 == null) {
 			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.xlabel, this.DataTableName));
+					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.xlabel, this.DataTable.getTableName()));
 		} else {
 			this.xdc = dc1;
 		}// Check if the DataColumn exists
 		if (dc2 == null) {
 			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.ylabel, this.DataTableName));
+					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.ylabel, this.DataTable.getTableName()));
 		} else {
 			this.ydc = dc2;
 		}
 		// Check if the DataColumn exists
 		if (dc3 == null) {
 			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.category, this.DataTableName));
+					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.category, this.DataTable.getTableName()));
 		} else {
 			this.cdc = dc3;
 		}
 
-		// Check if the size for every DataColumns are the same
-		if (tdc.getSize() != xdc.getSize() || xdc.getSize() != ydc.getSize() || ydc.getSize() != cdc.getSize() ) {
-			throw new ChartException(this.ChartType, "DataColumns are of different size!");
-		}
 		// Initialize: Keep track of the size of DataColumn
+		//	All DataColumns have the same size
+		//	Guaranteed by the DataTable class
 		SizeOfdc = ydc.getSize();
 
 		// First three DataColumns must be Number Type	
@@ -355,6 +353,7 @@ public class dynamicchart extends xychart {
 	 * @param allSeries
 	 */
 	private void addAllSeriesToChart(HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
+		
 		
 		xychart.getData().clear();
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {

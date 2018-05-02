@@ -13,15 +13,15 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+
 public class linechart extends xychart{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5204086031235214239L;
 	/**
-	 * Constructor of the LineChart
-	 * Can extend it to more than one series
-	 * 
+	 * The only Constructor of the linechart class
+	 * 	 
 	 * @param DataTable
 	 * 			- the DataTable object. It should contains at least 2 Number type DataColumns.
 	 * @param AxisLabels
@@ -55,23 +55,24 @@ public class linechart extends xychart{
 			//Check if the DataColumn exists
 			if (dc == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.xlabel, this.DataTableName)) ;
+						this.xlabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.xdc = DataTable.getCol(this.xlabel);
 			}
 			if (dc2 == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.xlabel, this.DataTableName)) ;
+						this.xlabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.ydc = DataTable.getCol(this.ylabel);
 			}
 		
 		//Check if the size for every DataColumns are the same
+			/*
 		if (this.xdc.getSize() != this.ydc.getSize()) {
 			throw new ChartException(this.ChartType, "DataColumns are of different size!");
-		}
+		}*/
 		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
 
@@ -92,6 +93,7 @@ public class linechart extends xychart{
 		//Keep track of the Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
+
 		
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
@@ -110,11 +112,9 @@ public class linechart extends xychart{
 		 this.xychart.getData().add(this.series);
 		 
 	}
-	public XYChart.Series<Number, Number> getSeries(){
-		return series;
-	}
-	
+
 	//Attributes
+
 	protected String xlabel;
 	protected String ylabel;
 	protected DataColumn xdc;
@@ -122,9 +122,5 @@ public class linechart extends xychart{
 	protected XYChart.Series<Number, Number> series;
 	protected int SizeOfdc;
 
-	
-	
-	
-	
 	
 }

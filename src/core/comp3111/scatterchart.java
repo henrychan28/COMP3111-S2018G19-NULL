@@ -54,7 +54,7 @@ public class scatterchart extends xychart{
 			//Check if the DataColumn exists
 			if (dc == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.xlabel, this.DataTableName)) ;
+						this.xlabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.xdc = dc;
@@ -63,7 +63,7 @@ public class scatterchart extends xychart{
 			//Check if the DataColumn exists
 			if (dc1 == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.ylabel, this.DataTableName)) ;
+						this.ylabel, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.ydc = dc1;
@@ -72,18 +72,13 @@ public class scatterchart extends xychart{
 			//Check if the DataColumn exists
 			if (dc2 == null) {
 				throw new ChartException(this.ChartType, String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", 
-						this.category, this.DataTableName)) ;
+						this.category, this.DataTable.getTableName())) ;
 			}
 			else {
 				this.cdc = dc2;
 			}
 			
 			
-			
-		//Check if the size for every DataColumns are the same
-		if (xdc.getSize() != ydc.getSize() || xdc.getSize() != cdc.getSize()) {
-			throw new ChartException(this.ChartType, "DataColumns are of different size!");
-		}
 		//Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
 		
