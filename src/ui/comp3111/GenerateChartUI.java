@@ -47,9 +47,33 @@ import javafx.stage.Stage;
 // getDataColumnsOf(Type)
 
 public class GenerateChartUI extends Application {
+	
+	
+	public GenerateChartUI(int[] tableIndex) {
+		this.selectedTableIndex = tableIndex;
+	}
+	//testing testing, delete it later
+	private void testingData() {
+		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2number, 1string
+		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
+		selectedTableIndex = a;
+	}
+
+	@Override
+	public void start(Stage primarystage) {
+		//testingData();
+		stage = primarystage;
+		initScenes();
+		initEventHandlers();
+		putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	// Data Storage
-	private CoreData coreData = new CoreData();
+	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = { Constants.EMPTY, Constants.EMPTY };
 
 	// View Chart
@@ -73,9 +97,8 @@ public class GenerateChartUI extends Application {
 	// createScene()
 
 	// screen 1: paneChartSelection
-	private Button btHistory, btGenerateNew;
+	private Button btHistory, btGenerateNew, btBackToDataTable;
 	private ComboBox cbChartType;
-	private XYChart<Number, Number> chartPreviewChart;
 	private Label lbSelectType, lbmessage;
 
 	// screen 2: paneViewHistory
@@ -144,8 +167,10 @@ public class GenerateChartUI extends Application {
 		// 3. buttons
 		btHistory = new Button("View History");
 		btGenerateNew = new Button("Generate New");
+		btBackToDataTable = new Button("Back");
+		btBackToDataTable.setOnMouseClicked(new btBackToDataTableEventHandler());
 		HBox Buttons = new HBox(20);
-		Buttons.getChildren().addAll(btHistory, btGenerateNew);
+		Buttons.getChildren().addAll(btHistory, btGenerateNew, btBackToDataTable);
 		Buttons.setAlignment(Pos.CENTER);
 		// Container
 		VBox container = new VBox(20);
@@ -389,6 +414,14 @@ public class GenerateChartUI extends Application {
 				}
 
 			}
+		});
+		btBackToDataTable.setOnAction(e->{
+			lbmessage.setText("");
+			cbChartType.setValue(null);
+			//TODO: back to datatable selection
+			
+			
+			
 		});
 
 	};
@@ -667,11 +700,7 @@ public class GenerateChartUI extends Application {
 		stage.show();
 	}
 
-	private void testingData() {
-		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); // 2number, 1string
-		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2number
-		selectedTableIndex = a;
-	}
+
 
 	/**
 	 * A function to create the TableView
@@ -745,22 +774,15 @@ public class GenerateChartUI extends Application {
 
 		}
 	}
-
+	
+    private class btBackToDataTableEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stage);
+        }
+    }
 	
 
-	@Override
-	public void start(Stage primarystage) {
-		testingData();
-		stage = primarystage;
-		initScenes();
-		initEventHandlers();
-		putSceneOnStage(0);
-		System.out.println(cbChartType.getValue());
-
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 }

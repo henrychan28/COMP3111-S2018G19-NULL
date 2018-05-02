@@ -11,7 +11,9 @@ import java.util.Set;
 
 public class DataFilter {
 	
-	private DataFilter() {}
+	private DataFilter() {
+		System.out.println("In the DataFilter Constructor");
+	}
 	private static DataFilter filter = new DataFilter();
 	public static DataFilter getFilter() {return filter;}
 	
