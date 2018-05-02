@@ -21,6 +21,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SelectionMode;
@@ -36,7 +38,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class DataFilterUI extends Application {
+public class DataTextFilterUI extends Application {
 	public static final int OUTER = 0;
 	private String[] currentText;
 	private String[] columnNames;
@@ -59,7 +61,7 @@ public class DataFilterUI extends Application {
 	private ComboBox replacementOptionsComboBox2;
 	private Slider splitSlider;
 
-    public DataFilterUI(DataTable dataTable) {
+    public DataTextFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
     }
     
@@ -69,8 +71,8 @@ public class DataFilterUI extends Application {
     	}
     	
     	//Handle initialization case
-    	if(columnName==null) columnName =currentTable.getColumnNames()[0];
-    	
+    	if(columnName==null) columnName =textMap.keySet().toArray(new String[textMap.keySet().size()])[0];
+    	System.out.println("First column name: " + columnName);
     	Set<String> currentTextSet = textMap.get(columnName);
     	currentText = currentTextSet.toArray(new String[currentTextSet.size()]);
     }
@@ -85,8 +87,17 @@ public class DataFilterUI extends Application {
     	currentTable = dataTable;
     	DataFilter filter = DataFilter.getFilter();
     	textMap = filter.GetTableTextLabels(dataTable);
+    	if(textMap==null||textMap.size()==0) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Filter Error");
+    		alert.setHeaderText("Filter Error");
+    		alert.setContentText("Selected table does not have any string entry.");
+    		alert.showAndWait();
+        	throw (new Exception("No String entry in the table"));
+    	}
     	InjectColumnName();
     	InjectCurrentText(null);
+    	
     }
     
 
@@ -97,14 +108,14 @@ public class DataFilterUI extends Application {
  
     @Override
     public void start(Stage stage) {
+    	stageDataFilterUI = stage;
     	try {
 			SetCurrentTable(currentTable);
 		} catch (Exception e) {
-			e.printStackTrace();
+			return;
 		}
-    	stageDataFilterUI = stage;
 		stageDataFilterUI.setTitle("Data Filter Interface");
-		stageDataFilterUI.setWidth(900);
+		stageDataFilterUI.setWidth(700);
 		stageDataFilterUI.setHeight(500);
         
         columnTableView = createTableView("Column Name", columnNames);
@@ -139,60 +150,6 @@ public class DataFilterUI extends Application {
         textFilterBox.getChildren().addAll(selectButton, generateButton);
         textFilterBox.setAlignment(Pos.CENTER);
 
-        Separator separator = new Separator();
-        separator.setOrientation(Orientation.VERTICAL);
-        
-        Text tableNamesTextBox = new Text();
-        tableNamesTextBox.setText("Enter Table Names:");
-
-        randomTableNameTextField1 = new TextField ();
-        randomTableNameTextField2 = new TextField ();
-        
-        splitSlider = new Slider();
-        splitSlider.setMin(0);
-        splitSlider.setMax(100);
-        splitSlider.setValue(50);
-        splitSlider.setShowTickLabels(true);
-        splitSlider.setShowTickMarks(true);
-        splitSlider.setMajorTickUnit(50);
-        splitSlider.setMinorTickCount(5);
-        splitSlider.setBlockIncrement(10);
-        
-        Text splitRatio = new Text();
-        splitRatio.setText("50%");
-        
-        splitSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	splitRatio.setText(String.format("%.2f", new_val)+"%");
-            }
-        });
-        
-        Text replaceOriginalTextFilter2 = new Text();
-        replaceOriginalTextFilter2.setText("Replace original table?");
-        
-        replacementOptionsComboBox2 = new ComboBox<>(replacementOptions);
-        
-        Button generateButton2 = new Button("Generate Table");
-        generateButton2.setOnMouseClicked(new GenerateButtonEventHandler2());
-        
-        Button backButton2 = new Button("Back");
-        backButton2.setOnMouseClicked(new BackButtonEventHandler());
-        
-        randomText = new Text();
-        
-        HBox randomBox = new HBox();
-        randomBox.getChildren().addAll(generateButton2, backButton2);
-        randomBox.setAlignment(Pos.CENTER);
-
-        
-        VBox randomFilterVbox = new VBox(10);
-        randomFilterVbox.setPadding(new Insets(10, 10, 10, 10));
-        randomFilterVbox.setAlignment(Pos.CENTER);
-        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, 
-        									  splitSlider, splitRatio, replaceOriginalTextFilter2, replacementOptionsComboBox2, 
-        									  randomBox, randomText);
-
         VBox textFilterVbox = new VBox(10);
         textFilterVbox.setPadding(new Insets(10, 10, 10, 10));
         textFilterVbox.setAlignment(Pos.CENTER);
@@ -200,7 +157,7 @@ public class DataFilterUI extends Application {
         		                            replacementOptionsComboBox, textFilterBox, backButton, textFilterText);
         
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox, separator, randomFilterVbox);
+        hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox);
         Scene scene = new Scene(hbox);
         stageDataFilterUI.setScene(scene);
         stageDataFilterUI.show();

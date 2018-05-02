@@ -100,16 +100,19 @@ public class DataHostingUI extends Application {
 	        vbox.setPadding(new Insets(10, 10, 10, 10));
 
 	        
-	        Button filterButton = new Button("Filter");
-	        filterButton.setOnMouseClicked(new FilterButtonEventHandler());
+	        Button textFilterButton = new Button("Text Filter");
+	        textFilterButton.setOnMouseClicked(new TextFilterButtonEventHandler());
 
+	        Button randomFilterButton = new Button("Random Filter");
+	        randomFilterButton.setOnMouseClicked(new RandomFilterButtonEventHandler());
+	        
 	        Button chartButton = new Button("Chart");
 	        chartButton.setOnMouseClicked(new ChartButtonEventHandler());
 	        
 	        Button backButton = new Button("Back");
 	        backButton.setOnMouseClicked(new BackButtonEventHandler());
 	        
-	        vbox.getChildren().addAll(filterButton, chartButton, backButton);
+	        vbox.getChildren().addAll(textFilterButton, randomFilterButton, chartButton, backButton);
 	        
 	        hbox.getChildren().addAll(parentTable, childTable, vbox);
 	        Scene scene = new Scene(hbox);
@@ -164,13 +167,23 @@ public class DataHostingUI extends Application {
 	        }
 	    } 
 	    
-	    private class FilterButtonEventHandler implements EventHandler<MouseEvent> {
+	    private class TextFilterButtonEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
             	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
             	if(selectedTable==null) return;
-            	DataFilterUI dataFilterUI = new DataFilterUI(selectedTable);
-            	dataFilterUI.start(stageDataHostingUI);
+            	DataTextFilterUI dataTextFilterUI = new DataTextFilterUI(selectedTable);
+            	dataTextFilterUI.start(stageDataHostingUI);
+            }
+        }
+	    
+	    private class RandomFilterButtonEventHandler implements EventHandler<MouseEvent> {
+	        @Override
+	        public void handle(MouseEvent t) {
+            	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
+            	if(selectedTable==null) return;
+            	DataRandomFilterUI dataTextFilterUI = new DataRandomFilterUI(selectedTable);
+            	dataTextFilterUI.start(stageDataHostingUI);
             }
         }
 	    
