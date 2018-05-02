@@ -45,6 +45,11 @@ public class ColumnTypeUI {
 	
 	private HashMap<String, String[]> columnPrefs;
 	
+	/**
+	 * Initializer, creates a Hashmap with defaults set to String DataType and Empty autofill
+	 * @param columns
+	 * 			The names of the columns, this is the key
+	 */
 	public ColumnTypeUI(String[] columns) {
 		columnPrefs = new HashMap<String, String[]>();
 		String[] defaultVals = {DataType.TYPE_STRING, AutoFillType.TYPE_EMPTY};
@@ -55,6 +60,13 @@ public class ColumnTypeUI {
 		}
 	}
 	
+	/**
+	 * Presents the UI where column preferences can be chosen
+	 * 
+	 * @param parent
+	 * 			The application window that called this one
+	 * @return A finished Hashmap with column preferences
+	 */
 	public HashMap<String, String[]> presentUI(Stage parent) {
 		
 		// Defines
