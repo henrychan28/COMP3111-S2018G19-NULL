@@ -7,6 +7,12 @@ Team Members:
 - Chung, Yuen Ting [ytchung@ust.hk](mailto:ytchung@ust.hk): Team Member
 - Frost, Michael [mffrost@ust.hk](mailto:mffrost@ust.hk): Team Member
 
+| Name | Email | Features | Best Commit | Best Pull |
+|---|---|---|---|---|
+| Chan, Wing Kin | wkchanaj@ust.hk | 3,5 | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/9a6a9d9b5f90e94e41334008872865db04887368, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/c0bc771fb73f3847d398ca9160557bdbf04fd7c5, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/ba2432d2a45dcc588a2be5334f9a0a8b5c808210  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/16 |
+| Chung, Yuen Ting | ytchung@ust.hk  | 2,6 | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/bc476e53575b466d6a8c53ef7efeb7f3b84656ce, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/ffbc15ef892845342d5c1735aca6c95ee1ebc580, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/e44a0f4cbf98d858ccbddf80d35e2a33f26ac800  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/19  |
+| Frost, Michael   | mffrost@ust.hk  | 1,4  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/384c12f584092bbd3af450765b24ce3c926e622d, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/68d7cc4d0ed118bf27cc04589164c7a7ea9e2b95, https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/commit/0752940f26083f2373922f19b02dcd8547c2d62a  | https://github.com/thefrostysnowman/COMP3111-S2018G19-NULL/pull/17 |
+
 Quick reference links:
 
 - [Project Sign Up](https://docs.google.com/spreadsheets/d/1NKxQflvfnRKmjrX8E_HLnRCC6kr4spUST_9fcyZIgFo/edit#gid=0)

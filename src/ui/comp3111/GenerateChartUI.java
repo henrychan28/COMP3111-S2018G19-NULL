@@ -52,11 +52,11 @@ public class GenerateChartUI extends Application {
 	/**
 	 * Constructor for ChartUI. 
 	 * @tableIndex - Index of the table.
-	 * 
+	 */
 	public GenerateChartUI(int[] tableIndex) {
 		this.selectedTableIndex = tableIndex;
 	}
-	*/
+	
 	//testing testing, delete it later
 	private void testingData() {
 		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 3 number, 1string
@@ -69,7 +69,7 @@ public class GenerateChartUI extends Application {
 
 	@Override
 	public void start(Stage primarystage) {
-		testingData();
+		//testingData();
 		stage = primarystage;
 		initScenes();
 		initEventHandlers();

@@ -1,6 +1,5 @@
 package ui.comp3111;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -22,24 +21,35 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Class that presents the column property selection menu
+ * 
+ * @author michaelfrost
+ *
+ */
 public class ColumnTypeUI {
 	
 	private static final int WINDOW_H = 500;
-	private static final int WINDOW_W = 600;
+	private static final int WINDOW_W = 650;
 	
 	private static final int LIST_W = 220;
-	private static final int LIST_H = WINDOW_H - 150;
-	private static final int BUTTONS_W = WINDOW_W - LIST_W - 150;
-	private static final int BUTTONS_H = WINDOW_H - 150;
+	private static final int LIST_H = WINDOW_H - 120;
+	private static final int BUTTONS_W = WINDOW_W - LIST_W - 120;
+	private static final int BUTTONS_H = WINDOW_H - 120;
 	
 	private HashMap<String, String[]> columnPrefs;
 	
+	/**
+	 * Initializer, creates a Hashmap with defaults set to String DataType and Empty autofill
+	 * @param columns
+	 * 			The names of the columns, this is the key
+	 */
 	public ColumnTypeUI(String[] columns) {
 		columnPrefs = new HashMap<String, String[]>();
 		String[] defaultVals = {DataType.TYPE_STRING, AutoFillType.TYPE_EMPTY};
@@ -50,6 +60,13 @@ public class ColumnTypeUI {
 		}
 	}
 	
+	/**
+	 * Presents the UI where column preferences can be chosen
+	 * 
+	 * @param parent
+	 * 			The application window that called this one
+	 * @return A finished Hashmap with column preferences
+	 */
 	public HashMap<String, String[]> presentUI(Stage parent) {
 		
 		// Defines
@@ -191,7 +208,8 @@ public class ColumnTypeUI {
 			if (typeChoiceBox.getSelectionModel().getSelectedIndex() == 0 &&
 					fillChoiceBox.getSelectionModel().getSelectedItem().equals(AutoFillType.TYPE_EMPTY)) {
 				fillChoiceBox.getSelectionModel().select(numberFill[1]);
-				fillLabel.setText("Cannot have blank chosen, set to zero");
+				fillLabel.setText("A Number column must be filled.\n Replacing blank with zero.");
+				fillLabel.setTextAlignment(TextAlignment.CENTER);;
 			}
 			
 			// Save it

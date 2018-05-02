@@ -14,6 +14,7 @@ import java.io.Serializable;
 import javafx.scene.Scene;
 
 
+
 public class xychart implements Serializable{
 	/**
 	 * 

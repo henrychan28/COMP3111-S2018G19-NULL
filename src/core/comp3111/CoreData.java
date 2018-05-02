@@ -7,7 +7,9 @@ import java.util.HashMap;
 import core.comp3111.DataTable;
 
 /**
- * Data storage class for the application.  Main property is a 2D matrix of DataTable objects.
+ * Data storage class for the application.  
+ * 
+ * It is a 2D matrix of DataTable objects, Hashtable of Charts and a singular instance of CoreData.
  * 
  * @author michaelfrost
  *
@@ -17,24 +19,54 @@ public class CoreData implements Serializable {
 	// Defines
 	public static final long serialVersionUID = Constants.SERIALIZABLE_VER;
 	private static long serialChartUID = 1;
+	private static long transactID = 0;
 	
 	// Class variables
 	private ArrayList<ArrayList<DataTable>> masterTableList;
 	private HashMap<String, ArrayList<xychart>> masterChartList;
 	private static CoreData instance;
 
-	// Initializer
-	private CoreData() {
+	// Initializers
+	
+	/**
+	 * Instantiates a CoreData object with new empty chart and DataTable lists
+	 * 
+	 */
+	public CoreData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
 	}
 	
+	/**
+	 * Used to fetch the singular instance of CoreData
+	 * 
+	 * @return the CoreData instance
+	 */
 	public static CoreData getInstance(){
         if(instance == null){
             instance = new CoreData();
         }
         return instance;
     }
+	
+	/**
+	 * Set the singular instance to the passed CoreData object
+	 * 
+	 * @param data
+	 * 			the core data object
+	 */
+	public static void setInstance(CoreData data) {
+		instance = data;
+	}
+	
+	/**
+	 * Gets the number of table adds performed, this is to allow automatic creation of unique table names
+	 * 
+	 * @return the number (long)
+	 */
+	public static long getTransactID() {
+		return transactID;
+	}
 	
 	/**
 	 * Add a new inner list of data tables and a parent data table
@@ -54,15 +86,19 @@ public class CoreData implements Serializable {
 			newParentIndex[Constants.OUTER] = masterTableList.size() - 1;
 			newParentIndex[Constants.INNER] = 0;
 		}
+		transactID++;
 		
 		return newParentIndex;
 	}
 	
 	/**
-	 * Add a new child table to the specified outer list
+	 * Add a new child table to the specified outer list.
+	 * Null tables are not added
 	 * 
 	 * @param table
 	 *            The DataTable
+	 * @param parentIndex
+	 * 			Index of the parent datatable on outer Arraylist
 	 * @return child table index
 	 */
 	public int[] addChildTable(DataTable table, int parentIndex) {
@@ -74,6 +110,7 @@ public class CoreData implements Serializable {
 			newChildIndex[Constants.INNER] = masterTableList.get(parentIndex).size() - 1;
 			newChildIndex[Constants.OUTER] = parentIndex;
 		}
+		transactID++;
 		
 		return newChildIndex;
 	}
@@ -81,7 +118,7 @@ public class CoreData implements Serializable {
 	/**
 	 * Fetch the ArrayList of DataTables by outer index 
 	 * 
-	 * @param index
+	 * @param outerIndex
 	 * 			The index of the data table ArrayList in outer Arraylist
 	 * @return the inner ArrayList
 	 */
@@ -97,12 +134,10 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Fetch the DataTable by inner and outer index
+	 * Fetch the DataTable at a certain [outer,inner] index
 	 * 
-	 * @param outerIndex 
-	 * 				int that represents outer ArrayList index to access 
-	 * @param innerIndex 
-	 * 				int that represents inner ArrayList index to access
+	 * @param index 
+	 * 				int[] that represents outer 2D ArrayList index to access 
 	 * @return the DataTable
 	 */
 	public DataTable getDataTable(int[] index) {
@@ -125,7 +160,7 @@ public class CoreData implements Serializable {
 	 * 
 	 * @param innerIndex
 	 * 			The array index on the outer ArrayList
-	 * @return
+	 * @return size of inner ArrayList
 	 */
 	public int getInnerSize(int innerIndex) {
 		int size = Constants.EMPTY;
@@ -138,6 +173,13 @@ public class CoreData implements Serializable {
 		return size;
 	}
 	
+	/**
+	 * Returns the number of top level (parent) DataTables being stored
+	 * 
+	 * DataTables can be null and thus store no usable information
+	 * 
+	 * @return Number of parent tables
+	 */
 	public int getOuterSize() {
 		return masterTableList.size();
 	}
@@ -149,6 +191,7 @@ public class CoreData implements Serializable {
 	 * 			Outer and Inner index of the DataTable in question
 	 * @param table
 	 * 			The DataTable that will be stored
+	 * @return true if the table could be set, false if it could not 
 	 */
 	public boolean setDataTable(int[] index, DataTable table) {
 		boolean success = false;
@@ -160,11 +203,12 @@ public class CoreData implements Serializable {
 			masterTableList.get(index[Constants.OUTER]).set(index[Constants.INNER], table);
 			success = true;
 		}
+		transactID++;
 		return success;
 	}
 	
 	/**
-	 * Searches through the contained DataTables for a table of the supplied name. 
+	 * Searches through the contained DataTables for a table of the supplied name, not case sensitive. 
 	 * 
 	 * @param name
 	 * 			DataTable name that is being searched for
@@ -198,6 +242,30 @@ public class CoreData implements Serializable {
 	
 	
 	/**
+	 * Checks whether the file 'name' exists in the CoreData, not case sensitive
+	 * 
+	 * @param name
+	 * 			TableName to search for
+	 * @return boolean
+	 * 			true if it exists, false if not
+	 */
+	public boolean doesTableExist(String name) {
+		boolean exists = false;
+		int[] indices = {Constants.EMPTY,Constants.EMPTY};
+		
+		indices = searchForDataTable(name);
+		
+		if (indices[Constants.INNER] == Constants.EMPTY && indices[Constants.OUTER] == Constants.EMPTY) {
+			exists = false;
+		} else {
+			exists = true;
+		}
+			
+		return exists;
+	}
+	
+	
+	/**
 	 * Add the Chart to the masterChartList.
 	 * 
 	 * @param DataTableName
@@ -206,7 +274,6 @@ public class CoreData implements Serializable {
 	 * 			- ChartName
 	 * @return true if success, false otherwise
 	 */
-	
 	public boolean addChart(String DataTableName, xychart xychart) {
 		boolean success = false;
 		if(this.masterChartList.containsKey(DataTableName)) {
@@ -221,6 +288,8 @@ public class CoreData implements Serializable {
 		}
 		return success;
 	}
+	
+	
 	/**
 	 * get the ArrayList of xychart for the specific DataTable.
 	 * 
@@ -268,6 +337,7 @@ public class CoreData implements Serializable {
 		}
 		
 	}
+	
 	/**
 	 * get the chart with ChartID known and DataTable known 
 	 * 
@@ -275,7 +345,6 @@ public class CoreData implements Serializable {
 	 * @param ChartID
 	 * @return the xychart if existed. null otherwise.
 	 */
-	
 	public xychart getChart(String DataTableName, String ChartID) {
 		if (masterChartList.containsKey(DataTableName)) {
 			ArrayList<xychart> Charts = masterChartList.get(DataTableName);
@@ -288,6 +357,7 @@ public class CoreData implements Serializable {
 		}
 		return null;
 	}
+	
 	/**
 	 * Get and update the chartid. 
 	 * 
@@ -298,6 +368,8 @@ public class CoreData implements Serializable {
 		CoreData.serialChartUID +=1;	
 		return CoreData.serialChartUID -1;
 	}
+	
+	
 	/**
 	 * Get the chartid. No updating. 
 	 * 
@@ -305,6 +377,16 @@ public class CoreData implements Serializable {
 	 */
 	public static long checkchartid() {
 		return CoreData.serialChartUID;
+	}
+	
+	/**
+	 * Deletes all data stored in CoreData, sets transaction count to zero
+	 * 
+	 */
+	public void destroyData() {
+		masterTableList = new ArrayList<ArrayList<DataTable>>();
+		masterChartList = new HashMap<String, ArrayList<xychart>>();
+		transactID = 0;
 	}
 	
 	
