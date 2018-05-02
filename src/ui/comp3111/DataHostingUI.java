@@ -19,21 +19,36 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+/**
+ * DataHostingUI is responsible for creating, launching and maintaining the window
+ * of displaying dataTable available in the database. It provides an interface for 
+ * users to select dataTable for manipulations.
+ * 
+ * @author Henry Chan
+
+ */
 public class DataHostingUI extends Application {
 		private ObservableList<DataTable> parentTableList = null;
 		private ObservableList<DataTable> childTableList = null;
-		//private static ObservableList<DataTable> graphTableList = null;
 		private int childIndex = 0;
 		private TableView<DataTable> parentTable;
 		private TableView<DataTable> childTable;
-		//private static TableView<DataTable> graphTable;
 		private enum EventHandlerType {
 		    PARENT, CHILD, GRAPH
 		}
 		private Stage stageDataHostingUI;
-
-	    public static ObservableList<DataTable> InjectDataTable(int axis, int parent) {
-	    	//To-Do: Once the CoreData is completed, retrieve data from there
+		
+		/**
+		 * InjectDataTable is used to inject value to the  
+		 * 
+		 * @param axis 
+		 *            - the axis to be scan along (INNER or OUTER)
+		 * @param outerIndex
+		 * 			  - if scan along OUTER, put it to be -1
+		 * 			  - if scan along INNER, provide the parentIndex
+		 */
+	    private ObservableList<DataTable> datatTableToObservableList(int axis, int parent) {
 	    	CoreData coreData = CoreData.getInstance();
 	    	ObservableList<DataTable> dataSet = FXCollections.observableArrayList();
 	    	if (axis == Constants.OUTER && parent == -1) {
@@ -52,21 +67,20 @@ public class DataHostingUI extends Application {
 	    }
 		
 		/**
-		 * SetTable helps to set the parentTableList and childTableList in the class with the aid 
-		 * of GetDataTable function. 
+		 * SetTable is used to set the parentTableList or childTableList 
 		 * 
 		 * @param axis 
 		 *            - the axis to be scan along (INNER or OUTER)
-		 * @param outer
+		 * @param outerIndex
 		 * 			  - if scan along OUTER, put it to be -1
 		 * 			  - if scan along INNER, provide the parentIndex
 		 */
-	    private void SetTable(int axis, int outerIndex) {
+	    private void setTable(int axis, int outerIndex) {
 	    	if(axis==Constants.OUTER) {
-	    		parentTableList = InjectDataTable(Constants.OUTER, -1);
+	    		parentTableList = datatTableToObservableList(Constants.OUTER, -1);
 	    	}
 	    	else if(axis==Constants.INNER) {
-	    		childTableList = InjectDataTable(Constants.INNER, outerIndex);
+	    		childTableList = datatTableToObservableList(Constants.INNER, outerIndex);
 	    	}
 	    }
 	    
@@ -77,17 +91,17 @@ public class DataHostingUI extends Application {
 	    @Override
 	    public void start(Stage stage) {
 	    	//Initialize the parent table
-	    	SetTable(Constants.OUTER, -1);
-	    	SetTable(Constants.INNER, childIndex);
+	    	setTable(Constants.OUTER, -1);
+	    	setTable(Constants.INNER, childIndex);
 	    	
 	        stageDataHostingUI = stage;
 	    	stageDataHostingUI.setTitle("Table View Sample");
 	    	stageDataHostingUI.setWidth(650);
 	    	stageDataHostingUI.setHeight(500);
 	    	
-	        parentTable = CreateTableView("Parent Table", "tableName", parentTableList, EventHandlerType.PARENT);
+	        parentTable = createTableView("Parent Table", "tableName", parentTableList, EventHandlerType.PARENT);
 			parentTable.setOnMouseClicked(new ParentTableFactoryEventHandler());
-	        childTable = CreateTableView("Child Table", "tableName", childTableList, EventHandlerType.CHILD);
+	        childTable = createTableView("Child Table", "tableName", childTableList, EventHandlerType.CHILD);
 
 	        HBox hbox = new HBox();
 	        
@@ -126,9 +140,9 @@ public class DataHostingUI extends Application {
 		 * @param tableList
 		 * 			  - the tableList containing desired data for display
 		 * @return table
-		 * 			  - the table created 
+		 * 			  - the tableView created 
 		 */
-	    private TableView<DataTable> CreateTableView(String tableName, String propertyName, ObservableList<DataTable> tableList,
+	    private TableView<DataTable> createTableView(String tableName, String propertyName, ObservableList<DataTable> tableList,
 	    											EventHandlerType eventType) {
 	    	TableView<DataTable> table = new TableView<>();
 	        TableColumn<DataTable, String> Dataset = new TableColumn<>(tableName);
@@ -139,21 +153,26 @@ public class DataHostingUI extends Application {
 	    	return table;	    	
 	    }
 
-	    
+    	/**
+    	 * Event handler for updating the childTableView after selected a parent 
+    	 * table on the parentTableView
+    	 */
 	    private class ParentTableFactoryEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
 	            childIndex = parentTable.getSelectionModel().getSelectedIndex();
-	            SetTable(Constants.INNER, childIndex);
+	            setTable(Constants.INNER, childIndex);
 	            childTable.setItems(childTableList);
 	            childTable.refresh();
 	        }
 	    }
 	    
+    	/**
+    	 * Event handler for transition to the GenerateChartUI module
+    	 */
 	    private class ChartButtonEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
-	        	
             	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
             	if(selectedTable==null) return;
             	CoreData coreData = CoreData.getInstance();
@@ -163,9 +182,13 @@ public class DataHostingUI extends Application {
 	        }
 	    } 
 	    
+    	/**
+    	 * Event handler for transition to the DataTextFilterUI module
+    	 */
 	    private class TextFilterButtonEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
+	        	//Go to the DataTextFilterUI
             	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
             	if(selectedTable==null) return;
             	DataTextFilterUI dataTextFilterUI = new DataTextFilterUI(selectedTable);
@@ -173,9 +196,13 @@ public class DataHostingUI extends Application {
             }
         }
 	    
+    	/**
+    	 * Event handler for transition to the DataRandomFilterUI module
+    	 */    
 	    private class RandomFilterButtonEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
+	        	//Go to the DataRandomFilterUI
             	DataTable selectedTable = childTable.getSelectionModel().getSelectedItem();
             	if(selectedTable==null) return;
             	DataRandomFilterUI dataTextFilterUI = new DataRandomFilterUI(selectedTable);
@@ -183,9 +210,13 @@ public class DataHostingUI extends Application {
             }
         }
 	    
+    	/**
+    	 * Event handler for transition to the main page
+    	 */  
 	    private class BackButtonEventHandler implements EventHandler<MouseEvent> {
 	        @Override
 	        public void handle(MouseEvent t) {
+	        	//Return to the main menu
             	Main main = new Main();
             	main.start(stageDataHostingUI);
             }

@@ -7,6 +7,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
+/**
+ * DataFilter class provides static methods for manipulating dataTable 
+ * 
+ * @author Henry Chan
+
+ */
 public class DataFilter {	
 	
 	/**

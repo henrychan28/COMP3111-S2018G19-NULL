@@ -32,6 +32,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * DataTextFilterUI is the UI for user to select text in columns to be retained,
+ * enabling user to replace/add the filtered dataTable into the database. 
+ * 
+ * @author Henry Chan
+
+ */
 public class DataTextFilterUI extends Application {
 	public static final int OUTER = 0;
 	private String[] currentText;
@@ -49,12 +56,24 @@ public class DataTextFilterUI extends Application {
 		        "Yes", "No"
 		    );
 	private ComboBox<String> replacementOptionsComboBox;
-
+	
+	/** 
+	 * Creates a DataTextFilterUI with the specified dataTable.
+	 * @param the input dataTable
+	 */
     public DataTextFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
     }
     
-    private void InjectCurrentText(String columnName) throws Exception {
+	/** 
+	 * Provided with a columnName of interest, injectCurrentText will find 
+	 * the column with columnName in the dataTable and inject it to the 
+	 * currentText variable, which will determine the text to be displayed on 
+	 * the textTableView
+	 * @param columnName
+	 * 			- name of column in the dataTable targeted to be inject 
+	*/
+    private void injectCurrentText(String columnName) throws Exception {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
     		throw new Exception("Column name not found or there is no column in current table...");
     	}
@@ -66,13 +85,22 @@ public class DataTextFilterUI extends Application {
     	currentText = currentTextSet.toArray(new String[currentTextSet.size()]);
     }
     
-    private void InjectColumnName() {
+	/**
+	 * injectColumnName is called after the dataTable and textMap is set
+	 * for injecting column names of given textMap to the variable columnNames 
+	 */
+    private void injectColumnName() {
     	Set<String> columnNameSet = textMap.keySet();
     	columnNames = columnNameSet.toArray(new String[columnNameSet.size()]);
 	}
 
-    	
-    private void SetCurrentTable(DataTable dataTable) throws Exception {
+	/** 
+	 * setCurrentTable is used to set the dataTable and inject corresponding 
+	 * value to attributes in the DataTextFilterUI for initializing the UI
+	 * @param dataTable
+	 * 			- dataTable for displaying in the UI
+	 */	
+    private void setCurrentTable(DataTable dataTable) throws Exception {
     	currentTable = dataTable;
     	textMap = DataFilter.GetTableTextLabels(dataTable);
     	if(textMap==null||textMap.size()==0) {
@@ -83,8 +111,8 @@ public class DataTextFilterUI extends Application {
     		alert.showAndWait();
         	throw (new Exception("No String entry in the table"));
     	}
-    	InjectColumnName();
-    	InjectCurrentText(null);
+    	injectColumnName();
+    	injectCurrentText(null);
     	
     }
     
@@ -97,15 +125,16 @@ public class DataTextFilterUI extends Application {
     @Override
     public void start(Stage stage) {
     	stageDataFilterUI = stage;
-    	try {
-			SetCurrentTable(currentTable);
-		} catch (Exception e) {
-			return;
-		}
 		stageDataFilterUI.setTitle("Data Filter Interface");
 		stageDataFilterUI.setWidth(700);
 		stageDataFilterUI.setHeight(500);
-        
+		
+    	try {
+			setCurrentTable(currentTable);
+		} catch (Exception e) {
+			return;
+		}
+    	
         columnTableView = createTableView("Column Name", columnNames);
         columnTableView.setOnMouseClicked(new ColumnTableEventHandler());
         columnTableView.getSelectionModel().select(0);;
@@ -152,6 +181,16 @@ public class DataTextFilterUI extends Application {
         stageDataFilterUI.show();
     }
     
+	/** 
+	 * createTableView is used to create a tableView from a list of string 
+	 * and set the tableView name with a given tableName
+	 * @param tableName
+	 * 			- name of the table on the tableView
+	 * @param data
+	 * 			- string to be displayed on the tableView
+	 * @return table
+	 * 			- tableView with given name and data
+	*/	
 	private TableView<String> createTableView(String tableName, String[] data) {
 		TableView<String> table = new TableView<>();
 		TableColumn<String, String> Dataset = new TableColumn<>(tableName);
@@ -167,12 +206,15 @@ public class DataTextFilterUI extends Application {
 		return table;
 	}
 	
+	/**
+	 * Event handler for updating textTableView after selecting a column 
+	 */  
     private class ColumnTableEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
              String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
              try {
-				InjectCurrentText(selectedColumn);
+				injectCurrentText(selectedColumn);
 				textTableView.getItems().setAll(Arrays.asList(currentText));
 				if(selectedRetainText.get(selectedColumn)!=null) {
 					for(Object previousSelectedText: selectedRetainText.get(selectedColumn)) {
@@ -185,6 +227,9 @@ public class DataTextFilterUI extends Application {
         }
     }
     
+	/**
+	 * Event handler for updating texts being selected to be retain for filtering
+	 */  
     private class SelectButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
@@ -195,10 +240,16 @@ public class DataTextFilterUI extends Application {
         			selectedTextSet.add(selectedText);
         		}
         		selectedRetainText.put(selectedColumn, selectedTextSet);
-        		PrintSelectedRetainText();
 		}
     }
     
+	/**
+	 * GenerateButtonEventHandler fires upon a click on the "generate button.
+	 * It will retrieve the table names from text fields and check whether is there any 
+	 * name clash with dataTables in CoreData. Upon confirmation of correct name 
+	 * and available name, if filtered tables are not empty, they will be added/replaced 
+	 * to the CoreData according to user's choice.
+	 */  
     private class GenerateButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) 
@@ -236,27 +287,15 @@ public class DataTextFilterUI extends Application {
     }
     
 
-    
+	/**
+	 * Event handler for transition to the DataHostingUI
+	 */  
     private class BackButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
+        	//Return to dataHostingUI
         	DataHostingUI dataHostingUI = new DataHostingUI();
         	dataHostingUI.start(stageDataFilterUI);
         }
     }
-    
-    private void PrintSelectedRetainText() {
-		System.out.println("---------PrintSelectedRetainText()---------");
-
-    	for(String column: selectedRetainText.keySet()) {
-    		System.out.println(column);
-    		for(Object entry: selectedRetainText.get(column)) {
-    			System.out.print(entry.toString() + " ");
-    		}
-    		System.out.println();
-    	}
-		System.out.println("-----------------------------------------");
-
-    }
-
 }
