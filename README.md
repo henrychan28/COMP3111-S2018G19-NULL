@@ -7,16 +7,10 @@ Team Members:
 - Chung, Yuen Ting [ytchung@ust.hk](mailto:ytchung@ust.hk): Team Member
 - Frost, Michael [mffrost@ust.hk](mailto:mffrost@ust.hk): Team Member
 
-| Command | Description |
-| --- | --- |
-| git status | List all new or modified files |
-| git diff | Show file differences that haven't been staged |
-
-|  Name  |  EMail  |  Features  |  Best Commits  |  Best Pull Request  |
-| ------------- | ------------- |------------- | ------------- |
-| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  | 
-| Content Cell  | Content Cell  | Content Cell  | Content Cell  | Content Cell  |
-
+| Name | Email | | Features | Best Commit | Best Pull |
+| --- | --- | --- | --- | --- |
+| git status | List all new or modified files | Content | Content | Content |
+| git diff | Show file differences that haven't been staged | Content | Content | Content |
 
 Quick reference links:
 
