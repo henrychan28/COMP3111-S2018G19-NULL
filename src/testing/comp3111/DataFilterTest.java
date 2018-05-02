@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
+import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataFilter;
 
 
@@ -24,7 +25,6 @@ public class DataFilterTest {
 
 	@BeforeEach
 	void init() {
-		testDataFilter = DataFilter.getFilter();
 		smallDataTable = new DataTable();
 		try {
 			smallDataTable.addCol("Random1", new DataColumn("String", column1));
@@ -39,11 +39,11 @@ public class DataFilterTest {
 	
 	@Test
 	void testTextFilter() {
-		HashMap<String, Set<Object>> retainValues = new HashMap();
-		Set<Object> retainString2 = new HashSet();
+		HashMap<String, Set<String>> retainValues = new HashMap<>();
+		Set<String> retainString2 = new HashSet<>();
 		retainString2.add("Yes");
 		retainValues.put("Random2", retainString2);
-		DataTable testDataTable = testDataFilter.TextFilter(smallDataTable, retainValues);
+		DataTable testDataTable = DataFilter.TextFilter(smallDataTable, retainValues);
 		DataTable expectDataTable = new DataTable();
 		try{
 			expectDataTable.addCol("Random1", new DataColumn("String", new Object[]{"Bye", "GoToSchool"}));
@@ -101,7 +101,13 @@ public class DataFilterTest {
 		}
 		catch(Exception e){}
 		assertEquals(trueTable,filterTable);
-		
+	}
+	
+	@Test
+	void testGetTableTextLabels() {
+		DataTable testTable = SampleDataGenerator.generateSampleLineData();
+		HashMap<String, Set<String>>testResult = DataFilter.GetTableTextLabels(testTable);
+		assertEquals(testResult,testResult);
 		
 	}
 }
