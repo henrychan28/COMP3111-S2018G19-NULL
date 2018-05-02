@@ -15,7 +15,12 @@ import core.comp3111.DataTable;
 import core.comp3111.DataTableException;
 import core.comp3111.DataType;
 import core.comp3111.scatterchart;
-
+/**
+ * Test cases for scatterchart class. 
+ * 
+ * @author YuenTing
+ *
+ */
 public class ScatterChartTest{
 
 	DataColumn testNumColumn_0 = new DataColumn();
@@ -37,7 +42,7 @@ public class ScatterChartTest{
 		testStrColumn_0 = new DataColumn(DataType.TYPE_STRING,
 				new String[] { "One", "Two", "One", "Four", "Six", "Three", "Two" });
 		testStrColumn_1 = new DataColumn(DataType.TYPE_STRING,
-				new String[] { "Frog", "Chicken", "Dog", "Frog", "Dog", "Chicken", "Chickn" });
+				new String[] { "Frog", "Chicken", "Dog", "Frog", "Dog", "Chicken", "Chicken" });
 		testObjColumn_0 = new DataColumn(DataType.TYPE_OBJECT,
 				new String[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven" });
 

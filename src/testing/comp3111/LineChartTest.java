@@ -16,7 +16,7 @@ import core.comp3111.DataType;
 import core.comp3111.linechart;
 
 /**
- * Test case for linechart.java.
+ * Test cases for linechart class.
  * 
  * @author YuenTing
  *
