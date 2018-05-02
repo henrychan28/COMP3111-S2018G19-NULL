@@ -14,6 +14,11 @@ import core.comp3111.DataImport;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing DataImport class
+ * @author michaelfrost
+ *
+ */
 public class DataImportTest {
 	
 	@Test

@@ -5,6 +5,12 @@ import org.junit.jupiter.api.Test;
 import core.comp3111.CoreData;
 import core.comp3111.CoreDataIO;
 
+/**
+ * Testing coredata IO module
+ * 
+ * @author michaelfrost
+ *
+ */
 public class CoreDataIOTest {
 	
 	@Test

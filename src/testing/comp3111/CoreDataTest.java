@@ -13,6 +13,12 @@ import core.comp3111.CoreData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing CoreData class
+ * 
+ * @author michaelfrost
+ *
+ */
 public class CoreDataTest {
 	
 	CoreData coreData;
