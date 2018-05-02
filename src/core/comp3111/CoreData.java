@@ -50,7 +50,8 @@ public class CoreData implements Serializable {
     }
 	
 	/**
-	 * Set the singular instance to the passed CoreData instance
+	 * Set the singular instance to the passed CoreData object
+	 * 
 	 * @param data
 	 * 			the core data object
 	 */
@@ -133,7 +134,7 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Fetch the DataTable by inner and outer index
+	 * Fetch the DataTable at a certain [outer,inner] index
 	 * 
 	 * @param index 
 	 * 				int[] that represents outer 2D ArrayList index to access 
@@ -159,7 +160,7 @@ public class CoreData implements Serializable {
 	 * 
 	 * @param innerIndex
 	 * 			The array index on the outer ArrayList
-	 * @return szie of inner arraylist
+	 * @return size of inner ArrayList
 	 */
 	public int getInnerSize(int innerIndex) {
 		int size = Constants.EMPTY;
