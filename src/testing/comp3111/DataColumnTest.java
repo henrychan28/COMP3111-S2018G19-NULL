@@ -78,4 +78,13 @@ class DataColumnTest {
 		DataColumn dc2 = new DataColumn(DataType.TYPE_STRING,arr2);
 		assertEquals(true,dc.equals(dc2));
 	}
+	
+	@Test
+	void test() {
+		Number[] yvalues = new Number[] { 30.0, 30, 25, (short) 16, 8.0, 9, 1, 3, 4, (byte) 22 };
+
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+		
+		System.out.println(yvaluesCol.isInteger());
+	}
 }

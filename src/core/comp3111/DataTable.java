@@ -184,6 +184,7 @@ public class DataTable implements Serializable{
 		//Iterate every element in dc
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			DataColumn temdc = entry.getValue();
+			
 			if (temdc.isInteger()) {
 				Num +=1;
 			}	

@@ -62,7 +62,7 @@ public class GenerateChartUI extends Application {
 		int[] a = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV3()); // 3 number, 1string
 		int[] b = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV2()); // 2 number
 		int[] c = coreData.addParentTable(SampleDataGenerator.generateSampleLineData()); //2 number, 1string
-		int[] d = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV4()); //2 number, 1string
+		int[] d = coreData.addParentTable(SampleDataGenerator.generateSampleLineDataV5()); //3 number, 1string
 
 		selectedTableIndex = d;
 	}
@@ -400,7 +400,10 @@ public class GenerateChartUI extends Application {
 					cbDynamicXaxis.getItems().addAll(keys);	
 					cbDynamicYaxis.getItems().addAll(keys);	
 					for(String key: keys) {
+						System.out.print(key);
+
 						if (selectedDataTable.getCol(key).isInteger()) {
+
 							cbDynamicTaxis.getItems().add(key);	//TODO: Taxis should be increasing
 						}
 					}

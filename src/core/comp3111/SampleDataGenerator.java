@@ -173,10 +173,42 @@ public class SampleDataGenerator {
 		Number[] xvalues = new Number[] { 3, 5, 2, 2, 4, 2, 4, 6, 0.2, 5 };
 		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
 		// Sample: An array of integer
-		Number[] tvalues = new Number[] { 0, 0, 1, 1, 1, 2, 2, 3, 4, 0.8 };
+		Number[] tvalues = new Number[] { 0, 0, 1, 1, 1, 2, 2, 3, 4, 8 };
 		DataColumn tvaluesCol = new DataColumn(DataType.TYPE_NUMBER, tvalues);
 		// Sample: Can also mixed Number types
 		Number[] yvalues = new Number[] { 30.0, 30, 25, (short) 16, 8.0, 9, 1, 3, 4, (byte) 22 };
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+
+		// Sample: A array of String
+		String[] labels = new String[] { "P1", "P2", "P3", "P3", "P2", "P3", "P5", "P4", "P3", "P5" };
+		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
+
+		try {
+
+			t.addCol("X", xvaluesCol);
+			t.addCol("Y", yvaluesCol);
+			t.addCol("label", labelsCol);
+			t.addCol("time", tvaluesCol);
+
+		} catch (DataTableException e) {
+			e.printStackTrace();
+
+		}
+
+		return t;
+	}
+	public static DataTable generateSampleLineDataV5() {
+
+		DataTable t = new DataTable("Sample Data 1");
+
+		// Sample: An array of integer
+		Number[] xvalues = new Double[] { (double) 3, (double)5, (double)2, (double)2, (double)4, 2.2, (double)4, (double)6, 0.2, (double)5 };
+		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
+		// Sample: An array of integer
+		Number[] tvalues = new Double[] { (double)0, (double)0, (double)1, (double)1, (double)1, (double)2, (double)2, (double)3, (double)4,(double) 8 };
+		DataColumn tvaluesCol = new DataColumn(DataType.TYPE_NUMBER, tvalues);
+		// Sample: Can also mixed Number types
+		Number[] yvalues = new Double[] { 30.0, (double)30, 25.3, 16.1, 8.0, 9.5, 1.1, 3.3, 4.5, 22.1 };
 		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
 
 		// Sample: A array of String
