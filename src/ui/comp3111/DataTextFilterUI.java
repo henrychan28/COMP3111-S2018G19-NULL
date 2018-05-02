@@ -6,25 +6,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 import core.comp3111.CoreData;
-import core.comp3111.DataColumn;
 import core.comp3111.DataFilter;
 import core.comp3111.DataTable;
-import core.comp3111.SampleDataGenerator;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Separator;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -35,20 +32,25 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class DataFilterUI extends Application {
+public class DataTextFilterUI extends Application {
 	public static final int OUTER = 0;
-	private static String[] currentText;
-	private static String[] columnNames;
-	private static ObservableList<DataColumn> columnList;
-	private static TableView<String> columnTableView;
-	private static TableView<String> textTableView;
-	private static DataTable currentTable;
-	private static HashMap<String, Set<Object>> selectedRetainText = new HashMap<>();
-	private static TextField tableNameTextField;
-	private static TextField randomTableNameTextField1;
-	private static TextField randomTableNameTextField2;
+	private String[] currentText;
+	private String[] columnNames;
+	private TableView<String> columnTableView;
+	private TableView<String> textTableView;
+	private DataTable currentTable;
+	private HashMap<String, Set<String>> textMap;
+	private HashMap<String, Set<String>> selectedRetainText = new HashMap<>();
+	private TextField tableNameTextField;
+	private Stage stageDataFilterUI;
+	private Text textFilterText;
+	private ObservableList<String> replacementOptions = 
+		    FXCollections.observableArrayList(
+		        "Yes", "No"
+		    );
+	private ComboBox<String> replacementOptionsComboBox;
 
-    public DataFilterUI(DataTable dataTable) {
+    public DataTextFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
     }
     
@@ -56,29 +58,34 @@ public class DataFilterUI extends Application {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
     		throw new Exception("Column name not found or there is no column in current table...");
     	}
+    	
     	//Handle initialization case
-    	if(columnName==null) columnName =currentTable.getColumnNames()[0];
-    	Object[] currentTextObject = currentTable.getCol(columnName).getData();
-    	currentText = Arrays.copyOf(currentTextObject, currentTextObject.length, String[].class);
+    	if(columnName==null) columnName =textMap.keySet().toArray(new String[textMap.keySet().size()])[0];
+    	System.out.println("First column name: " + columnName);
+    	Set<String> currentTextSet = textMap.get(columnName);
+    	currentText = currentTextSet.toArray(new String[currentTextSet.size()]);
     }
     
-    private void InjectColumnList() {
-    	columnList = FXCollections.observableArrayList();
-    	for(DataColumn dataColumn: currentTable.getCol()) {
-    		columnList.add(dataColumn);
-    	}
-    }
     private void InjectColumnName() {
-    	columnNames = currentTable.getColumnNames();
+    	Set<String> columnNameSet = textMap.keySet();
+    	columnNames = columnNameSet.toArray(new String[columnNameSet.size()]);
 	}
 
     	
     private void SetCurrentTable(DataTable dataTable) throws Exception {
-    	DataFilter filter = DataFilter.getFilter();
-    	currentTable = filter.GetTableTextLabels(dataTable);
+    	currentTable = dataTable;
+    	textMap = DataFilter.GetTableTextLabels(dataTable);
+    	if(textMap==null||textMap.size()==0) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Filter Error");
+    		alert.setHeaderText("Filter Error");
+    		alert.setContentText("Selected table does not have any string entry.");
+    		alert.showAndWait();
+        	throw (new Exception("No String entry in the table"));
+    	}
     	InjectColumnName();
-    	InjectColumnList();
     	InjectCurrentText(null);
+    	
     }
     
 
@@ -86,23 +93,18 @@ public class DataFilterUI extends Application {
         launch(args);
     }
     
-    private void TestInitialize() {
-    	DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
-    	try{
-    		SetCurrentTable(testTable);
-    	} catch (Exception e) {
-    		e.getMessage();
-    	}
-    }
  
     @Override
     public void start(Stage stage) {
-    	//Initialize the UI test data
-    	//TestInitialize();
-
-    	stage.setTitle("Data Filter Interface");
-        stage.setWidth(900);
-        stage.setHeight(500);
+    	stageDataFilterUI = stage;
+    	try {
+			SetCurrentTable(currentTable);
+		} catch (Exception e) {
+			return;
+		}
+		stageDataFilterUI.setTitle("Data Filter Interface");
+		stageDataFilterUI.setWidth(700);
+		stageDataFilterUI.setHeight(500);
         
         columnTableView = createTableView("Column Name", columnNames);
         columnTableView.setOnMouseClicked(new ColumnTableEventHandler());
@@ -114,64 +116,40 @@ public class DataFilterUI extends Application {
         Text tableNameTextBox = new Text();
         tableNameTextBox.setText("Enter Table Name:");
         
+        tableNameTextField = new TextField ();
+
+        Text replaceOriginalTextFilter = new Text();
+        replaceOriginalTextFilter.setText("Replace original table?");
+        
+        replacementOptionsComboBox = new ComboBox<>(replacementOptions);
+        replacementOptionsComboBox.getSelectionModel().select(0);
+        
         Button selectButton = new Button("Select Text");
         selectButton.setOnMouseClicked(new SelectButtonEventHandler());
         
         Button generateButton = new Button("Generate Table");
         generateButton.setOnMouseClicked(new GenerateButtonEventHandler());
         
-        tableNameTextField = new TextField ();
-        
         Button backButton = new Button("Back");
+        backButton.setOnMouseClicked(new BackButtonEventHandler());
+                
+        textFilterText = new Text();
+
         HBox textFilterBox = new HBox();
         textFilterBox.getChildren().addAll(selectButton, generateButton);
         textFilterBox.setAlignment(Pos.CENTER);
 
-        Separator separator = new Separator();
-        separator.setOrientation(Orientation.VERTICAL);
-        
-        Text tableNamesTextBox = new Text();
-        tableNamesTextBox.setText("Enter Table Names:");
-        
-        randomTableNameTextField1 = new TextField ();
-        randomTableNameTextField2 = new TextField ();
-        
-        Slider splitSlider = new Slider();
-        splitSlider.setMin(0);
-        splitSlider.setMax(100);
-        splitSlider.setValue(50);
-        splitSlider.setShowTickLabels(true);
-        splitSlider.setShowTickMarks(true);
-        splitSlider.setMajorTickUnit(50);
-        splitSlider.setMinorTickCount(5);
-        splitSlider.setBlockIncrement(10);
-        
-        Text splitRatio = new Text();
-        splitRatio.setText("50%");
-        
-        splitSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                Number old_val, Number new_val) {
-            	splitRatio.setText(String.format("%.2f", new_val)+"%");
-            }
-        });
-        
-        
-        VBox randomFilterVbox = new VBox(10);
-        randomFilterVbox.setPadding(new Insets(10, 10, 10, 10));
-        randomFilterVbox.setAlignment(Pos.CENTER);
-        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, splitSlider, splitRatio);
-
         VBox textFilterVbox = new VBox(10);
         textFilterVbox.setPadding(new Insets(10, 10, 10, 10));
         textFilterVbox.setAlignment(Pos.CENTER);
-        textFilterVbox.getChildren().addAll(tableNameTextBox, tableNameTextField, textFilterBox, backButton);
+        textFilterVbox.getChildren().addAll(tableNameTextBox, tableNameTextField, replaceOriginalTextFilter, 
+        		                            replacementOptionsComboBox, textFilterBox, backButton, textFilterText);
         
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox, separator, randomFilterVbox);
+        hbox.getChildren().addAll(columnTableView, textTableView, textFilterVbox);
         Scene scene = new Scene(hbox);
-        stage.setScene(scene);
-        stage.show();
+        stageDataFilterUI.setScene(scene);
+        stageDataFilterUI.show();
     }
     
 	private TableView<String> createTableView(String tableName, String[] data) {
@@ -212,7 +190,7 @@ public class DataFilterUI extends Application {
         public void handle(MouseEvent t) {
         		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
         		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
-        		Set<Object> selectedTextSet = new HashSet<Object>();
+        		Set<String> selectedTextSet = new HashSet<String>();
         		for(String selectedText: selectedTextList) {
         			selectedTextSet.add(selectedText);
         		}
@@ -223,18 +201,48 @@ public class DataFilterUI extends Application {
     
     private class GenerateButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
-        public void handle(MouseEvent t) {
-        	DataFilter filter = DataFilter.getFilter();
-        	//This is the dataTable that will be added to CoreData
-        	DataTable filteredDataTable = filter.TextFilter(currentTable, selectedRetainText);
-        	String userInput = tableNameTextField.getText();
-        	filteredDataTable.setName(userInput);     	
+        public void handle(MouseEvent t) 
+        {
         	CoreData coreData = CoreData.getInstance();
-        	int[] tableIndex = coreData.searchForDataTable(currentTable.getTableName());
-        	coreData.addChildTable(filteredDataTable, tableIndex[OUTER]);
+        	String tableName = tableNameTextField.getText();
+        	//Case: there is no user input
+        	if(tableName=="" || tableName.trim().isEmpty()) {
+        		textFilterText.setText("Table Name cannot be empty");
+        		return;
+        	}
+        	//Case: the table name already exist
+        	else if(!Arrays.equals(coreData.searchForDataTable(tableName),new int[] {-1,-1})) {
+        		textFilterText.setText("Table Name already exist");
+        		return;
+        	}
+        	//This is the dataTable that will be added to CoreData
+        	DataTable filteredDataTable = DataFilter.TextFilter(currentTable, selectedRetainText);
+        	filteredDataTable.setName(tableName);
         	
-        	filteredDataTable.printDataTable();
+        	if(filteredDataTable.getNumRow()==0) {
+        		textFilterText.setText("Please select entry to retain");
+        		return;
+        	}
+        	int[] tableIndex = coreData.searchForDataTable(currentTable.getTableName());
+        	if(replacementOptionsComboBox.getSelectionModel().getSelectedItem()=="Yes") {
+            	coreData.setDataTable(tableIndex, filteredDataTable);
+            	textFilterText.setText("Table \""+ tableName +"\" successfully replaced ");
+        	} else {
+            	coreData.addChildTable(filteredDataTable, tableIndex[OUTER]);
+            	textFilterText.setText("Table \""+ tableName +"\" successfully created");
+
+        	}
 		}
+    }
+    
+
+    
+    private class BackButtonEventHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent t) {
+        	DataHostingUI dataHostingUI = new DataHostingUI();
+        	dataHostingUI.start(stageDataFilterUI);
+        }
     }
     
     private void PrintSelectedRetainText() {

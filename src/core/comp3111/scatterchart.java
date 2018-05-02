@@ -16,6 +16,10 @@ import java.util.HashMap;
 
 public class scatterchart extends xychart{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2200543648037359595L;
+	/**
 	 * Constructor of the ScatterChart class.
 	 * 
 	 * @param DataTable

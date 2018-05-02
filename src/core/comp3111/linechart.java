@@ -15,6 +15,10 @@ import javafx.scene.chart.XYChart;
 
 public class linechart extends xychart{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5204086031235214239L;
+	/**
 	 * Constructor of the LineChart
 	 * Can extend it to more than one series
 	 * 
@@ -61,7 +65,7 @@ public class linechart extends xychart{
 						this.xlabel, this.DataTableName)) ;
 			}
 			else {
-				this.ydc = DataTable.getCol(this.xlabel);
+				this.ydc = DataTable.getCol(this.ylabel);
 			}
 		
 		//Check if the size for every DataColumns are the same

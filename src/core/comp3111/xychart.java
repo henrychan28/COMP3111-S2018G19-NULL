@@ -14,7 +14,12 @@ import java.io.Serializable;
 import javafx.scene.Scene;
 
 
-public class xychart implements Serializable {
+
+public class xychart implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2;
 	/**
 	 * Constructor of the Chart class
 	 * @param DataTable
