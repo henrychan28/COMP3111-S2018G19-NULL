@@ -1,6 +1,8 @@
 package ui.comp3111;
 
 import java.util.Arrays;
+
+import core.comp3111.Constants;
 import core.comp3111.CoreData;
 import core.comp3111.DataFilter;
 import core.comp3111.DataTable;
@@ -23,16 +25,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * DataRandomFilterUI is the UI for user to randomly split a dataTable into 
+ * two, enabling user to replace/add the split dataTable into the database. 
+ * 
+ * @author Henry Chan
 
+ */
 public class DataRandomFilterUI extends Application{
 
-	public static final int OUTER = 0;
-
 	private DataTable currentTable;
-
-	private TextField randomTableNameTextField1;
-	private TextField randomTableNameTextField2;
-	private Stage stageDataFilterUI;
+	private TextField tableNameTextField1;
+	private TextField tableNameTextField2;
+	private Stage stageRandomFilterUI;
 	private Text randomText;
 	private ObservableList<String> replacementOptions = 
 		    FXCollections.observableArrayList(
@@ -45,25 +50,23 @@ public class DataRandomFilterUI extends Application{
     	currentTable = dataTable;
     }
     
-    
-
 	public static void main(String[] args) {
         launch(args);
     }
-    
  
     @Override
     public void start(Stage stage) {
-    	stageDataFilterUI = stage;
-		stageDataFilterUI.setTitle("Data Filter Interface");
-		stageDataFilterUI.setWidth(350);
-		stageDataFilterUI.setHeight(500);
+    	//Initialization of stage
+    	stageRandomFilterUI = stage;
+		stageRandomFilterUI.setTitle("Data Filter Interface");
+		stageRandomFilterUI.setWidth(350);
+		stageRandomFilterUI.setHeight(500);
         
         Text tableNamesTextBox = new Text();
         tableNamesTextBox.setText("Enter Table Names:");
 
-        randomTableNameTextField1 = new TextField ();
-        randomTableNameTextField2 = new TextField ();
+        tableNameTextField1 = new TextField ();
+        tableNameTextField2 = new TextField ();
         
         splitSlider = new Slider();
         splitSlider.setMin(0);
@@ -108,23 +111,29 @@ public class DataRandomFilterUI extends Application{
         VBox randomFilterVbox = new VBox(10);
         randomFilterVbox.setPadding(new Insets(10, 10, 10, 10));
         randomFilterVbox.setAlignment(Pos.CENTER);
-        randomFilterVbox.getChildren().addAll(tableNamesTextBox, randomTableNameTextField1, randomTableNameTextField2, 
+        randomFilterVbox.getChildren().addAll(tableNamesTextBox, tableNameTextField1, tableNameTextField2, 
         									  splitSlider, splitRatio, replaceOriginalTextFilter2, replacementOptionsComboBox, 
         									  randomBox, randomText);
         Scene scene = new Scene(randomFilterVbox);
-        stageDataFilterUI.setScene(scene);
-        stageDataFilterUI.show();
+        stageRandomFilterUI.setScene(scene);
+        stageRandomFilterUI.show();
     }
     
 	
- 
+	/**
+	 * GenerateButtonEventHandler fires upon a click on the "generate button.
+	 * It will retrieve the table names from text fields and check whether is there any 
+	 * name clash with dataTables in CoreData. Upon confirmation of correct name 
+	 * and available name, if split tables are not empty, they will be added/replaced 
+	 * to the CoreData according to user's choice.
+	 */  
     private class GenerateButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) 
-        {
+        {	
         	CoreData coreData = CoreData.getInstance();
-        	String tableName1 = randomTableNameTextField1.getText();
-        	String tableName2 = randomTableNameTextField2.getText();
+        	String tableName1 = tableNameTextField1.getText();
+        	String tableName2 = tableNameTextField2.getText();
 
         	//Case: there is no user input
         	if(tableName1=="" || tableName1.trim().isEmpty() || 
@@ -145,35 +154,39 @@ public class DataRandomFilterUI extends Application{
         	randomDataTables[0].setName(tableName1);
         	randomDataTables[1].setName(tableName2);
         	
+        	//Case: there is a dataTable with no entry after split
         	if(randomDataTables[0].getNumRow()==0||randomDataTables[1].getNumRow()==0) {
             	randomText.setText("Error: One of the split table has no row");
             	return;
         	}
 
-
         	int[] tableIndex = coreData.searchForDataTable(currentTable.getTableName());
+        	//Case: the user selected to replace the original dataTable
         	if(replacementOptionsComboBox.getSelectionModel().getSelectedItem()=="Yes") {
             	coreData.setDataTable(tableIndex, randomDataTables[0]);
-            	coreData.addChildTable(randomDataTables[1], tableIndex[OUTER]);
+            	coreData.addChildTable(randomDataTables[1], tableIndex[Constants.OUTER]);
 
             	randomText.setText("Table \""+ tableName1 + "\" and \"" + tableName2 + "\" successfully replaced");
-        	} else {
-            	coreData.addChildTable(randomDataTables[0], tableIndex[OUTER]);
-            	coreData.addChildTable(randomDataTables[1], tableIndex[OUTER]);
+        	} 
+        	//Case: the user selected not to replace the original dataTable
+        	else {
+            	coreData.addChildTable(randomDataTables[0], tableIndex[Constants.OUTER]);
+            	coreData.addChildTable(randomDataTables[1], tableIndex[Constants.OUTER]);
             	randomText.setText("Table \""+ tableName1 + "\" and \"" + tableName2 + "\" successfully added");
 
         	}
 		}
     }
     
+	/**
+	 * Event handler for transition to the DataHostingUI
+	 */  
     private class BackButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
+			 //Return to the dataHostingUI  
         	DataHostingUI dataHostingUI = new DataHostingUI();
-        	dataHostingUI.start(stageDataFilterUI);
+        	dataHostingUI.start(stageRandomFilterUI);
         }
     }
-    
-
-
 }

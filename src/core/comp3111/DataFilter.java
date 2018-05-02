@@ -7,6 +7,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
+/**
+ * DataFilter class provides static methods for manipulating dataTable 
+ * 
+ * @author Henry Chan
+
+ */
 public class DataFilter {	
 	
 	/**
@@ -20,9 +28,7 @@ public class DataFilter {
 	 * @return newDataTable
 	 * 			   - a dataTable filtered with given retainValues
 	 */
-	public static DataTable TextFilter(DataTable dataTable, HashMap<String, Set<String>> retainValues) {
-		
-		//TO-DO: bug of selecting only one entry of the unique text
+	public static DataTable TextFilter(DataTable dataTable, HashMap<String, Set<String>> retainValues) {		
 		DataTable filteredTable = null;
 		ArrayList<Integer> index = new ArrayList<Integer>();
 		if (retainValues.keySet().size() != 0) for(int i=0;i<dataTable.getNumRow();i++) index.add(i);
@@ -39,11 +45,7 @@ public class DataFilter {
 				}
 			}
 		}
-		try{
-			filteredTable = FilterTableByIndex(dataTable, index);
-		} catch(Exception e) {
-			System.err.println(e.getMessage());
-		}
+		filteredTable = FilterTableByIndex(dataTable, index);
 		return filteredTable;
 	}
 	
@@ -72,12 +74,8 @@ public class DataFilter {
 		ArrayList<Integer> indexB = new ArrayList<>();
 		for(int i=0;i<cutOff;i++) indexA.add(randomIntegerArray[i]);
 		for(int i=cutOff;i<numRows;i++) indexB.add(randomIntegerArray[i]);
-		try {
-			splitedTables[0] = FilterTableByIndex(dataTable, indexA);
-			splitedTables[1] = FilterTableByIndex(dataTable, indexB);
-		} catch(Exception e) {
-			System.err.println(e.getMessage());
-		}
+		splitedTables[0] = FilterTableByIndex(dataTable, indexA);
+		splitedTables[1] = FilterTableByIndex(dataTable, indexB);
 		return splitedTables;
 	}
 	
@@ -110,7 +108,7 @@ public class DataFilter {
 	 * @return newDataTable
 	 * 			   - table filtered with given index
 	 */
-	public static DataTable FilterTableByIndex(DataTable dataTable, ArrayList<Integer> index) throws DataTableException{
+	public static DataTable FilterTableByIndex(DataTable dataTable, ArrayList<Integer> index){
 		DataTable newDataTable = new DataTable();
 		String[] columnNames = dataTable.getColumnNames();
 		for (String columnName:columnNames) {
@@ -121,8 +119,11 @@ public class DataFilter {
 			for(int i=0;i<index.size();i++) {
 				newData[i]=originalData[index.get(i)];
 			}
-			newDataTable.addCol(columnName, new DataColumn(originalTypeName,newData));
-			
+			try {
+				newDataTable.addCol(columnName, new DataColumn(originalTypeName,newData));
+			} catch(Exception e) {
+				e.getMessage();
+			}
 		}
 		return newDataTable;
 	} 
