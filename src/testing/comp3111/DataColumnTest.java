@@ -20,28 +20,22 @@ class DataColumnTest {
 
 	@Test
 	void testCoverageEmptyDataColumnConstructor() {
-
 		DataColumn dc = new DataColumn();
 		assert (dc.getSize() == 0);
-
 	}
 
 	@Test
 	void testCoverageNonEmptyDataColumnConstructor() {
-
 		Number[] arr = new Integer[] { 1, 2, 3, 4, 5 };
 		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
 		assert (dc.getSize() == 5);
-
 	}
 
 	@Test
 	void testCoverageGetDataAndType() {
-
 		DataColumn dc = new DataColumn();
 		assert (dc.getTypeName().equals(""));
 		assert (dc.getData() == null);
-
 	}
 	
 	@Test
@@ -78,4 +72,27 @@ class DataColumnTest {
 		DataColumn dc2 = new DataColumn(DataType.TYPE_STRING,arr2);
 		assertEquals(true,dc.equals(dc2));
 	}
+	
+	@Test
+	void testInvalidColType() {
+		String[] arr = new String[] { "Hey", "There", "Whats", "Up"};
+		DataColumn dc = new DataColumn("Invalid",arr);
+		assertEquals(DataType.TYPE_OBJECT, dc.getTypeName());
+	}
+	
+	@Test
+	void testColumnTypeInt() {
+		Number[] arr = new Integer[] { 1, 2, 3, 4, 5 };
+		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
+		assertEquals(true,dc.isInteger());
+	}
+	
+	@Test
+	void testColumnTypeInt_IsFloat() {
+		Number[] arr = new Number[] { 1.9, 2, 3, 4, 5 };
+		DataColumn dc = new DataColumn(DataType.TYPE_NUMBER, arr);
+		System.out.println(Math.round(arr[0].doubleValue()));
+		assertEquals(false,dc.isInteger());
+	}
+	
 }

@@ -2,6 +2,7 @@ package testing.comp3111;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -100,7 +101,7 @@ public class DataImportTest {
 	void getPath() {
 		DataImport i = new DataImport();
 		i.setFile("Documents/testEmpty.csv");
-		assertEquals(System.getProperty("user.dir") + "/Documents/testEmpty.csv",i.getAbsolutePath());
+		assertEquals(System.getProperty("user.dir") + File.separator + "Documents" + File.separator + "testEmpty.csv",i.getAbsolutePath());
 	}
 	
 	@Test

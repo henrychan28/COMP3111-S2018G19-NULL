@@ -104,15 +104,22 @@ public class Main extends Application {
 				lbStatusLabel.setText("File Selected: " + importFilePath);
 				
 				// Ask for the file name
-				dialog = new TextInputDialog("Name Here");
+				dialog = new TextInputDialog("Unique Table Name Here");
 				dialog.setTitle("Import CSV");
 				dialog.setHeaderText("Before importing, please enter a unique name for the table");
 				dialog.setContentText("Please enter the name:");
 				dialog.initOwner(stage);
-				dialog.initModality(Modality.APPLICATION_MODAL); 
+				dialog.initModality(Modality.APPLICATION_MODAL);
 
 				// Traditional way to get the response value.
-				Optional<String> result = dialog.showAndWait();
+				Optional<String> result = dialog.showAndWait();;
+				
+				// Until cancel or valid name is chosen, keep asking
+				while (result.isPresent() && result.get().trim().length() == 0) {
+					result = dialog.showAndWait();
+				}
+				
+				
 				if (result.isPresent()){
 					lbStatusLabel.setText("Table being called: " + result.get());
 				
@@ -128,6 +135,8 @@ public class Main extends Application {
 						selectedTableIndex = coreData.addParentTable(fileToImport.buildDataTable(columnData,result.get()));
 						lbStatusLabel.setText(String.format("DataTable Added: %d rows, %d columns", coreData.getDataTable(selectedTableIndex).getNumRow(),
 								coreData.getDataTable(selectedTableIndex).getNumCol()));
+					} else {
+						lbStatusLabel.setText("Table creation cancelled");
 					}
 				}
 			} 		

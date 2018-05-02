@@ -92,7 +92,7 @@ public class DataColumn implements Serializable {
 	public boolean isInteger() {
 		for (Object d: data) {
 			if (!(d instanceof Integer)) {
-				return  false;
+				return false;
 			}
 		}
 		return true;

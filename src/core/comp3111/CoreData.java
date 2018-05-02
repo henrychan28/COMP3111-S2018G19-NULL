@@ -365,8 +365,8 @@ public class CoreData implements Serializable {
 	 */
 	public static long getchartid() {
 		
-		CoreData.serialChartUID +=1;	
-		return CoreData.serialChartUID -1;
+		CoreData.serialChartUID += 1;	
+		return CoreData.serialChartUID - 1;
 	}
 	
 	
@@ -386,6 +386,7 @@ public class CoreData implements Serializable {
 	public void destroyData() {
 		masterTableList = new ArrayList<ArrayList<DataTable>>();
 		masterChartList = new HashMap<String, ArrayList<xychart>>();
+		serialChartUID = 0;
 		transactID = 0;
 	}
 	

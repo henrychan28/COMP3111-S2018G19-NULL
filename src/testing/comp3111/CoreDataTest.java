@@ -278,4 +278,16 @@ public class CoreDataTest {
 		coreData.addParentTable(dt);
 		assertEquals(true, coreData.doesTableExist("nom"));
 	}
+	
+	@Test
+	void peekChartUID() {
+		assertEquals(0,CoreData.checkchartid());
+	}
+	
+	@Test
+	void checkChartUID() {
+		assertEquals(0,CoreData.getchartid());
+		assertEquals(1,CoreData.getchartid());
+	}
+	
 }
