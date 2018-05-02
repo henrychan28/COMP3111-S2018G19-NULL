@@ -20,9 +20,8 @@ public class linechart extends xychart{
 	 */
 	private static final long serialVersionUID = -5204086031235214239L;
 	/**
-	 * Constructor of the LineChart
-	 * Can extend it to more than one series
-	 * 
+	 * The only Constructor of the linechart class
+	 * 	 
 	 * @param DataTable
 	 * 			- the DataTable object. It should contains at least 2 Number type DataColumns.
 	 * @param AxisLabels
@@ -94,9 +93,8 @@ public class linechart extends xychart{
 		//Keep track of the Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
+
 		
-		//final NumberAxis xAxis = new NumberAxis();
-		//final NumberAxis yAxis = new NumberAxis();
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(this.xlabel);
