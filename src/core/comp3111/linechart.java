@@ -85,8 +85,16 @@ public class linechart extends xychart implements Serializable{
 					+ "y-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 					ylabel, this.ydc.getTypeName()));
 		}
-	
-		 
+		//Initialize the series
+		//Keep track of the Object[] from DataColumn
+		Object[] xarray = xdc.getData();
+		Object[] yarray = ydc.getData();
+		//Define a series 
+		 this.series =  new XYChart.Series<Number, Number>();
+		 //this.series.setName(this.ylabel);
+		 for (int i = 0; i < this.SizeOfdc; i ++) {
+			 this.series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
+		 }
 	}
 	/**
 	 * Override the getXYChart in xychart class to return a line chart. 
@@ -95,6 +103,8 @@ public class linechart extends xychart implements Serializable{
 	public  XYChart<Number, Number> getXYChart() {
 		return getLineChart();
 	}
+	
+	
 	/**
 	 * Background function of making the LineChart using the saved parameters.
 	 * 
@@ -103,13 +113,8 @@ public class linechart extends xychart implements Serializable{
 	 */
 	
 	
-	public LineChart<Number, Number> getLineChart () {
+	private LineChart<Number, Number> getLineChart () {
 		//Create the line chart from javafx	
-
-		
-		//Keep track of the Object[] from DataColumn
-		Object[] xarray = xdc.getData();
-		Object[] yarray = ydc.getData();
 
 		
 		NumberAxis xAxis = new NumberAxis();
@@ -119,13 +124,7 @@ public class linechart extends xychart implements Serializable{
 		LineChart<Number, Number> xychart  = new LineChart<Number, Number> (xAxis, yAxis); 
 
 		xychart.setTitle(this.ChartName); //title of the chart is the ChartName
-		
-		//Define a series 
-		 this.series =  new XYChart.Series<Number, Number>();
-		 //this.series.setName(this.ylabel);
-		 for (int i = 0; i < this.SizeOfdc; i ++) {
-			 this.series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
-		 }
+
 		//Add the series to the LineChart
 		 xychart.getData().add(this.series);
 		 

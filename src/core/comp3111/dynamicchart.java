@@ -43,7 +43,7 @@ public class dynamicchart extends xychart implements Serializable {
 	protected DataColumn xdc;
 	protected DataColumn ydc;
 	protected DataColumn cdc;
-	protected HashMap<Object, XYChart.Series<Number, Number>> allSeries;
+	protected HashMap<Object, XYChart.Series<Number, Number>> allSeries; //updating overtime. 
 	protected int SizeOfdc;
 
 	/**

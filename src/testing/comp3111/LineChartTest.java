@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
@@ -16,12 +17,13 @@ import core.comp3111.ChartTypeValue;
 import core.comp3111.CoreData;
 import core.comp3111.DataType;
 import core.comp3111.linechart;
+import core.comp3111.xychart;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 /**
- * Test cases for linechart class.
+ * Test cases for linechart class and xychart class. 
  * 
  * @author YuenTing
  *
@@ -185,8 +187,7 @@ public class LineChartTest {
 		linechart x = new linechart(dataTable, AxisLabels, "123");
 		ObservableList<Series<Number, Number>> series = x.getXYChart().getData();
 		assertAll(()-> assertNotNull(x.getXYChart()),
-				()->assertEquals(series.size(), 1),
-				()->assertEquals(series.get(0).getName(), "testNumColumn_1"),
+				()->assertEquals(series.size(), 1),				
 				()->assertEquals(series.get(0).getData().size(), 6),
 				()->assertEquals(series.get(0).getData().get(0).getXValue(), 1),
 				()->assertEquals(series.get(0).getData().get(1).getXValue(), 2),
@@ -215,6 +216,15 @@ public class LineChartTest {
 		linechart x = new linechart(dataTable, AxisLabels, "123");
 		assertEquals("123_" + Long.toString(CoreData.checkchartid() - 1), x.getChartID());
 
+	}
+	@Test
+	void testgetXYChartForxychart() throws ChartException, DataTableException {
+		DataTable dataTable = new DataTable("Topology");
+		dataTable.addCol("testNumColumn_0", testNumColumn_0);
+		dataTable.addCol("testNumColumn_1", testNumColumn_1);
+		String[] AxisLabels = { "testNumColumn_0", "testNumColumn_1" };
+		xychart x = new xychart(dataTable, AxisLabels, "WeLoveMath", "No_Type");
+		assertNull(x.getXYChart());
 	}
 
 }

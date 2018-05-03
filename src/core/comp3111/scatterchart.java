@@ -102,37 +102,11 @@ public class scatterchart extends xychart implements Serializable{
 					category, this.cdc.getTypeName()));
 		}
 		
-		
-	}
-	/**
-	 * Override the getXYChart in xychart class to return a scatter chart. 
-	 */
-	@Override
-	public  XYChart<Number, Number> getXYChart() {
-		return getScatterChart();
-	}
-	/**
-	 * Background function of making the ScatterChart using the saved parameters.
-	 * 
-	 * @return ScatterChart <Number, Number>
-	 * 			- ScatterChart
-	 */
-	
-	private ScatterChart <Number, Number> getScatterChart(){
+		//Initialize allSeries 
 		//Initialize: Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
 		Object[] carray = cdc.getData();
-		
-		//Create the scatter chart from javafx
-
-		NumberAxis xAxis = new NumberAxis();
-		NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel(this.xlabel);
-		yAxis.setLabel(this.ylabel);
-		
-		ScatterChart <Number, Number > xychart  = new ScatterChart<Number, Number> (xAxis, yAxis); 
-		xychart.setTitle(this.ChartName); //title of the chart is the ChartName
 		//defining a series for each category
 		
 		this.allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
@@ -155,6 +129,34 @@ public class scatterchart extends xychart implements Serializable{
 			}		
 			
 		}
+	}
+	/**
+	 * Override the getXYChart in xychart class to return a scatter chart. 
+	 */
+	@Override
+	public  XYChart<Number, Number> getXYChart() {
+		return getScatterChart();
+	}
+	/**
+	 * Background function of making the ScatterChart using the saved parameters.
+	 * 
+	 * @return ScatterChart <Number, Number>
+	 * 			- ScatterChart
+	 */
+	
+	private ScatterChart <Number, Number> getScatterChart(){
+
+		
+		//Create the scatter chart from javafx
+
+		NumberAxis xAxis = new NumberAxis();
+		NumberAxis yAxis = new NumberAxis();
+		xAxis.setLabel(this.xlabel);
+		yAxis.setLabel(this.ylabel);
+		
+		ScatterChart <Number, Number > xychart  = new ScatterChart<Number, Number> (xAxis, yAxis); 
+		xychart.setTitle(this.ChartName); //title of the chart is the ChartName
+
 		
 		//Add all series to the ScatterChart
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry: allSeries.entrySet()) {
