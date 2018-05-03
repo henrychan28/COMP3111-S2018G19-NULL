@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -50,7 +51,7 @@ public class DynamicChartTest {
 	@BeforeEach
 	void init() {
 		com.sun.javafx.application.PlatformImpl.startup(() -> {});
-		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, (double) 0, (double) 1, (double) 1, (double) 5, (double) 5 }); //integer type
+		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, (double) 0, (double) 2, (double) 1, (double) 5, (double) 5 }); //integer type
 		testIntColumn_1 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 15, 20, 5, 6, 11, 5 , 15}); //integer type 
 		
 		testNumColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 1.3, 2, 3.5, 2.1, 1.523, 2 , 4.23}); //float type
@@ -194,7 +195,7 @@ public class DynamicChartTest {
 		assertThrows(ChartException.class, () -> new dynamicchart(dataTable, AxisLabels, "NumberForthLabel"));
 	}
 	@Test
-	void testCoverageOfConstructor_getChartName_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetChartName_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -205,7 +206,7 @@ public class DynamicChartTest {
 		assertEquals("MaxwellEquation", dc.getChartName());
 	}
 	@Test
-	void testCoverageOfConstructor_getChartID_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetChartID_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -217,7 +218,7 @@ public class DynamicChartTest {
 	}
 	
 	@Test
-	void testCoverageOfConstructor_getDataTableName_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetDataTableName_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Stephen");
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -228,7 +229,7 @@ public class DynamicChartTest {
 		assertEquals("Stephen", dc.getDataTableName());
 	}
 	@Test
-	void testCoverageOfConstructor_getAxisLabels_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetAxisLabels_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Hello");
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -239,7 +240,7 @@ public class DynamicChartTest {
 		assertEquals(AxisLabels, dc.getAxisLabels());
 	}
 	@Test
-	void testCoverageOfConstructor_getChartType_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetChartType_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Hello");
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -253,7 +254,7 @@ public class DynamicChartTest {
 	
 	
 	@Test
-	void testCoverageOfConstructor_getXYChart_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetXYChart_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Chicken");
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -306,9 +307,8 @@ public class DynamicChartTest {
 				
 				);
 	}
-	
 	@Test
-	void testCoverageOfConstructor_setAnimateTrue_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
+	void testgetPointer() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Chicken");
 		dataTable.addCol("testIntColumn_0", testIntColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -316,29 +316,49 @@ public class DynamicChartTest {
 		dataTable.addCol("testStrColumn_1", testStrColumn_1);
 		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
-		long startTime = System.currentTimeMillis();
-		dc.Animate((ScatterChart<Number, Number>)dc.getXYChart(), true);
-		while(false||(System.currentTimeMillis()-startTime)<5500)
-		{
-			//Let the animation run for some time
-			
-		}
-		dc.Animate((ScatterChart<Number, Number>)dc.getXYChart(),false);
-		
-		//make sure Animate() won't destroy variables in dynamicchart
-		assertAll( ()->assertEquals(dc.getAxisLabels(), AxisLabels),
-				()->assertEquals(dc.getChartName(), "Wings"),
-				()->assertEquals(dc.getChartID(), "Wings_"+ Long.toString(CoreData.checkchartid()-1)),
-				()->assertEquals(dc.getChartType(),ChartTypeValue.TYPE_DYNAMIC),
-				()->assertEquals(dc.getDataTableName(), "Chicken")
+		assertAll(()->assertEquals(0, 	dc.getPointer()),
+				()->assertEquals(1, 	dc.getPointer()),
+				()->assertEquals(2, 	dc.getPointer()),
+				()->assertEquals(3, 	dc.getPointer()),
+				()->assertEquals(4, 	dc.getPointer()),
+				()->assertEquals(5, 	dc.getPointer()),
+				()->assertEquals(0, 	dc.getPointer())
 				);
-		
-		
 	}
+	@Test
+	void testinitPointer() throws DataTableException, ChartException {
+		DataTable dataTable = new DataTable("Chicken");
+		dataTable.addCol("testIntColumn_0", testIntColumn_0);
+		dataTable.addCol("testNumColumn_1", testNumColumn_1);
+		dataTable.addCol("testNumColumn_2", testNumColumn_2);
+		dataTable.addCol("testStrColumn_1", testStrColumn_1);
+		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
+		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
+		dc.getPointer();
+		dc.initPointer();
+		assertEquals(0, dc.getPointer());
+	}
+
 	
-	
-	
-	
+	@Test
+	void testgetIndex() throws DataTableException, ChartException {
+		DataTable dataTable = new DataTable("Chicken");
+		dataTable.addCol("testIntColumn_0", testIntColumn_0);
+		dataTable.addCol("testNumColumn_1", testNumColumn_1);
+		dataTable.addCol("testNumColumn_2", testNumColumn_2);
+		dataTable.addCol("testStrColumn_1", testStrColumn_1);
+		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
+		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
+		
+		ArrayList<Number> x = new ArrayList<Number>();
+		x.add(0);x.add(1);x.add(2);
+		ArrayList<Number> y = new ArrayList<Number>();
+		y.add(4);
+		assertAll(()->assertEquals(x, dc.getIndex()),
+		()->assertEquals(y, dc.getIndex())
+		);
+
+	}
 	
 	
 	
