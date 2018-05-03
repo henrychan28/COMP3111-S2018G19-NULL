@@ -277,13 +277,21 @@ public class dynamicchart extends xychart {
 		Object[] tarray = this.tdc.getData();
 		int p = getPointer();
 		for (int i = 0; i < tarray.length; i++) {
-			if (tarray[i] instanceof Double) {
+			if (tarray[i] instanceof Double) { 
 				Double t = (Double) tarray[i];
 				int d_int = t.intValue();
 				if (d_int == p) {
 					indexes.add(i);
 				}
+			
+			}	
+			//else: must be integer, guarantee by isInteger() in DataColumn
+			else {//if (tarray[i] instanceof Integer) {
+				if( (int)tarray[i] == p) {
+					indexes.add(i);
+				}
 			}
+			//
 
 		}
 		return indexes;

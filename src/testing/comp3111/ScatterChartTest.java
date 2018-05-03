@@ -302,7 +302,7 @@ public class ScatterChartTest{
 
 		assertAll(()->assertNotNull(sc.getXYChart()),
 				()->assertNotNull(sc.getXYChart().getData()),
-				() -> assertEquals(allSeries.size(), 5),
+				() -> assertEquals(5, allSeries.size()),
 				()->assertEquals("One", allSeries.get(PosOfhm[0]).getName()),
 				()->assertEquals("Two", allSeries.get(PosOfhm[1]).getName()),
 				()->assertEquals("Three", allSeries.get(PosOfhm[2]).getName()),

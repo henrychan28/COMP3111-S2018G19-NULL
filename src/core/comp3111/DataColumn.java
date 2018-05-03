@@ -93,7 +93,6 @@ public class DataColumn implements Serializable {
 	
 	public boolean isInteger() {
 		if (typeName != DataType.TYPE_NUMBER) {
-			System.out.print("bye");
 
 			return false;
 		}
@@ -106,12 +105,17 @@ public class DataColumn implements Serializable {
 			} else if(data[index] instanceof Double) {
 				stringArrayForStoreDouble[index]=((Double)data[index]).doubleValue();
 			} else if(data[index] instanceof Byte){
-				stringArrayForStoreDouble[index]=((Byte)data[index]).doubleValue();
+				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
+				return false;
+				//stringArrayForStoreDouble[index]=((Byte)data[index]).doubleValue();
 			} else if(data[index] instanceof Short){
-				stringArrayForStoreDouble[index]=((Short)data[index]).doubleValue();
+				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
+				return false;
+				//stringArrayForStoreDouble[index]=((Short)data[index]).doubleValue();
 			} else {
 				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
-			}
+				return false;
+				}
 		}
 		
 		for (double d : stringArrayForStoreDouble) {
