@@ -1,7 +1,7 @@
 package core.comp3111;
 
 /**
- * The implementation of the ScatterChart Type
+ * The implementation of the scatterchart class. 
  * 
  * @author YuenTing
  *

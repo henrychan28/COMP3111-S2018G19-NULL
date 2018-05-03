@@ -1,5 +1,7 @@
 package core.comp3111;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -90,8 +92,35 @@ public class DataColumn implements Serializable {
 	 */
 	
 	public boolean isInteger() {
-		for (Object d: data) {
-			if (!(d instanceof Integer)) {
+
+		if (typeName != DataType.TYPE_NUMBER) {
+
+			return false;
+		}
+		
+		
+		double[] stringArrayForStoreDouble = new double[data.length];
+		for(int index=0;index<data.length;index++) {
+			if(data[index] instanceof Integer) {
+				stringArrayForStoreDouble[index]=(double)((Integer)data[index]).intValue();
+			} else if(data[index] instanceof Double) {
+				stringArrayForStoreDouble[index]=((Double)data[index]).doubleValue();
+			} else if(data[index] instanceof Byte){
+				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
+				return false;
+				//stringArrayForStoreDouble[index]=((Byte)data[index]).doubleValue();
+			} else if(data[index] instanceof Short){
+				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
+				return false;
+				//stringArrayForStoreDouble[index]=((Short)data[index]).doubleValue();
+			} else {
+				System.err.println("The casting type is not support - only Integer/Double are supported - " + data[index].getClass().toString());
+				return false;
+				}
+		}
+		
+		for (double d : stringArrayForStoreDouble) {
+			if(Math.ceil(d) != Math.floor(d)) {
 				return false;
 			}
 		}

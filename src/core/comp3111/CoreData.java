@@ -266,13 +266,14 @@ public class CoreData implements Serializable {
 	
 	
 	/**
-	 * Add the Chart to the masterChartList.
+	 * Add the Chart to the masterChartList for a specific DataTable.
 	 * 
 	 * @param DataTableName
-	 * 			- Corresponding DataTable
-	 * @param ChartName
-	 * 			- ChartName
-	 * @return true if success, false otherwise
+	 * 			- String, Corresponding DataTable Name
+	 * @param xychart
+	 * 			- the xychart object
+	 * @return boolean
+	 * 			- true if success, false otherwise
 	 */
 	public boolean addChart(String DataTableName, xychart xychart) {
 		boolean success = false;
@@ -295,7 +296,10 @@ public class CoreData implements Serializable {
 	 * 
 	 * 
 	 * @param DataTable
-	 * @return ArrayList<xychart> if there is charts for DataTable. null otherwise.
+	 * 			- String, DataTable Name
+	 * @return ArrayList<xychart> 
+	 * 			- it is the ArrayList of the xychart(s) if there exists charts for DataTable. 
+	 * 			- null otherwise.
 	 */
 	public ArrayList<xychart> getCharts(String DataTable){
 		return masterChartList.get(DataTable);
@@ -303,7 +307,14 @@ public class CoreData implements Serializable {
 	
 	
 	/**
+	 * Get the Number of Charts of the input DataTable with input ChartType.
 	 * 
+	 * @param DataTableName 
+	 * 		- String, Name of the DataTable that the charts belong to
+	 * @param ChartType 
+	 * 		- String, Type of the Chart intends to get. Defined in ChartTypeValue.java.
+	 * @return int
+	 * 		- Number of Charts with inputed ChartType and inputed DataTable (with Name: DataTableName)
 	 */
 	public int getNumChartsWithType(String DataTableName, String ChartType){
 		int num = 0;
@@ -319,10 +330,23 @@ public class CoreData implements Serializable {
 		
 		
 	}
+	/**
+	 * Get the list of charts of the inputed chart type of a specific DataTable.
+	 * 
+	 * @param DataTableName
+	 * 			- String, Name of the DataTable
+	 * @param ChartType
+	 * 			- String, Type of the chart. Define in ChartTypeValue.java.
+	 * @return ArrayList<xychart>
+	 * 			- an ArrayList of xychart(s) of specific ChartType of the specific DataTable if exists
+	 *			- null if not exists
+	 */	
 	
 	public ArrayList<xychart> getChartsWithType(String DataTableName, String ChartType){
 		ArrayList<xychart> charts = masterChartList.get(DataTableName);
-		if (charts == null) {return null;}
+		if (charts == null) {
+			return null;
+		}
 		ArrayList<xychart> chart_ChartType = new ArrayList<xychart>();
 		for (xychart chart: charts) {
 			if (chart.getChartType().equals(ChartType)) {
@@ -342,8 +366,12 @@ public class CoreData implements Serializable {
 	 * get the chart with ChartID known and DataTable known 
 	 * 
 	 * @param DataTableName
+	 * 			- String, The Name of the DataTable
 	 * @param ChartID
-	 * @return the xychart if existed. null otherwise.
+	 * 			- String, ChartID of the chart intented to get
+	 * @return xychart
+	 * 			- the xychart with ChartID of the DataTable if existed. 
+	 * 			- null otherwise.
 	 */
 	public xychart getChart(String DataTableName, String ChartID) {
 		if (masterChartList.containsKey(DataTableName)) {
@@ -359,21 +387,22 @@ public class CoreData implements Serializable {
 	}
 	
 	/**
-	 * Get and update the chartid. 
+	 * Get and update the chartid in CoreData class. 
 	 * 
-	 * @return long chartid
+	 * @return long 
+	 * 			- current chartid in the CoreData class
 	 */
-	public static long getchartid() {
-		
+	public static long getchartid() {	
 		CoreData.serialChartUID += 1;	
 		return CoreData.serialChartUID - 1;
 	}
 	
 	
 	/**
-	 * Get the chartid. No updating. 
+	 * Check the chartid in the CoreData class. No updating. 
 	 * 
-	 * @return long chartid
+	 * @return long
+	 * 			- current chartid in the CoreData class.
 	 */
 	public static long checkchartid() {
 		return CoreData.serialChartUID;
