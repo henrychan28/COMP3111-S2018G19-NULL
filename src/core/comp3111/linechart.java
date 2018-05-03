@@ -77,14 +77,15 @@ public class linechart extends xychart implements Serializable {
 		SizeOfdc = xdc.getSize();
 
 		// Check: Both DataColumn must be number type
-		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
+		if (!this.xdc.getTypeName().equals(DataType.TYPE_NUMBER)) {
 			throw new ChartException(this.ChartType,
 					String.format(
 							"Inconsistent Data Column type: "
 									+ "x-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 							xlabel, this.xdc.getTypeName()));
 		}
-		if (this.ydc.getTypeName() != DataType.TYPE_NUMBER) {
+		if (!this.ydc.getTypeName() .equals(DataType.TYPE_NUMBER)) {
+
 			throw new ChartException(this.ChartType,
 					String.format(
 							"Inconsistent Data Column type: "

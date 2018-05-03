@@ -2,9 +2,14 @@ package ui.comp3111;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import core.comp3111.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -55,6 +60,7 @@ public class GenerateChartUI extends Application {
 	 * 		- int[] Index of the DataTable used for chart generating.
 	 */
 	public GenerateChartUI(int[] tableIndex) {
+
 		this.selectedTableIndex = tableIndex;
 	}
 	/**
@@ -71,12 +77,15 @@ public class GenerateChartUI extends Application {
 		initScenes();
 		initEventHandlers();
 		putSceneOnStage(SCENE_Chart_TYPE_SELECTION);
+
+	
 	}
 
 	// Data Storage and selected ChartType. 
 	private CoreData coreData = CoreData.getInstance();
 	private int[] selectedTableIndex = { Constants.EMPTY, Constants.EMPTY };
 	private String ChartType; // defined in ChartTypeValue
+	ScheduledFuture future = null;
 
 	// Attributes: Scene and Stage
 	public static final int SCENE_CHART_NUM = 6;
@@ -155,6 +164,7 @@ public class GenerateChartUI extends Application {
 		// show ScatterChart
 		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 2
 				&& (selectedDataTable.getNumColOfType(DataType.TYPE_STRING))  >= 1) {
+
 						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 			cbChartType.getItems().add(ChartTypeValue.TYPE_SCATTER);
 		}
@@ -162,6 +172,7 @@ public class GenerateChartUI extends Application {
 		if (selectedDataTable.getNumColOfType(DataType.TYPE_NUMBER) >= 3 && 
 				selectedDataTable.getNumColOfInteger() >=1 &&
 				(selectedDataTable.getNumColOfType(DataType.TYPE_STRING))  >= 1) {
+
 						//+selectedDataTable.getNumColOfType(DataType.TYPE_OBJECT))  >= 1) {
 				cbChartType.getItems().addAll(ChartTypeValue.TYPE_DYNAMIC);
 			}
@@ -348,14 +359,14 @@ public class GenerateChartUI extends Application {
 			cbScatterYaxis.getItems().addAll(keys);
 		}
 		String[] keys2 = selectedDataTable.getColKeysOfType(DataType.TYPE_STRING);
-		String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
+		//String[] keys3 = selectedDataTable.getColKeysOfType(DataType.TYPE_OBJECT);
 
 		if (keys2 != null) {
 			cbScatterCaxis.getItems().addAll(keys2);
 		}
-		if (keys3 != null) {
+		/*if (keys3 != null) {
 			//cbScatterCaxis.getItems().addAll(keys3);
-		}
+		}*/
 		
 		// 6
 		lbscattermsg = new Label("");
@@ -414,8 +425,7 @@ public class GenerateChartUI extends Application {
 					cbDynamicXaxis.getItems().addAll(keys);	
 					cbDynamicYaxis.getItems().addAll(keys);	
 					for(String key: keys) {
-						System.out.print(key);
-
+					
 						if (selectedDataTable.getCol(key).isInteger()) {
 
 							cbDynamicTaxis.getItems().add(key);	//TODO: Taxis should be increasing
@@ -486,6 +496,7 @@ public class GenerateChartUI extends Application {
 
 		// button
 		btbackto2 = new Button("Back to History.");
+		
 
 		VBox container = new VBox(20);
 		container.setAlignment(Pos.CENTER);
@@ -524,11 +535,11 @@ public class GenerateChartUI extends Application {
 				lbmessage.setText("");
 				cbChartType.setValue(null);
 
-				if (ChartType == ChartTypeValue.TYPE_LINE) {
+				if (ChartType.equals(ChartTypeValue.TYPE_LINE)) {
 					putSceneOnStage(SCENE_LINE_CHART_SELECTION);
-				} else if (ChartType == ChartTypeValue.TYPE_SCATTER) {
+				} else if (ChartType.equals(ChartTypeValue.TYPE_SCATTER)) {
 					putSceneOnStage(SCENE_SCATTER_CHART_SELECTION);
-				} else if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+				} else if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC)) {
 					putSceneOnStage(SCENE_DYNAMIC_CHART_SELECTION);
 				}
 
@@ -565,9 +576,31 @@ public class GenerateChartUI extends Application {
 			} else {
 				// chartShowChart updated by tvhistory
 				updateShowChartScene();
-				if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+				if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC) ){
 					//show animation
-					dChart.Animate((ScatterChart<Number, Number>)chartShowChart, true);
+					//dChart.Animate((ScatterChart<Number, Number>)chartShowChart, true);
+					
+					dChart.initPointer();
+					// allSeries helper
+					HashMap<Object, XYChart.Series<Number, Number>> allSeries
+					= new HashMap<Object, XYChart.Series<Number, Number>>();
+					final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+						Runnable dataGetter = () -> {
+							Platform.runLater(() -> {
+								// update ui
+								ArrayList<Integer> indexes = dChart.getIndex();
+								dChart.indexesToAllSeries(indexes, allSeries);
+								// Add all series to the ScatterChart
+								dChart.addAllSeriesToChart((ScatterChart<Number, Number>)chartShowChart, allSeries);
+
+							});
+						};
+						// update every second
+						 future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
+					
+					if(future == null) {
+						System.out.println("whywhy tell me why?");
+					}
 				}
 				// and then show chart
 				putSceneOnStage(SCENE_SHOW_CHART);
@@ -788,7 +821,32 @@ public class GenerateChartUI extends Application {
 						cbDynamicXaxis.setValue(null);
 						cbDynamicYaxis.setValue(null);
 						cbDynamicCaxis.setValue(null);
-						dc.Animate((ScatterChart<Number, Number>)chartShowChart, true);
+						//dc.Animate((ScatterChart<Number, Number>)chartShowChart, true);
+						if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC) ){
+							//show animation
+									
+								dChart.initPointer();
+								// allSeries helper
+								HashMap<Object, XYChart.Series<Number, Number>> allSeries
+								= new HashMap<Object, XYChart.Series<Number, Number>>();
+								final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+									Runnable dataGetter = () -> {
+										Platform.runLater(() -> {
+											
+											// update ui
+										
+											ArrayList<Integer> indexes = dChart.getIndex();
+											dChart.indexesToAllSeries(indexes, allSeries);
+											// Add all series to the ScatterChart
+											dChart.addAllSeriesToChart((ScatterChart<Number, Number>)chartShowChart, allSeries);
+
+										});
+									};
+									// update every second
+									 future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
+							}
+						
+						
 						putSceneOnStage(SCENE_SHOW_CHART);
 
 					} catch (ChartException e1) {
@@ -814,10 +872,16 @@ public class GenerateChartUI extends Application {
 
 		btbackto2.setOnAction(e -> {
 			// update the view history scene, since not yet updated after creating chart
-			if(dChart != null) {
-				dChart.Animate((ScatterChart<Number, Number>)chartShowChart, false);
+			if(ChartType.equals(ChartTypeValue.TYPE_DYNAMIC)) {
+				//System.out.print(dChart.getChartID());
+				//dChart.Animate((ScatterChart<Number, Number>)chartShowChart, false);
+				future.cancel(true);
+				future = null;
 				dChart = null;
 			}
+			//System.out.println("Garbage collection called");
+			//System.gc();
+			//System.runFinalization();
 			updateHistoryScene();
 			
 		});
@@ -932,7 +996,7 @@ public class GenerateChartUI extends Application {
 			xychart selectedchart = olhistory.get(selected);
 			// updated the selected chart to scene 6
 			chartShowChart = selectedchart.getXYChart();
-			if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
+			if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC)) {
 				//keep track of it for animation
 				dChart = (dynamicchart) selectedchart;
 			}

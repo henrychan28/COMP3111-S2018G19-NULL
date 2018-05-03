@@ -212,11 +212,11 @@ public class DataTable implements Serializable{
 		//Iterate every element in dc
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			String type = entry.getValue().getTypeName();
-			if (type == colType) {
+
+			if (type.equals(colType) ) {
 				Num +=1;
 			}	
 		}
-		
 		return Num;
 	}
 	/**
@@ -235,13 +235,12 @@ public class DataTable implements Serializable{
 			return null;
 		}
 		String [] keys = new String[size];
-		//System.out.print(size);
 
 		//iterate the HashMap dc
 		int i = 0;
 		for (Map.Entry<String, DataColumn> entry: dc.entrySet()) {
 			String type = entry.getValue().getTypeName();
-			if (type == colType) {
+			if (type.equals(colType)) {
 
 				keys[i] = entry.getKey();
 				i++;

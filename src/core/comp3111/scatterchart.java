@@ -83,16 +83,17 @@ public class scatterchart extends xychart implements Serializable {
 
 		// Initialize: Keep track of the size of DataColumn
 		SizeOfdc = xdc.getSize();
+		
 
 		// First two DataColumn must be Number Type
-		if (this.xdc.getTypeName() != DataType.TYPE_NUMBER) {
+		if (!this.xdc.getTypeName().equals(DataType.TYPE_NUMBER)) {
 			throw new ChartException(this.ChartType,
 					String.format(
 							"Inconsistent Data Column type: "
 									+ "x-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 							xlabel, this.xdc.getTypeName()));
 		}
-		if (this.ydc.getTypeName() != DataType.TYPE_NUMBER) {
+		if (!this.ydc.getTypeName().equals( DataType.TYPE_NUMBER)) {
 			throw new ChartException(this.ChartType,
 					String.format(
 							"Inconsistent Data Column type: "
@@ -100,7 +101,7 @@ public class scatterchart extends xychart implements Serializable {
 							ylabel, this.ydc.getTypeName()));
 		}
 		// Third DataColumn must be String Type
-		if (this.cdc.getTypeName() != DataType.TYPE_STRING) {
+		if (!this.cdc.getTypeName().equals( DataType.TYPE_STRING)) {
 			throw new ChartException(this.ChartType,
 					String.format(
 							"Inconsistent Data Column type: "
