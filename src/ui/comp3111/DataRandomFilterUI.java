@@ -146,6 +146,11 @@ public class DataRandomFilterUI extends Application{
         		randomText.setText("Table Name cannot be empty");
         		return;
         	}
+        	//Case: table names in textfield are the same
+        	else if(tableName1.equals(tableName2)) {
+        		randomText.setText("Please enter different names");
+        		return;
+        	}
         	//Case: the table name already exist
         	else if(!Arrays.equals(coreData.searchForDataTable(tableName1),new int[] {-1,-1})||
         			!Arrays.equals(coreData.searchForDataTable(tableName2),new int[] {-1,-1})) {
