@@ -97,13 +97,14 @@ public class linechart extends xychart{
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
 		xAxis.setLabel(this.xlabel);
+		yAxis.setLabel(this.ylabel);
 		
 		this.xychart  = new LineChart<Number, Number> (xAxis, yAxis); 
 		this.xychart.setTitle(this.ChartName); //title of the chart is the ChartName
 		
 		//Define a series 
 		 this.series =  new XYChart.Series<Number, Number>();
-		 this.series.setName(this.ylabel);
+		 //this.series.setName(this.ylabel);
 		 for (int i = 0; i < this.SizeOfdc; i ++) {
 			 this.series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
 		 }
