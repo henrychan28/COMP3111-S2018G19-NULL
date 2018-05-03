@@ -4,6 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import core.comp3111.DataColumn;
@@ -14,6 +18,9 @@ import core.comp3111.ChartTypeValue;
 import core.comp3111.CoreData;
 import core.comp3111.DataType;
 import core.comp3111.dynamicchart;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 
 /**
  * Test cases for dynamicchart.java.
@@ -42,7 +49,7 @@ public class DynamicChartTest {
 	@BeforeEach
 	void init() {
 		com.sun.javafx.application.PlatformImpl.startup(() -> {});
-		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, 0, 1, 1, 5, 5 }); //integer type
+		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, (double) 0, (double) 1, (double) 1, (double) 5, (double) 5 }); //integer type
 		testIntColumn_1 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 15, 20, 5, 6, 11, 5 , 15}); //integer type 
 		
 		testNumColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 1.3, 2, 3.5, 2.1, 1.523, 2 , 4.23}); //float type
@@ -243,6 +250,7 @@ public class DynamicChartTest {
 	}
 	
 	
+	
 	@Test
 	void testCoverageOfConstructor_getXYChart_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Chicken");
@@ -252,8 +260,52 @@ public class DynamicChartTest {
 		dataTable.addCol("testStrColumn_1", testStrColumn_1);
 		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
-		assertNotNull( dc.getXYChart());
+		
+		//get the series from the getXYChart()
+		XYChart<Number, Number> y = dc.getXYChart();
+		ObservableList<Series<Number, Number>> allSeries = y.getData();
+		//create reference for the testing
+		HashMap<String, Number[][]> hm2 = new HashMap<String, Number[][]>();
+		Number[][] x1 = {{1, 12}, {2, 14}};
+		Number[][] x2 = {{3.3, 12}};
+		hm2.put("Frog", x1);
+		hm2.put("Dog", x2);
+
+		
+		int[] PosOfhm = new int[5];
+		int i = 0;
+		for (HashMap.Entry<String, Number[][]> entry: hm2.entrySet()) {
+			if (entry.getKey() == "Frog") {
+				PosOfhm[0] = i;
+				}
+			else if (entry.getKey() == "Dog") {
+				PosOfhm[1] = i;
+			}
+			i++;
+		}
+		
+		
+		assertAll(	()->assertNotNull( dc.getXYChart()),
+				()->assertNotNull(dc.getXYChart().getData()),
+				() -> assertEquals(2, allSeries.size()),
+				
+				()->assertEquals("Frog", allSeries.get(PosOfhm[0]).getName()),
+				()->assertEquals("Dog", allSeries.get(PosOfhm[1]).getName()),
+				
+				()->assertEquals(2, allSeries.get(PosOfhm[0]).getData().size()),
+				()->assertEquals(1, allSeries.get(PosOfhm[1]).getData().size()),
+
+
+				()->assertEquals(hm2.get("Frog")[0][0], allSeries.get(PosOfhm[0]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Frog")[0][1], allSeries.get(PosOfhm[0]).getData().get(0).getYValue()),
+				()->assertEquals(hm2.get("Frog")[1][0], allSeries.get(PosOfhm[0]).getData().get(1).getXValue()),
+				()->assertEquals(hm2.get("Frog")[1][1], allSeries.get(PosOfhm[0]).getData().get(1).getYValue()),
+				()->assertEquals(hm2.get("Dog")[0][0], allSeries.get(PosOfhm[1]).getData().get(0).getXValue()),
+				()->assertEquals(hm2.get("Dog")[0][1], allSeries.get(PosOfhm[1]).getData().get(0).getYValue())				
+				
+				);
 	}
+	
 	@Test
 	void testCoverageOfConstructor_setAnimateTrue_1Int2Num1StrTypeLabel() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Chicken");
@@ -263,22 +315,25 @@ public class DynamicChartTest {
 		dataTable.addCol("testStrColumn_1", testStrColumn_1);
 		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
-		
 		long startTime = System.currentTimeMillis();
-		while(false||(System.currentTimeMillis()-startTime)<4000)
+		dc.Animate(true);
+		while(false||(System.currentTimeMillis()-startTime)<5500)
 		{
+			//Let the animation run for some time
 			
-			dc.Animate(true);
-
 		}
 		dc.Animate(false);
 		
+		//make sure Animate() won't destroy variables in dynamicchart
+		assertAll( ()->assertEquals(dc.getAxisLabels(), AxisLabels),
+				()->assertEquals(dc.getChartName(), "Wings"),
+				()->assertEquals(dc.getChartID(), "Wings_"+ Long.toString(CoreData.checkchartid()-1)),
+				()->assertEquals(dc.getChartType(),ChartTypeValue.TYPE_DYNAMIC),
+				()->assertEquals(dc.getDataTableName(), "Chicken")
+				);
+		
 		
 	}
-	
-	
-	
-	
 	
 	
 	

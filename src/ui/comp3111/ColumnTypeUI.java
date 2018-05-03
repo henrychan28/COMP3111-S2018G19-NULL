@@ -44,6 +44,8 @@ public class ColumnTypeUI {
 	private static final int BUTTONS_H = WINDOW_H - 120;
 	
 	private HashMap<String, String[]> columnPrefs;
+	HashMap<String, String[]> returnPrefs = null;
+	
 	
 	/**
 	 * Initializer, creates a Hashmap with defaults set to String DataType and Empty autofill
@@ -68,6 +70,7 @@ public class ColumnTypeUI {
 	 * @return A finished Hashmap with column preferences
 	 */
 	public HashMap<String, String[]> presentUI(Stage parent) {
+		
 		
 		// Defines
 		Stage newWindow = new Stage();
@@ -143,14 +146,12 @@ public class ColumnTypeUI {
 				int i = 0;
 				for (i = 0; i < types.length; i++) {
 					if (types[i].equals(vals[Constants.DATATYPE_INDEX])) {
-						System.out.println(i);
 						typeChoiceBox.getSelectionModel().select(i);
 					}
 				}
 				
 				for (i = 0; i < numberFill.length; i++) {
 					if (numberFill[i].equals(vals[Constants.AUTOFILLTYPE_INDEX])) {
-						System.out.println(i);
 						fillChoiceBox.getSelectionModel().select(i);
 					}
 				}			
@@ -226,10 +227,11 @@ public class ColumnTypeUI {
 		closeDialog.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+            	returnPrefs = columnPrefs;
             	System.out.print("Confirm...");
             	newWindow.close();
             }
-        });
+        }); 
 		
 		cancelDialog.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -293,7 +295,7 @@ public class ColumnTypeUI {
 		newWindow.showAndWait();
 
 		System.out.println("Done");
-		return columnPrefs;
+		return returnPrefs;
 	}
 
 }

@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * Class to store the CoreData object on the disk and load it
+ * @author michaelfrost
+ *
+ */
 public class CoreDataIO {
 	
 	/**

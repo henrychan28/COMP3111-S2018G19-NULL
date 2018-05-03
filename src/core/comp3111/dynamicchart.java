@@ -1,6 +1,7 @@
 package core.comp3111;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,7 +15,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 
 /**
- * The implementation of the Dynamic Scatter Chart class.
+ * The implementation of the dynamicchart class.
+ * It is a Dynamic Scatter Chart. 
  * 
  * 
  * @author YuenTing
@@ -26,43 +28,43 @@ public class dynamicchart extends xychart {
 	// attributes
 	private final ScheduledExecutorService service;
 	private ScheduledFuture future;
-	protected double timespan; //from 0 to 1
+	protected double timespan; // from 0 to 1
 	protected int maxTime;
 	protected int pointer;
 	protected boolean Updating;
 	protected int timeAxisType;
-	 // for naming of the graph
-	protected String time; //for record only
+	// for naming of the graph
+	protected String time; // for record only
 	protected String xlabel;
 	protected String ylabel;
-	protected String category; 
+	protected String category;
 	protected DataColumn tdc;
 	protected DataColumn xdc;
 	protected DataColumn ydc;
 	protected DataColumn cdc;
 	protected HashMap<Object, XYChart.Series<Number, Number>> allSeries;
 	protected int SizeOfdc;
-	
-
-	
 
 	/**
 	 * Constructor of the Dynamic Line Chart class
 	 * 
 	 * @param DataTable
-	 * 			- DataTable reference
+	 *            - DataTable reference
 	 * @param AxisLabels[]
-	 * 			- Must passed four AxisLabels. 
-	 * 			- 1st: TimeAxis Integer, increasing. 2nd: XLabel 3rd: YLabel 4th: Categories
+	 *            - Must passed four AxisLabels. 
+	 *            - 1st: TimeAxis－ Integer,
+	 *            - 2nd: XLabel, Number
+	 *            - 3rd: YLabel, Number 
+	 *            - 4th: Categories, String
 	 * 
-	 * 			- SAMPLE DATASET:
-	 * 			- TIME:000000011111112233333455777
-	 * 			- XLAB:238492112983912939129392334
-	 * 			- YLAB:212387912739812739812739812
-	 * 			- CATE:ABDCCBBAABBDCBABCDDBAAABCDB
+	 *            - SAMPLE DATASET: 
+	 *            TIME:000000011111112233333455777 -
+	 *            XLAB:238492112983912939129392334 -
+	 *            YLAB:212387912739812739812739812 -
+	 *            CATE:ABDCCBBAABBDCBABCDDBAAABCDB
 	 * 
 	 * @param ChartName
-	 * 			- The name of the chart (i.e. titile)
+	 *            - The name of the chart 
 	 * @throws ChartException
 	 */
 
@@ -79,7 +81,7 @@ public class dynamicchart extends xychart {
 		this.xlabel = AxisLabels[1];
 		this.ylabel = AxisLabels[2];
 		this.category = AxisLabels[3];
-		
+
 		// initialize the DataColumns
 		DataColumn dc0 = DataTable.getCol(this.time);
 		DataColumn dc1 = DataTable.getCol(this.xlabel);
@@ -88,38 +90,42 @@ public class dynamicchart extends xychart {
 
 		// Check if the DataColumn exists
 		if (dc0 == null) {
-			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.time, this.DataTable.getTableName()));
+			throw new ChartException(this.ChartType,
+					String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", this.time,
+							this.DataTable.getTableName()));
 		} else {
 			this.tdc = dc0;
 		}
 		// Check if the DataColumn exists
 		if (dc1 == null) {
-			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.xlabel, this.DataTable.getTableName()));
+			throw new ChartException(this.ChartType,
+					String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", this.xlabel,
+							this.DataTable.getTableName()));
 		} else {
 			this.xdc = dc1;
-		}// Check if the DataColumn exists
+		} // Check if the DataColumn exists
 		if (dc2 == null) {
-			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.ylabel, this.DataTable.getTableName()));
+			throw new ChartException(this.ChartType,
+					String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", this.ylabel,
+							this.DataTable.getTableName()));
 		} else {
 			this.ydc = dc2;
 		}
 		// Check if the DataColumn exists
 		if (dc3 == null) {
-			throw new ChartException(this.ChartType, String.format(
-					"Unexisted DataColumn named &s for DataTable %s! Try again!", this.category, this.DataTable.getTableName()));
+			throw new ChartException(this.ChartType,
+					String.format("Unexisted DataColumn named &s for DataTable %s! Try again!", this.category,
+							this.DataTable.getTableName()));
 		} else {
 			this.cdc = dc3;
 		}
 
 		// Initialize: Keep track of the size of DataColumn
-		//	All DataColumns have the same size
-		//	Guaranteed by the DataTable class
+		// All DataColumns have the same size
+		// Guaranteed by the DataTable class
 		SizeOfdc = ydc.getSize();
 
-		// First three DataColumns must be Number Type	
+		// First three DataColumns must be Number Type
 		if (this.tdc.getTypeName() != DataType.TYPE_NUMBER) {
 			throw new ChartException(this.ChartType,
 					String.format(
@@ -141,7 +147,7 @@ public class dynamicchart extends xychart {
 									+ "y-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 							ylabel, this.ydc.getTypeName()));
 		}
-		
+
 		// Second DataColumn must be String Type
 		if (this.cdc.getTypeName() != DataType.TYPE_STRING) {
 			throw new ChartException(this.ChartType,
@@ -150,59 +156,40 @@ public class dynamicchart extends xychart {
 									+ "Categories should be String Type (Current: &s DataColumn with type &s))",
 							category, this.cdc.getTypeName()));
 		}
-		//check if the time data column is integer type
-				if(!checkTimeAxisType()) {
-					throw new ChartException(this.ChartType,
-							String.format(
-									"Inconsistent Data Column type: "
-											+ "Time Axis should be Integer Type (Current: (&s) DataColumn with type Number))",
-									time));
-				}
-		
+		// check if the time data column is integer type
+		if (!tdc.isInteger()) {
+			throw new ChartException(this.ChartType,
+					String.format(
+							"Inconsistent Data Column type: "
+									+ "Time Axis should be Integer Type (Current: (&s) DataColumn with type Number))",
+							time));
+		}
+
 		// defining a series for each category
 		service = Executors.newSingleThreadScheduledExecutor();
 
 		this.allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
-		
+
 		this.timespan = 0.5;
 		this.pointer = 0;
 		this.maxTime = this.getMaxTime();
-		
+
 		initcreatechart();
-	}
-	/**
-	 * Check the input Time Axis Type is integer type
-	 * @return true if yes, false otherwise
-	 */
-	private boolean checkTimeAxisType() {
-		Object[] tarray = tdc.getData();
-		/*
-		for (int i = 0; i < tarray.length; i ++) {
-			//if (tarray[i] < )
-		}
-		return 0;*/
-		for (Object t: tarray) {
-			if (! (t instanceof Integer)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**
-	 * Initialize: Create Line Chart
+	 * Initialize the ScatterChart in javafx.scene.chart.ScatterChart. 
 	 *
 	 */
 	private void initcreatechart() {
-		//For increasing integer timeAxis
-		
+		// For increasing integer timeAxis
+
 		// Object[] from DataColumn
 		Object[] tarray = tdc.getData();
 		Object[] xarray = ydc.getData();
 		Object[] yarray = ydc.getData();
 		Object[] carray = cdc.getData();
 
-		
 		// Create the scatter chart from javafx
 		NumberAxis xAxis = new NumberAxis();
 		NumberAxis yAxis = new NumberAxis();
@@ -211,112 +198,124 @@ public class dynamicchart extends xychart {
 
 		this.xychart = new ScatterChart<Number, Number>(xAxis, yAxis);
 		this.xychart.setTitle(this.ChartName); // title of the chart is the ChartName
-		
-		
+
 		ArrayList<Integer> indexes = getIndex();
 		indexesToAllSeries(indexes, this.allSeries);
 		// Add all series to the ScatterChart
 		addAllSeriesToChart(this.allSeries);
-		
+		// setAnimated false!!!
+		xychart.setAnimated(false);
+
 	}
+
 	/**
-	 * Set Animation
+	 * Set Animation of the dynamic chart. 
+	 * 
 	 * @param animate
+	 * 			- if true, then animation would start
+	 * 			- if false, the animation would stop
 	 */
 	public void Animate(boolean animate) {
-		
-		  Runnable dataGetter =
-				  () -> {
-		        try {
-		            // simulate some delay caused by the io operation
-		            Thread.sleep(500);
-		        } catch (InterruptedException ex) {
-		        }
-
+		Runnable dataGetter = () -> {
+			Platform.runLater(() -> {
+				// update ui
 				ArrayList<Integer> indexes = getIndex();
-		        Platform.runLater(() -> {
-		            // update ui
-		            indexesToAllSeries(indexes, this.allSeries);
-		    		// Add all series to the ScatterChart
-		    		addAllSeriesToChart(this.allSeries);
-		    		
-		        });
-		    };
-		    if (animate) {
-	            // update every second
-	            future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
-	        } else {
-	        	//Return back to initial state as in constructor
-	        	this.pointer = 0;
-	        	ArrayList<Integer> indexes = getIndex();
-	            indexesToAllSeries(indexes, this.allSeries);
-	    		addAllSeriesToChart(this.allSeries);
+				indexesToAllSeries(indexes, this.allSeries);
+				// Add all series to the ScatterChart
+				addAllSeriesToChart(this.allSeries);
 
-	            // stop updates
+			});
+		};
+		if (animate) {
 
-	            future.cancel(true);
-	            future = null;
-	        }
-		    
-		    xychart.setAnimated(false);
-		
+			// update every second
+			future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
+		} else {
+			// Return back to initial state as in constructor
+
+			this.pointer = 0;
+			ArrayList<Integer> indexes = getIndex();
+			indexesToAllSeries(indexes, this.allSeries);
+			addAllSeriesToChart(this.allSeries);
+
+			// stop updates
+
+			future.cancel(true);
+			future = null;
+		}
+
 	}
+
 	/**
-	 * update and return the time pointer. 
+	 * update and return the time pointer.
 	 * 
-	 * @return current time value
+	 * @return int
+	 * 			- the current time value
 	 */
-	
+
 	private int getPointer() {
-		//System.out.print(this.pointer);
+		// System.out.print(this.pointer);
 		if (this.pointer < maxTime) {
 			this.pointer += 1;
-			return this.pointer -1;
-		}
-		else {
+			return this.pointer - 1;
+		} else {
 			this.pointer = 0;
 			return maxTime;
 		}
-		
+
 	}
+
 	/**
 	 * get the Indexes where time (@ time-axis) == this.pointer
 	 * 
 	 * @return ArrayList<Integer> Indexes
 	 */
-	
+
 	private ArrayList<Integer> getIndex() {
-		
+
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		Object[] tarray = this.tdc.getData();
 		int p = getPointer();
 		for (int i = 0; i < tarray.length; i++) {
-			if ((int) tarray[i] == p) {
-				indexes.add(i);
-			}
+			if (tarray[i] instanceof Double) { 
+				Double t = (Double) tarray[i];
+				int d_int = t.intValue();
+				if (d_int == p) {
+					indexes.add(i);
+				}
 			
+			}	
+			//else: must be integer, guarantee by isInteger() in DataColumn
+			else {//if (tarray[i] instanceof Integer) {
+				if( (int)tarray[i] == p) {
+					indexes.add(i);
+				}
+			}
+			//
+
 		}
 		return indexes;
-		
+
 	}
+
 	/**
-	 * Set up the HashMap<Object, XYChart.Series<Number, Number>> allSeries 
-	 * with input indexes
-	 *  
+	 * Set up the allSeries with input indexes.
+	 * 
 	 */
-	private void indexesToAllSeries(ArrayList<Integer> indexes, HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
+	private void indexesToAllSeries(ArrayList<Integer> indexes,
+			HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
 		allSeries.clear();
 		Object[] xarray = this.xdc.getData();
 		Object[] yarray = this.ydc.getData();
 		Object[] carray = this.cdc.getData();
-		
-		for (int j = 0 ; j < indexes.size(); j++) {
+
+		for (int j = 0; j < indexes.size(); j++) {
 			int i = indexes.get(j);
 			// if the category key already exists in allSeries
 			if (allSeries.containsKey(carray[i])) {
 				// add the data point to the corresponding series
 				allSeries.get(carray[i]).getData()
-						.add(new Data<Number, Number>( (Number) xarray[i], (Number) yarray[i]));
+						.add(new Data<Number, Number>((Number) xarray[i], (Number) yarray[i]));
 			}
 			// if the category key not yet exists in allSeries
 			else {
@@ -330,39 +329,45 @@ public class dynamicchart extends xychart {
 			}
 
 		}
-		
+
 	}
-	
+
 	/**
+	 * Get the max value of the TimeAxis. 
 	 * 
 	 */
 	private int getMaxTime() {
 		Object[] tarray = this.tdc.getData();
 		int max_time = 0;
 		for (int i = 0; i < tarray.length; i++) {
-			if((int) tarray[i] > max_time) {
-				max_time = (int) tarray[i];
+			if (tarray[i] instanceof Double) {
+				Double t = (Double) tarray[i];
+				int d_int = t.intValue();
+				if (d_int > max_time) {
+					max_time = d_int;
+				}
 			}
+
 		}
 		return max_time;
-		
-		
+
 	}
+
 	/**
 	 * Add all series in the input HashMap to the XYChart
+	 * 
 	 * @param allSeries
+	 * 			- HashMap<Object, XYChart.Series<Number, Number>> that storing all the series
+	 * 				 and corresponding category
 	 */
 	private void addAllSeriesToChart(HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
-		
-		
+
 		xychart.getData().clear();
+
 		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
+
 			this.xychart.getData().add(entry.getValue());
-			//System.out.print(entry.getKey());
 		}
 	}
-
-
-	
 
 }
