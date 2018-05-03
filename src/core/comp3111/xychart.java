@@ -13,7 +13,12 @@ import java.io.Serializable;
 
 import javafx.scene.Scene;
 
-
+/**
+ * The implementation of xychart class. 
+ * 
+ * @author YuenTing
+ *
+ */
 
 public class xychart implements Serializable{
 	/**
@@ -21,11 +26,16 @@ public class xychart implements Serializable{
 	 */
 	private static final long serialVersionUID = 2;
 	/**
-	 * Constructor of the Chart class
+	 * Constructor of the xychart class
+	 * 
 	 * @param DataTable
-	 * @param AxisLabels
+	 * 			- the corresponding DataTable for xychart creation
+	 * @param AxisLabels	
+	 * 			- String[] names of the columns for the Axises of xychart
 	 * @param ChartName
+	 * 			- Name of the xychart
 	 * @param ChartType
+	 * 			- Chart Type of the xychart. define in ChartTypeValue.java. 
 	 */
 	
 	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
@@ -39,7 +49,7 @@ public class xychart implements Serializable{
 
 	/**
 	 * 
-	 * get the XYChart <Number, Number> xychart. 
+	 * get the XYChart <Number, Number>. 
 	 * 
 	 * 
 	 * @return XYChart <Number, Number> xychart
@@ -48,7 +58,7 @@ public class xychart implements Serializable{
 		return xychart;
 	}
 	/**
-	 * get the ChartID
+	 * get the Chart ID, which is unique for each chart. 
 	 * 
 	 * @return String ChartID
 	 */
@@ -64,7 +74,7 @@ public class xychart implements Serializable{
 		return this.ChartName;
 	}
 	/**
-	 * get the chart type
+	 * Get the chart type. defined in ChartTypeValue.java.
 	 * 
 	 * @return String ChartType 
 	 */
@@ -72,7 +82,7 @@ public class xychart implements Serializable{
 		return this.ChartType;
 	}
 	/**
-	 * get the data columns name
+	 * Get the data columns name
 	 * 
 	 * @return String[] AxisLabels
 	 */

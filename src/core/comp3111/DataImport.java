@@ -227,8 +227,7 @@ public class DataImport {
 		for (int i = 0; i < obj.length; i++) {
 			arr[i] = (Number) Double.parseDouble((String) obj[i]);
 		}
-		
-		return arr;
+		return arr; 
 	}
 	
 	/**
