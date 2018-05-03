@@ -21,12 +21,12 @@ public class DataFilter {
 	 * TextFilter takes the target dataTable and retainValues which is a map of column name and text values
 	 * for column to retain. The function will return a dataTable with rows containing columns to be retain.
 	 * @param dataTable
-	 *            - the dataTable for processing
+	 *            the dataTable for processing
 	 * @param retainValues
-	 * 			  - the HashMap contains column name and for each column name, the set of text to be retain 
+	 * 			  the HashMap contains column name and for each column name, the set of text to be retain 
 	 * 
 	 * @return newDataTable
-	 * 			   - a dataTable filtered with given retainValues
+	 * 			  - a dataTable filtered with given retainValues
 	 */
 	public static DataTable TextFilter(DataTable dataTable, HashMap<String, Set<String>> retainValues) {		
 		DataTable filteredTable = null;
@@ -55,9 +55,9 @@ public class DataFilter {
 	 * which the exact number of rows for one of the split dataTable is (lowerbound)splitRatio*numRows.
 	 * 
 	 * @param dataTable 
-	 *            - the dataTable for processing
+	 *            the dataTable for processing
 	 * @param splitRatio
-	 * 			  - the splitRatio
+	 * 			  the splitRatio
 	 * @return splitedTables
 	 * 			  - a DataTable array of size 2 containing dataTables which are split with ratio specified in 
 	 *              in splitRatio
@@ -84,11 +84,11 @@ public class DataFilter {
 	 * specified range
 	 * 
 	 * @param start
-	 *            - start integer (inclusive)
+	 *            start integer (inclusive)
 	 * @param end
-	 * 			  - end integer (exclusive)
+	 * 			  end integer (exclusive)
 	 * @return randomIntegerArray
-	 * 			   - randomly shuffled integer array with specified range
+	 * 			  - randomly shuffled integer array with specified range
 	 */
 	public static Integer[] NonRepRandomIntegerGenerator(int start, int end) {
 	    Integer[] randomIntegerArray = new Integer[end-start];
@@ -102,11 +102,11 @@ public class DataFilter {
 	 * FilterTableByIndex takes a dataTable and desired index to retain and return a dataTable with selected index
 	 * 
 	 * @param dataTable
-	 *            - the input dataTable
+	 *            the input dataTable
 	 * @param index
-	 * 			  - the index array with indexes of rows wanted to retain
+	 * 			  the index array with indexes of rows wanted to retain
 	 * @return newDataTable
-	 * 			   - table filtered with given index
+	 * 			  - table filtered with given index
 	 */
 	public static DataTable FilterTableByIndex(DataTable dataTable, ArrayList<Integer> index){
 		DataTable newDataTable = new DataTable();
@@ -127,12 +127,13 @@ public class DataFilter {
 		}
 		return newDataTable;
 	} 
+	
 	/**
 	 * GetTableTextLabels takes a dataTable and return a HashMap with key to be the column name
 	 * and value to be a set of unique text for each column
 	 * 
 	 * @param dataTable
-	 *            - the input dataTable
+	 *            the input dataTable
 	 * @return textLabelTable
 	 * 			   - HashMap with column name as key and sets of unique text for each column
 	 */

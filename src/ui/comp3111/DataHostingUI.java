@@ -43,10 +43,13 @@ public class DataHostingUI extends Application {
 		 * InjectDataTable is used to inject value to the  
 		 * 
 		 * @param axis 
-		 *            - the axis to be scan along (INNER or OUTER)
+		 *            the axis to be scan along (INNER or OUTER)
 		 * @param outerIndex
-		 * 			  - if scan along OUTER, put it to be -1
-		 * 			  - if scan along INNER, provide the parentIndex
+		 * 			  if scan along OUTER, put it to be -1
+		 * 			  if scan along INNER, provide the parentIndex
+		 * @return dataSet
+		 * 			  - an ObservableList containing all dataTable in the CoreData
+		 * 
 		 */
 	    private ObservableList<DataTable> datatTableToObservableList(int axis, int parent) {
 	    	CoreData coreData = CoreData.getInstance();
@@ -70,10 +73,10 @@ public class DataHostingUI extends Application {
 		 * SetTable is used to set the parentTableList or childTableList 
 		 * 
 		 * @param axis 
-		 *            - the axis to be scan along (INNER or OUTER)
+		 *            the axis to be scan along (INNER or OUTER)
 		 * @param outerIndex
-		 * 			  - if scan along OUTER, put it to be -1
-		 * 			  - if scan along INNER, provide the parentIndex
+		 * 			  if scan along OUTER, put it to be -1
+		 * 			  if scan along INNER, provide the parentIndex
 		 */
 	    private void setTable(int axis, int outerIndex) {
 	    	if(axis==Constants.OUTER) {
@@ -131,14 +134,16 @@ public class DataHostingUI extends Application {
 	    }
 	    
 		/**
-		 * CreateTableView function returns a single column table view 
+		 * CreateTableView function returns a single column table view which contains 
+		 * data table name of either parent tables or child tables of designated 
+		 * parent table
 		 * 
 		 * @param tableName
-		 *            - a string for setting the table name
+		 *            a string for setting the table name
 		 * @param propertyName
-		 * 			  - the propertyName on the tableList wanted to be shown on the column
+		 * 			  the propertyName on the tableList wanted to be shown on the column
 		 * @param tableList
-		 * 			  - the tableList containing desired data for display
+		 * 			  the tableList containing desired data for display
 		 * @return table
 		 * 			  - the tableView created 
 		 */
