@@ -19,6 +19,7 @@ import core.comp3111.CoreData;
 import core.comp3111.DataType;
 import core.comp3111.dynamicchart;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
@@ -316,13 +317,13 @@ public class DynamicChartTest {
 		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
 		long startTime = System.currentTimeMillis();
-		dc.Animate(true);
+		dc.Animate((ScatterChart<Number, Number>)dc.getXYChart(), true);
 		while(false||(System.currentTimeMillis()-startTime)<5500)
 		{
 			//Let the animation run for some time
 			
 		}
-		dc.Animate(false);
+		dc.Animate((ScatterChart<Number, Number>)dc.getXYChart(),false);
 		
 		//make sure Animate() won't destroy variables in dynamicchart
 		assertAll( ()->assertEquals(dc.getAxisLabels(), AxisLabels),

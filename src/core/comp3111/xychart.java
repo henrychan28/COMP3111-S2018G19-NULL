@@ -52,10 +52,10 @@ public class xychart implements Serializable {
 	 * get the XYChart <Number, Number>. 
 	 * 
 	 * 
-	 * @return XYChart <Number, Number> xychart
+	 * @return XYChart <Number, Number> if chart is created by XYChart's subclass, null otherwise
 	 */
 	public XYChart<Number, Number> getXYChart(){
-		return xychart;
+		return null;
 	}
 	/**
 	 * get the Chart ID, which is unique for each chart. 
@@ -107,7 +107,7 @@ public class xychart implements Serializable {
 	protected String ChartName;
 	protected String ChartID;  //unique
 	protected String ChartType;
-	protected XYChart <Number, Number> xychart;
+	//protected XYChart <Number, Number> xychart;
 	
 	
 }

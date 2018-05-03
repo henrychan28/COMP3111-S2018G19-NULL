@@ -29,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -566,7 +567,7 @@ public class GenerateChartUI extends Application {
 				updateShowChartScene();
 				if (ChartType == ChartTypeValue.TYPE_DYNAMIC) {
 					//show animation
-					dChart.Animate(true);
+					dChart.Animate((ScatterChart<Number, Number>)chartShowChart, true);
 				}
 				// and then show chart
 				putSceneOnStage(SCENE_SHOW_CHART);
@@ -787,7 +788,7 @@ public class GenerateChartUI extends Application {
 						cbDynamicXaxis.setValue(null);
 						cbDynamicYaxis.setValue(null);
 						cbDynamicCaxis.setValue(null);
-						dc.Animate(true);
+						dc.Animate((ScatterChart<Number, Number>)chartShowChart, true);
 						putSceneOnStage(SCENE_SHOW_CHART);
 
 					} catch (ChartException e1) {
@@ -814,7 +815,7 @@ public class GenerateChartUI extends Application {
 		btbackto2.setOnAction(e -> {
 			// update the view history scene, since not yet updated after creating chart
 			if(dChart != null) {
-				dChart.Animate(false);
+				dChart.Animate((ScatterChart<Number, Number>)chartShowChart, false);
 				dChart = null;
 			}
 			updateHistoryScene();

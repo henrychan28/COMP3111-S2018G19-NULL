@@ -85,31 +85,50 @@ public class linechart extends xychart implements Serializable{
 					+ "y-axis should be Number Type (Current: '&s' DataColumn with type &s))",
 					ylabel, this.ydc.getTypeName()));
 		}
-		
-		//Create the line chart from javafx	
-		
+		//Initialize the series
 		//Keep track of the Object[] from DataColumn
 		Object[] xarray = xdc.getData();
 		Object[] yarray = ydc.getData();
-
-		
-		NumberAxis xAxis = new NumberAxis();
-		NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel(this.xlabel);
-		yAxis.setLabel(this.ylabel);
-		
-		this.xychart  = new LineChart<Number, Number> (xAxis, yAxis); 
-		this.xychart.setTitle(this.ChartName); //title of the chart is the ChartName
-		
 		//Define a series 
 		 this.series =  new XYChart.Series<Number, Number>();
 		 //this.series.setName(this.ylabel);
 		 for (int i = 0; i < this.SizeOfdc; i ++) {
 			 this.series.getData().add(new XYChart.Data<Number, Number>((Number)xarray[i], (Number)yarray[i]));
 		 }
+	}
+	/**
+	 * Override the getXYChart in xychart class to return a line chart. 
+	 */
+	@Override
+	public  XYChart<Number, Number> getXYChart() {
+		return getLineChart();
+	}
+	
+	
+	/**
+	 * Background function of making the LineChart using the saved parameters.
+	 * 
+	 * @return LineChart <Number, Number>
+	 * 			- LineChart
+	 */
+	
+	
+	private LineChart<Number, Number> getLineChart () {
+		//Create the line chart from javafx	
+
+		
+		NumberAxis xAxis = new NumberAxis();
+		NumberAxis yAxis = new NumberAxis();
+		xAxis.setLabel(this.xlabel);
+		yAxis.setLabel(this.ylabel);
+		LineChart<Number, Number> xychart  = new LineChart<Number, Number> (xAxis, yAxis); 
+
+		xychart.setTitle(this.ChartName); //title of the chart is the ChartName
+
 		//Add the series to the LineChart
-		 this.xychart.getData().add(this.series);
+		 xychart.getData().add(this.series);
 		 
+		 return xychart;
 	}
 
 	//Attributes
