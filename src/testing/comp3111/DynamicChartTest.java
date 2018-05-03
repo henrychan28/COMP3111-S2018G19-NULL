@@ -49,7 +49,7 @@ public class DynamicChartTest {
 	@BeforeEach
 	void init() {
 		com.sun.javafx.application.PlatformImpl.startup(() -> {});
-		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, 0, 1, 1, 5, 5 }); //integer type
+		testIntColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 0, 0, (double) 0, (double) 1, (double) 1, (double) 5, (double) 5 }); //integer type
 		testIntColumn_1 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 15, 20, 5, 6, 11, 5 , 15}); //integer type 
 		
 		testNumColumn_0 = new DataColumn(DataType.TYPE_NUMBER, new Number[] { 1.3, 2, 3.5, 2.1, 1.523, 2 , 4.23}); //float type
@@ -260,6 +260,7 @@ public class DynamicChartTest {
 		dataTable.addCol("testStrColumn_1", testStrColumn_1);
 		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
+		
 		//get the series from the getXYChart()
 		XYChart<Number, Number> y = dc.getXYChart();
 		ObservableList<Series<Number, Number>> allSeries = y.getData();
@@ -286,7 +287,8 @@ public class DynamicChartTest {
 		
 		assertAll(	()->assertNotNull( dc.getXYChart()),
 				()->assertNotNull(dc.getXYChart().getData()),
-				() -> assertEquals(allSeries.size(), 2),
+				() -> assertEquals(2, allSeries.size()),
+				
 				()->assertEquals("Frog", allSeries.get(PosOfhm[0]).getName()),
 				()->assertEquals("Dog", allSeries.get(PosOfhm[1]).getName()),
 				
@@ -315,9 +317,10 @@ public class DynamicChartTest {
 		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
 		
 		long startTime = System.currentTimeMillis();
+		dc.Animate(true);
 		while(false||(System.currentTimeMillis()-startTime)<5499)
 		{
-			dc.Animate(true);
+			
 		}
 		dc.Animate(false);
 		
