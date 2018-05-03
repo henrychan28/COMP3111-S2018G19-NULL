@@ -35,6 +35,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import javafx.stage.Stage;
+import testing.comp3111.SampleDataGenerator;
 
 /**
  * UI for generating chart. 

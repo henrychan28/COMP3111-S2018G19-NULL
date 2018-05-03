@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
-import core.comp3111.SampleDataGenerator;
 import core.comp3111.DataFilter;
 
 

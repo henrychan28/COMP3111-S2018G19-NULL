@@ -3,6 +3,8 @@ package testing.comp3111;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.Assert;
+
 import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataTableException;
@@ -130,5 +132,66 @@ public class DataTableTest {
 		dataTable.setName("Not Test");
 		
 		assertEquals("Not Test", dataTable.getTableName());
+	}
+	
+	@Test
+	void testGetColKeysOfTypeSizeLargerThanZero() {
+		DataTable testTable = SampleDataGenerator.generateSampleLineData();
+		String[] getColKey=testTable.getColKeysOfType(DataType.TYPE_NUMBER);
+		String[] expectReturn = new String[] {"X", "Y"};
+		Assert.assertArrayEquals(getColKey, expectReturn);
+	}
+	
+	@Test
+	void testGetColKeysOfTypeSizeEqualToZero() {
+		DataTable testTable = SampleDataGenerator.generateSampleLineData();
+		String[] getColKey=testTable.getColKeysOfType(DataType.TYPE_OBJECT);
+		assertEquals(getColKey, null);
+	}
+	
+	@Test
+	void testGetCol() {
+		DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
+		DataColumn[] actualColumnArray = testTable.getCol();
+		
+		Number[] xvalues = new Integer[] { 1, 2, 3, 4, 5, 5, 5, 5 };
+		DataColumn xvaluesCol = new DataColumn(DataType.TYPE_NUMBER, xvalues);
+
+		// Sample: Can also mixed Number types
+		Number[] yvalues = new Number[] { 30.0, 25, (short) 16, 8.0, (byte) 22, 22, 22, 22 };
+		DataColumn yvaluesCol = new DataColumn(DataType.TYPE_NUMBER, yvalues);
+
+		// Sample: A array of String
+		String[] labels = new String[] { "P1", "P2", "P3", "P4", "P5", "P5", "P2", "P6" };
+		DataColumn labelsCol = new DataColumn(DataType.TYPE_STRING, labels);
+
+		// Sample: A array of String
+		String[] labels2 = new String[] { "A1", "A2", "A3", "A4", "A5", "A5", "A2", "A6" };
+		DataColumn labelsCol2 = new DataColumn(DataType.TYPE_STRING, labels2);
+		DataColumn[] expectedColumnArray = new DataColumn[] {xvaluesCol, yvaluesCol, labelsCol, labelsCol2};
+		Assert.assertArrayEquals(expectedColumnArray, actualColumnArray);
+	}
+	
+	@Test
+	void testEquals() {
+		DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
+		DataTable testTable2 = SampleDataGenerator.generateSampleDataForDataFilter();
+		boolean equal = testTable.equals(testTable2);
+		assertEquals(equal, true);
+	}
+	
+	@Test
+	void testGetColumnNames() {
+		DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
+		String[] actualColumnNames = testTable.getColumnNames();
+		String[] expectedColumnNames = new String[] {"X", "Y", "label", "label2"};
+		Assert.assertArrayEquals(actualColumnNames, expectedColumnNames);
+	}
+	
+	@Test
+	void testGetNumColOfInteger() {
+		DataTable testTable = SampleDataGenerator.generateSampleDataForDataFilter();
+		int actualNumColOfInteger = testTable.getNumColOfInteger();
+		assertEquals(actualNumColOfInteger, 2);
 	}
 }

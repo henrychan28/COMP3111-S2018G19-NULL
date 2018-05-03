@@ -126,7 +126,7 @@ public class DataTextFilterUI extends Application {
     public void start(Stage stage) {
     	stageDataFilterUI = stage;
 		stageDataFilterUI.setTitle("Data Filter Interface");
-		stageDataFilterUI.setWidth(700);
+		stageDataFilterUI.setWidth(750);
 		stageDataFilterUI.setHeight(500);
 		
     	try {
