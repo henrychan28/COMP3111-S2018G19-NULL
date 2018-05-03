@@ -234,13 +234,13 @@ public class DataTextFilterUI extends Application {
     private class SelectButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
-        		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
-        		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
-        		Set<String> selectedTextSet = new HashSet<String>();
-        		for(String selectedText: selectedTextList) {
-        			selectedTextSet.add(selectedText);
-        		}
-        		selectedRetainText.put(selectedColumn, selectedTextSet);
+    		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
+    		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
+    		Set<String> selectedTextSet = new HashSet<String>();
+    		for(String selectedText: selectedTextList) {
+    			selectedTextSet.add(selectedText);
+    		}
+    		selectedRetainText.put(selectedColumn, selectedTextSet);
 		}
     }
     
