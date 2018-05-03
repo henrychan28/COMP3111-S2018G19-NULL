@@ -52,7 +52,7 @@ public class dynamicchart extends xychart {
 	 *            - DataTable reference
 	 * @param AxisLabels[]
 	 *            - Must passed four AxisLabels. 
-	 *            - 1st: TimeAxis－ Integer,
+	 *            - 1st: TimeAxis Integer,
 	 *            - 2nd: XLabel, Number
 	 *            - 3rd: YLabel, Number 
 	 *            - 4th: Categories, String
