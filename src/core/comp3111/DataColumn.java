@@ -92,6 +92,7 @@ public class DataColumn implements Serializable {
 	 */
 	
 	public boolean isInteger() {
+
 		if (typeName != DataType.TYPE_NUMBER) {
 
 			return false;

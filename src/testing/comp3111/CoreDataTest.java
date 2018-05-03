@@ -25,6 +25,12 @@ import core.comp3111.xychart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Testing CoreData class
+ * 
+ * @author michaelfrost
+ *
+ */
 public class CoreDataTest {
 	
 	CoreData coreData;
@@ -291,6 +297,18 @@ public class CoreDataTest {
 		coreData.addParentTable(dt);
 		assertEquals(true, coreData.doesTableExist("nom"));
 	}
+	
+	@Test
+	void peekChartUID() {
+		assertEquals(0,CoreData.checkchartid());
+	}
+	
+	@Test
+	void checkChartUID() {
+		assertEquals(0,CoreData.getchartid());
+		assertEquals(1,CoreData.getchartid());
+	}
+
 	@Test
 	void testaddChart() throws DataTableException, ChartException {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {});
@@ -336,6 +354,7 @@ public class CoreDataTest {
 					);	
 			
 	}
+	
 	@Test
 	void testgetCharts() throws DataTableException, ChartException {
 			com.sun.javafx.application.PlatformImpl.startup(() -> {});
@@ -619,6 +638,5 @@ public class CoreDataTest {
 					()->assertEquals(1, CoreData.checkchartid()-id4)				
 					);		
 	}
-	
-	
+
 }

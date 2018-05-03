@@ -227,8 +227,7 @@ public class DataImport {
 		for (int i = 0; i < obj.length; i++) {
 			arr[i] = (Number) Double.parseDouble((String) obj[i]);
 		}
-		
-		return arr;
+		return arr; 
 	}
 	
 	/**
@@ -308,7 +307,7 @@ public class DataImport {
 	}
 	
 	/**
-	 * Creates a 2D ArrayList of Strings
+	 * Creates a 2D ArrayList of Object of outer size size and inner size zero
 	 * 
 	 * @param size
 	 * 			The number of columns the scratchpad needs to have

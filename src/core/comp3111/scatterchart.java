@@ -4,6 +4,8 @@ import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 
@@ -13,7 +15,7 @@ import java.util.HashMap;
  * @author YuenTing
  *
  */
-public class scatterchart extends xychart{
+public class scatterchart extends xychart implements Serializable{
 	/**
 	 * 
 	 */

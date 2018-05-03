@@ -59,7 +59,8 @@ public class DataTextFilterUI extends Application {
 	
 	/** 
 	 * Creates a DataTextFilterUI with the specified dataTable.
-	 * @param the input dataTable
+	 * @param dataTable
+	 * 			the input dataTable
 	 */
     public DataTextFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
@@ -71,7 +72,7 @@ public class DataTextFilterUI extends Application {
 	 * currentText variable, which will determine the text to be displayed on 
 	 * the textTableView
 	 * @param columnName
-	 * 			- name of column in the dataTable targeted to be inject 
+	 * 			name of column in the dataTable targeted to be inject 
 	*/
     private void injectCurrentText(String columnName) throws Exception {
     	if(currentTable.getNumCol()==0 || (columnName!=null && currentTable.getCol(columnName)==null)) {
@@ -98,7 +99,7 @@ public class DataTextFilterUI extends Application {
 	 * setCurrentTable is used to set the dataTable and inject corresponding 
 	 * value to attributes in the DataTextFilterUI for initializing the UI
 	 * @param dataTable
-	 * 			- dataTable for displaying in the UI
+	 * 			dataTable for displaying in the UI
 	 */	
     private void setCurrentTable(DataTable dataTable) throws Exception {
     	currentTable = dataTable;
@@ -126,7 +127,7 @@ public class DataTextFilterUI extends Application {
     public void start(Stage stage) {
     	stageDataFilterUI = stage;
 		stageDataFilterUI.setTitle("Data Filter Interface");
-		stageDataFilterUI.setWidth(700);
+		stageDataFilterUI.setWidth(750);
 		stageDataFilterUI.setHeight(500);
 		
     	try {
@@ -185,9 +186,9 @@ public class DataTextFilterUI extends Application {
 	 * createTableView is used to create a tableView from a list of string 
 	 * and set the tableView name with a given tableName
 	 * @param tableName
-	 * 			- name of the table on the tableView
+	 * 			name of the table on the tableView
 	 * @param data
-	 * 			- string to be displayed on the tableView
+	 * 			string to be displayed on the tableView
 	 * @return table
 	 * 			- tableView with given name and data
 	*/	
@@ -244,7 +245,7 @@ public class DataTextFilterUI extends Application {
     }
     
 	/**
-	 * GenerateButtonEventHandler fires upon a click on the "generate button.
+	 * GenerateButtonEventHandler fires upon a click on the "generate" button.
 	 * It will retrieve the table names from text fields and check whether is there any 
 	 * name clash with dataTables in CoreData. Upon confirmation of correct name 
 	 * and available name, if filtered tables are not empty, they will be added/replaced 

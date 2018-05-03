@@ -45,7 +45,12 @@ public class DataRandomFilterUI extends Application{
 		    );
 	private ComboBox<String> replacementOptionsComboBox;
 	private Slider splitSlider;
-
+	
+	/** 
+	 * Creates a DataRandomFilterUI with the specified dataTable.
+	 * @param dataTable
+	 * 			the input dataTable
+	 */
     public DataRandomFilterUI(DataTable dataTable) {
     	currentTable = dataTable;
     }

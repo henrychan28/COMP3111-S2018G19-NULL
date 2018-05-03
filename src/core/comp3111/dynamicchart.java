@@ -1,5 +1,6 @@
 package core.comp3111;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import javafx.scene.chart.XYChart.Data;
  * @author YuenTing
  */
 
-public class dynamicchart extends xychart {
+public class dynamicchart extends xychart implements Serializable {
 
 	private static final long serialVersionUID = -302806700256373712L;
 	// attributes
@@ -52,7 +53,7 @@ public class dynamicchart extends xychart {
 	 *            - DataTable reference
 	 * @param AxisLabels[]
 	 *            - Must passed four AxisLabels. 
-	 *            - 1st: TimeAxis－ Integer,
+	 *            - 1st: TimeAxis Integer,
 	 *            - 2nd: XLabel, Number
 	 *            - 3rd: YLabel, Number 
 	 *            - 4th: Categories, String
