@@ -1,5 +1,8 @@
 package core.comp3111;
 
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 
 /**
  *  The implementation of the linechart class. 
@@ -7,12 +10,6 @@ package core.comp3111;
  * @author YuenTing
  *
  */
-
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-
-
 public class linechart extends xychart{
 	/**
 	 * 
