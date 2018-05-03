@@ -20,7 +20,7 @@ import javafx.scene.Scene;
  *
  */
 
-public class xychart implements Serializable{
+public class xychart implements Serializable {
 	/**
 	 * 
 	 */

@@ -1,5 +1,7 @@
 package core.comp3111;
 
+import java.io.Serializable;
+
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -10,7 +12,7 @@ import javafx.scene.chart.XYChart;
  * @author YuenTing
  *
  */
-public class linechart extends xychart{
+public class linechart extends xychart implements Serializable{
 	/**
 	 * 
 	 */

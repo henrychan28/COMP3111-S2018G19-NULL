@@ -9,7 +9,7 @@ import core.comp3111.DataTable;
 /**
  * Data storage class for the application.  
  * 
- * It is a 2D matrix of DataTable objects, Hashtable of Charts and a singular instance of CoreData.
+ * Primary attributes are a 2D matrix of DataTable objects, Hashtable of Charts and a singular instance of CoreData.
  * 
  * @author michaelfrost
  *
@@ -53,7 +53,7 @@ public class CoreData implements Serializable {
 	 * Set the singular instance to the passed CoreData object
 	 * 
 	 * @param data
-	 * 			the core data object
+	 * 			The core data object
 	 */
 	public static void setInstance(CoreData data) {
 		instance = data;
@@ -98,7 +98,7 @@ public class CoreData implements Serializable {
 	 * @param table
 	 *            The DataTable
 	 * @param parentIndex
-	 * 			Index of the parent datatable on outer Arraylist
+	 * 			Index of the parent DataTable on outer Arraylist
 	 * @return child table index
 	 */
 	public int[] addChildTable(DataTable table, int parentIndex) {
@@ -242,7 +242,7 @@ public class CoreData implements Serializable {
 	
 	
 	/**
-	 * Checks whether the file 'name' exists in the CoreData, not case sensitive
+	 * Checks whether the file of name 'name' exists in the CoreData, not case sensitive
 	 * 
 	 * @param name
 	 * 			TableName to search for
