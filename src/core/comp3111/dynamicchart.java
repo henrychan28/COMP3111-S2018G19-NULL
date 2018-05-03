@@ -271,7 +271,7 @@ public class dynamicchart extends xychart implements Serializable {
 	}
 
 	/**
-	 * Set up the inputed allSeries with inputed indexes.
+	 * Set up the inputed allSeries with data points of inputed indexes.
 	 * 
 	 */
 	public void indexesToAllSeries(ArrayList<Integer> indexes,
