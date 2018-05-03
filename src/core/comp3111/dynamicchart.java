@@ -16,8 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 
 /**
- * The implementation of the dynamicchart class.
- * It is a Dynamic Scatter Chart. 
+ * The implementation of the dynamicchart class. It is a Dynamic Scatter Chart.
  * 
  * 
  * @author YuenTing
@@ -27,8 +26,6 @@ public class dynamicchart extends xychart implements Serializable {
 
 	private static final long serialVersionUID = -302806700256373712L;
 	// attributes
-	private final ScheduledExecutorService service;
-	private ScheduledFuture future;
 	protected double timespan; // from 0 to 1
 	protected int maxTime;
 	protected int pointer;
@@ -43,7 +40,6 @@ public class dynamicchart extends xychart implements Serializable {
 	protected DataColumn xdc;
 	protected DataColumn ydc;
 	protected DataColumn cdc;
-	protected HashMap<Object, XYChart.Series<Number, Number>> allSeries; //updating overtime. 
 	protected int SizeOfdc;
 
 	/**
@@ -52,20 +48,16 @@ public class dynamicchart extends xychart implements Serializable {
 	 * @param DataTable
 	 *            - DataTable reference
 	 * @param AxisLabels[]
-	 *            - Must passed four AxisLabels. 
-	 *            - 1st: TimeAxis Integer,
-	 *            - 2nd: XLabel, Number
-	 *            - 3rd: YLabel, Number 
-	 *            - 4th: Categories, String
+	 *            - Must passed four AxisLabels. - 1st: TimeAxis Integer, - 2nd:
+	 *            XLabel, Number - 3rd: YLabel, Number - 4th: Categories, String
 	 * 
-	 *            - SAMPLE DATASET: 
-	 *            TIME:000000011111112233333455777 -
+	 *            - SAMPLE DATASET: TIME:000000011111112233333455777 -
 	 *            XLAB:238492112983912939129392334 -
 	 *            YLAB:212387912739812739812739812 -
 	 *            CATE:ABDCCBBAABBDCBABCDDBAAABCDB
 	 * 
 	 * @param ChartName
-	 *            - The name of the chart 
+	 *            - The name of the chart
 	 * @throws ChartException
 	 */
 
@@ -167,27 +159,28 @@ public class dynamicchart extends xychart implements Serializable {
 		}
 
 		// defining a series for each category
-		service = Executors.newSingleThreadScheduledExecutor();
-		this.allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
 		this.timespan = 0.5;
 		this.pointer = 0;
 		this.maxTime = this.getMaxTime();
 	}
-	
+
 	/**
-	 * Override the getXYChart in xychart class to return a scatter chart at time = 0. 
+	 * Override the getXYChart in xychart class to return a scatter chart at time =
+	 * 0.
 	 */
 	@Override
-	public  XYChart<Number, Number> getXYChart() {
+	public XYChart<Number, Number> getXYChart() {
 		return initDynamicChart();
 	}
+
 	/**
-	 * Initialize the dynamic scatter chart in javafx.scene.chart.ScatterChart
-	 * At time = 0;
+	 * Initialize the dynamic scatter chart in javafx.scene.chart.ScatterChart At
+	 * time = 0;
 	 *
 	 */
-	private   ScatterChart<Number, Number> initDynamicChart() {
-		
+	private ScatterChart<Number, Number> initDynamicChart() {
+		HashMap<Object, XYChart.Series<Number, Number>> allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
+
 		// Object[] from DataColumn
 		Object[] tarray = tdc.getData();
 		Object[] xarray = ydc.getData();
@@ -200,35 +193,40 @@ public class dynamicchart extends xychart implements Serializable {
 		xAxis.setLabel(this.xlabel);
 		yAxis.setLabel(this.ylabel);
 
-		 ScatterChart<Number, Number> xychart = new ScatterChart<Number, Number>(xAxis, yAxis);
+		ScatterChart<Number, Number> xychart = new ScatterChart<Number, Number>(xAxis, yAxis);
 		xychart.setTitle(this.ChartName); // title of the chart is the ChartName
 
 		ArrayList<Integer> indexes = getIndex();
-		indexesToAllSeries(indexes, this.allSeries);
+		indexesToAllSeries(indexes, allSeries);
 		// Add all series to the ScatterChart
-		addAllSeriesToChart(xychart, this.allSeries);
+		addAllSeriesToChart(xychart, allSeries);
 		// setAnimated false!!!
 		xychart.setAnimated(false);
-		
+
 		return xychart;
 
 	}
 
 	/**
-	 * Set Animation of the dynamic chart. 
+	 * Set Animation of the dynamic chart.
 	 * 
 	 * @param animate
-	 * 			- if true, then animation would start
-	 * 			- if false, the animation would stop
+	 *            - if true, then animation would start - if false, the animation
+	 *            would stop
 	 */
-	public void Animate(ScatterChart <Number, Number> xychart, boolean animate) {
+	public void Animate(ScatterChart<Number, Number> xychart, boolean animate) {
+		final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+		ScheduledFuture future = null;
+
+		// allSeries helper
+		HashMap<Object, XYChart.Series<Number, Number>> allSeries = new HashMap<Object, XYChart.Series<Number, Number>>();
 		Runnable dataGetter = () -> {
 			Platform.runLater(() -> {
 				// update ui
 				ArrayList<Integer> indexes = getIndex();
-				indexesToAllSeries(indexes, this.allSeries);
+				indexesToAllSeries(indexes, allSeries);
 				// Add all series to the ScatterChart
-				addAllSeriesToChart(xychart, this.allSeries);
+				addAllSeriesToChart(xychart, allSeries);
 
 			});
 		};
@@ -241,13 +239,14 @@ public class dynamicchart extends xychart implements Serializable {
 
 			this.pointer = 0;
 			ArrayList<Integer> indexes = getIndex();
-			indexesToAllSeries(indexes, this.allSeries);
-			addAllSeriesToChart(xychart, this.allSeries);
+			indexesToAllSeries(indexes, allSeries);
+			addAllSeriesToChart(xychart, allSeries);
 
 			// stop updates
-
-			future.cancel(true);
-			future = null;
+			if (future != null) {
+				future.cancel(true);
+				future = null;
+			}
 		}
 
 	}
@@ -255,8 +254,7 @@ public class dynamicchart extends xychart implements Serializable {
 	/**
 	 * update and return the time pointer.
 	 * 
-	 * @return int
-	 * 			- the current time value
+	 * @return int - the current time value
 	 */
 
 	private int getPointer() {
@@ -283,17 +281,17 @@ public class dynamicchart extends xychart implements Serializable {
 		Object[] tarray = this.tdc.getData();
 		int p = getPointer();
 		for (int i = 0; i < tarray.length; i++) {
-			if (tarray[i] instanceof Double) { 
+			if (tarray[i] instanceof Double) {
 				Double t = (Double) tarray[i];
 				int d_int = t.intValue();
 				if (d_int == p) {
 					indexes.add(i);
 				}
-			
-			}	
-			//else: must be integer, guarantee by isInteger() in DataColumn
-			else {//if (tarray[i] instanceof Integer) {
-				if( (int)tarray[i] == p) {
+
+			}
+			// else: must be integer, guarantee by isInteger() in DataColumn
+			else {// if (tarray[i] instanceof Integer) {
+				if ((int) tarray[i] == p) {
 					indexes.add(i);
 				}
 			}
@@ -305,7 +303,7 @@ public class dynamicchart extends xychart implements Serializable {
 	}
 
 	/**
-	 * Set up the allSeries with input indexes.
+	 * Set up the inputed allSeries with inputed indexes.
 	 * 
 	 */
 	private void indexesToAllSeries(ArrayList<Integer> indexes,
@@ -339,7 +337,7 @@ public class dynamicchart extends xychart implements Serializable {
 	}
 
 	/**
-	 * Get the max value of the TimeAxis. 
+	 * Get the max value of the TimeAxis.
 	 * 
 	 */
 	private int getMaxTime() {
@@ -363,10 +361,11 @@ public class dynamicchart extends xychart implements Serializable {
 	 * Add all series in the input HashMap to the XYChart
 	 * 
 	 * @param allSeries
-	 * 			- HashMap<Object, XYChart.Series<Number, Number>> that storing all the series
-	 * 				 and corresponding category
+	 *            - HashMap<Object, XYChart.Series<Number, Number>> that storing all
+	 *            the series and corresponding category
 	 */
-	private void addAllSeriesToChart(ScatterChart <Number, Number> xychart, HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
+	private void addAllSeriesToChart(ScatterChart<Number, Number> xychart,
+			HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
 
 		xychart.getData().clear();
 
