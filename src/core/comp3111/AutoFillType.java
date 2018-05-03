@@ -1,7 +1,7 @@
 package core.comp3111;
 
 /**
- * Class to define the types of autofill algorithms which can be used during CSV import to replace blanks
+ * Class to define the types of autofill algorithms which can be used during CSV import to replace blank cells
  * 
  * @author michaelfrost
  *

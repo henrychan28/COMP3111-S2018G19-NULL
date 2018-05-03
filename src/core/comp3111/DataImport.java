@@ -307,7 +307,7 @@ public class DataImport {
 	}
 	
 	/**
-	 * Creates a 2D ArrayList of Strings
+	 * Creates a 2D ArrayList of Object of outer size size and inner size zero
 	 * 
 	 * @param size
 	 * 			The number of columns the scratchpad needs to have

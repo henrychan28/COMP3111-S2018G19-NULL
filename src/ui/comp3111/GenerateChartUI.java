@@ -127,7 +127,6 @@ public class GenerateChartUI extends Application {
 	private TextField tfDynamicTitle;
 
 	// screen 6: paneShowChart
-	private Label lbShowChart;
 	private dynamicchart dChart = null;//keep track of the displaying dynamicchart for animation. equal null if not displaying dynamicchart.
 	private XYChart<Number, Number> chartShowChart = null;
 	private Button btbackto2; // back to history
@@ -947,7 +946,7 @@ public class GenerateChartUI extends Application {
 	 */
 	private void updateShowChartScene() {
 		VBox container = new VBox(20);
-		container.getChildren().addAll(lbShowChart, chartShowChart, btbackto2);
+		container.getChildren().addAll(chartShowChart, btbackto2);
 		container.setAlignment(Pos.CENTER);
 		BorderPane pane = new BorderPane();
 		pane.setCenter(container);

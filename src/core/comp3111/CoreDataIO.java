@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Class to store the CoreData object on the disk and load it
+ * 
  * @author michaelfrost
  *
  */
