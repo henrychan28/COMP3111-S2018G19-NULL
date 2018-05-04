@@ -31,7 +31,6 @@ public class linechart extends xychart implements Serializable {
 	 *            - Name of the LineChart
 	 * @throws ChartException
 	 */
-
 	public linechart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		// Constructor of the parent class
 
@@ -108,7 +107,6 @@ public class linechart extends xychart implements Serializable {
 	 * 
 	 * @return LineChart <Number, Number> - LineChart
 	 */
-
 	private LineChart<Number, Number> getLineChart() {
 		// Create the line chart from javafx
 

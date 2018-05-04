@@ -1,4 +1,5 @@
 package core.comp3111;
+
 /**
  * 
  * ChartType helper class. 
@@ -7,7 +8,6 @@ package core.comp3111;
  * @author YuenTing
  *
  */
-
 public class ChartTypeValue {
 	public static final String TYPE_LINE = "Line Chart";
 	public static final String TYPE_SCATTER = "Scatter Chart";

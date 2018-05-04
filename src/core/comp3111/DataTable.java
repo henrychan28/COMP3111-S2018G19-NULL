@@ -19,6 +19,7 @@ import java.util.Map;
 public class DataTable implements Serializable{
 
 	private static final long serialVersionUID = Constants.SERIALIZABLE_VER;
+	
 	/**
 	 * Construct - Create an empty DataTable
 	 */
@@ -29,6 +30,7 @@ public class DataTable implements Serializable{
 		dc = new HashMap<String, DataColumn>();
 		tableName = "";
 	}
+	
 	/**
 	 * Construct - Create an empty DataTable
 	 * 
@@ -105,6 +107,10 @@ public class DataTable implements Serializable{
 		return null;
 	}
 	
+	/**
+	 * Returns all data columns
+	 * @return DataColumn lists
+	 */
 	public DataColumn[] getCol() {
 		DataColumn[] dataColumns = new DataColumn[dc.size()];
 		int index = 0;
@@ -114,6 +120,7 @@ public class DataTable implements Serializable{
 		}
 		return dataColumns;
 	}
+	
 	/**
 	 * Check whether the column exists by the given column name
 	 * 
@@ -137,6 +144,7 @@ public class DataTable implements Serializable{
 	public int getNumCol() {
 		return dc.size();
 	}
+	
 	/**
 	 * Return the keys in the data table
 	 * 
@@ -147,6 +155,7 @@ public class DataTable implements Serializable{
 		String[] columnString = Arrays.copyOf(columnNames, columnNames.length, String[].class);
 		return columnString;
 	}
+	
 	/**
 	 * Returns the name of the DataTable
 	 * 
@@ -155,6 +164,7 @@ public class DataTable implements Serializable{
 	public String getTableName() {
 		return this.tableName;
 	}
+	
 	/**
 	 * Return the number of row of the data table. This data structure ensures that
 	 * all columns having the same number of row
@@ -170,11 +180,13 @@ public class DataTable implements Serializable{
 		Map.Entry<String, DataColumn> entry = dc.entrySet().iterator().next();
 		return dc.get(entry.getKey()).getSize();
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		DataTable otherDataTable = (DataTable) obj;
 		return dc.equals(otherDataTable.dc);
 	}
+	
 	/**
 	 * Get number of columns of integer type.
 	 * @return - integer 
@@ -205,7 +217,6 @@ public class DataTable implements Serializable{
 	 * @return 
 	 * 			- integer
 	 */	
-	
 	public int getNumColOfType(String colType) {
 		int Num = 0;
 		
@@ -219,6 +230,7 @@ public class DataTable implements Serializable{
 		}
 		return Num;
 	}
+	
 	/**
 	 * Return the keys of the columns of the input column type
 	 * 
@@ -228,7 +240,6 @@ public class DataTable implements Serializable{
 	 * 			- null if not exists
 	 * 			- String[] keys
 	 */
-	
 	public String[] getColKeysOfType(String colType) {
 		int size = getNumColOfType(colType);
 		if (size == 0) {

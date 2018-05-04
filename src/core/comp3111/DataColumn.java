@@ -17,6 +17,7 @@ public class DataColumn implements Serializable {
 
 	
 	private static final long serialVersionUID = Constants.SERIALIZABLE_VER;
+	
 	/**
 	 * Constructor. Create an empty data column
 	 */
@@ -86,11 +87,12 @@ public class DataColumn implements Serializable {
 			return 0;
 		return data.length;
 	}
+	
+	
 	/**
 	 * Check if the data is integer[] type
 	 * @return true if yes, false otherwise
 	 */
-	
 	public boolean isInteger() {
 
 		if (!typeName.equals(DataType.TYPE_NUMBER)) {

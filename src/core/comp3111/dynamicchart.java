@@ -61,7 +61,6 @@ public class dynamicchart extends xychart implements Serializable {
 	 *            - The name of the chart
 	 * @throws ChartException
 	 */
-
 	public dynamicchart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_DYNAMIC);
 		/** Check: Must passed 4 DataColumn with 3 Number Type and 1 String Type */
@@ -215,7 +214,6 @@ public class dynamicchart extends xychart implements Serializable {
 	/**
 	 * Set the pointer to 0. 
 	 */
-	
 	public void initPointer() {
 		this.pointer= 0;
 	}
@@ -225,7 +223,6 @@ public class dynamicchart extends xychart implements Serializable {
 	 * 
 	 * @return int - the current time value
 	 */
-
 	private int getPointer() {
 		// System.out.print(this.pointer);
 		 
@@ -244,7 +241,6 @@ public class dynamicchart extends xychart implements Serializable {
 	 * 
 	 * @return ArrayList<Integer> Indexes
 	 */
-
 	public ArrayList<Integer> getIndex() {
 
 		ArrayList<Integer> indexes = new ArrayList<Integer>();

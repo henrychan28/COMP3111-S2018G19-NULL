@@ -35,7 +35,6 @@ public class scatterchart extends xychart implements Serializable {
 	 * @throws ChartException
 	 *             - Exception class
 	 */
-
 	public scatterchart(DataTable DataTable, String[] AxisLabels, String ChartName) throws ChartException {
 
 		super(DataTable, AxisLabels, ChartName, ChartTypeValue.TYPE_SCATTER);
@@ -124,7 +123,6 @@ public class scatterchart extends xychart implements Serializable {
 	 * 
 	 * @return ScatterChart <Number, Number> - ScatterChart
 	 */
-
 	private ScatterChart<Number, Number> getScatterChart() {
 
 		// Create the scatter chart from javafx

@@ -25,6 +25,7 @@ public class xychart implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2;
+	
 	/**
 	 * Constructor of the xychart class
 	 * 
@@ -37,7 +38,6 @@ public class xychart implements Serializable {
 	 * @param ChartType
 	 * 			- Chart Type of the xychart. define in ChartTypeValue.java. 
 	 */
-	
 	public xychart(DataTable DataTable, String[] AxisLabels, String ChartName, String ChartType){
 		this.DataTable = DataTable;
 		this.AxisLabels = AxisLabels;
@@ -57,6 +57,8 @@ public class xychart implements Serializable {
 	public XYChart<Number, Number> getXYChart(){
 		return null;
 	}
+	
+	
 	/**
 	 * get the Chart ID, which is unique for each chart. 
 	 * 
@@ -65,6 +67,8 @@ public class xychart implements Serializable {
 	public String getChartID() {
 		return this.ChartID;
 	}
+	
+	
 	/**
 	 * get the Chart Name
 	 * 
@@ -73,6 +77,8 @@ public class xychart implements Serializable {
 	public String getChartName() {
 		return this.ChartName;
 	}
+	
+	
 	/**
 	 * Get the chart type. defined in ChartTypeValue.java.
 	 * 
@@ -81,19 +87,22 @@ public class xychart implements Serializable {
 	public String getChartType() {
 		return this.ChartType;
 	}
+	
+	
 	/**
 	 * Get the data columns name
 	 * 
 	 * @return String[] AxisLabels
 	 */
-	
 	public String[] getAxisLabels() {
 		return this.AxisLabels;
 	}
+	
+	
 	/**
 	 * get the name of the DataTable referred to
 	 * 
-	 * @ return String DataTableName
+	 * @return String DataTableName
 	 */
 	public String getDataTableName() {
 		return DataTable.getTableName();

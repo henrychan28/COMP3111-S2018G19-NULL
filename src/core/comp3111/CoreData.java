@@ -330,6 +330,8 @@ public class CoreData implements Serializable {
 		
 		
 	}
+	
+	
 	/**
 	 * Get the list of charts of the inputed chart type of a specific DataTable.
 	 * 
@@ -341,7 +343,6 @@ public class CoreData implements Serializable {
 	 * 			- an ArrayList of xychart(s) of specific ChartType of the specific DataTable if exists
 	 *			- null if not exists
 	 */	
-	
 	public ArrayList<xychart> getChartsWithType(String DataTableName, String ChartType){
 		ArrayList<xychart> charts = masterChartList.get(DataTableName);
 		if (charts == null) {
