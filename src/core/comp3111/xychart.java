@@ -1,11 +1,6 @@
 package core.comp3111;
 
-/**
- * The implementation of the xychart class 
- * Which is the parent class of Line Chart and Scatter Chart
- * 
- * @author YuenTing
- */
+
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 

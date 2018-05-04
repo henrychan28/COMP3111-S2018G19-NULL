@@ -271,6 +271,9 @@ public class dynamicchart extends xychart implements Serializable {
 
 	/**
 	 * Set up the inputed allSeries with data points of inputed indexes.
+	 *
+	 * @ param indexes - indexes of data points want to add
+	 * @ param allSeries - HashMap of series that want the data points to add to
 	 * 
 	 */
 	public void indexesToAllSeries(ArrayList<Integer> indexes,
@@ -307,8 +310,10 @@ public class dynamicchart extends xychart implements Serializable {
 	/**
 	 * Add all series in the input HashMap to the inputed ScatterChart
 	 * 
+	 * @param xychart
+	 *		-the ScatterChart that want to be modified. 
 	 * @param allSeries
-	 *            - HashMap<Object, XYChart.Series<Number, Number>> that storing all
+	 *		- HashMap<Object, XYChart.Series<Number, Number>> that storing all
 	 *            the series and corresponding category
 	 */
 	public void addAllSeriesToChart(ScatterChart<Number, Number> xychart,
@@ -324,7 +329,8 @@ public class dynamicchart extends xychart implements Serializable {
 
 	/**
 	 * Get the max value of the TimeAxis.
-	 * 
+	 *
+	 * @return int - max value of time
 	 */
 	private int getMaxTime() {
 		Object[] tarray = this.tdc.getData();
