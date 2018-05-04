@@ -51,9 +51,10 @@ public class dynamicchart extends xychart implements Serializable {
 	 *            - Must passed four AxisLabels. - 1st: TimeAxis Integer, - 2nd:
 	 *            XLabel, Number - 3rd: YLabel, Number - 4th: Categories, String
 	 * 
-	 *            - SAMPLE DATASET: TIME:000000011111112233333455777 -
-	 *            XLAB:238492112983912939129392334 -
-	 *            YLAB:212387912739812739812739812 -
+	 *            - SAMPLE DATASET: 
+	 *            TIME:000000011111112233333455777 
+	 *            XLAB:238492112983912939129392334 
+	 *            YLAB:212387912739812739812739812 
 	 *            CATE:ABDCCBBAABBDCBABCDDBAAABCDB
 	 * 
 	 * @param ChartName
@@ -214,6 +215,7 @@ public class dynamicchart extends xychart implements Serializable {
 	/**
 	 * Set the pointer to 0. 
 	 */
+	
 	public void initPointer() {
 		this.pointer= 0;
 	}
@@ -224,8 +226,8 @@ public class dynamicchart extends xychart implements Serializable {
 	 * @return int - the current time value
 	 */
 
-	public int getPointer() {
-		 System.out.print(this.pointer);
+	private int getPointer() {
+		// System.out.print(this.pointer);
 		 
 		if (this.pointer < maxTime) {
 			this.pointer += 1;
@@ -246,6 +248,7 @@ public class dynamicchart extends xychart implements Serializable {
 	public ArrayList<Integer> getIndex() {
 
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		
 		Object[] tarray = this.tdc.getData();
 		int p = getPointer();
 		for (int i = 0; i < tarray.length; i++) {
@@ -304,6 +307,25 @@ public class dynamicchart extends xychart implements Serializable {
 
 	}
 
+
+	/**
+	 * Add all series in the input HashMap to the inputed ScatterChart
+	 * 
+	 * @param allSeries
+	 *            - HashMap<Object, XYChart.Series<Number, Number>> that storing all
+	 *            the series and corresponding category
+	 */
+	public void addAllSeriesToChart(ScatterChart<Number, Number> xychart,
+			HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
+
+		xychart.getData().clear();
+
+		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
+
+			xychart.getData().add(entry.getValue());
+		}
+	}
+
 	/**
 	 * Get the max value of the TimeAxis.
 	 * 
@@ -323,24 +345,6 @@ public class dynamicchart extends xychart implements Serializable {
 		}
 		return max_time;
 
-	}
-
-	/**
-	 * Add all series in the input HashMap to the XYChart
-	 * 
-	 * @param allSeries
-	 *            - HashMap<Object, XYChart.Series<Number, Number>> that storing all
-	 *            the series and corresponding category
-	 */
-	public void addAllSeriesToChart(ScatterChart<Number, Number> xychart,
-			HashMap<Object, XYChart.Series<Number, Number>> allSeries) {
-
-		xychart.getData().clear();
-
-		for (HashMap.Entry<Object, XYChart.Series<Number, Number>> entry : allSeries.entrySet()) {
-
-			xychart.getData().add(entry.getValue());
-		}
 	}
 
 }

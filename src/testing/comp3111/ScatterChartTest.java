@@ -192,7 +192,7 @@ public class ScatterChartTest{
 	
 	
 	@Test
-	void testCoverageOfConstructor_getChartName_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetChartName_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -204,7 +204,7 @@ public class ScatterChartTest{
 		assertEquals(sc.getChartName(), "NASA");
 	}
 	@Test
-	void testCoverageOfConstructor_getTableName_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetTableName_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("StarWars");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -217,7 +217,7 @@ public class ScatterChartTest{
 	}
 	
 	@Test
-	void testCoverageOfConstructor_getChartID_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetChartID_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -228,7 +228,7 @@ public class ScatterChartTest{
 		assertEquals(sc.getChartID(), "CERN_"+Long.toString(CoreData.checkchartid()-1));
 	}
 	@Test
-	void testCoverageOfConstructor_getAxisLabels_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetAxisLabels_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -239,7 +239,7 @@ public class ScatterChartTest{
 		assertEquals(sc.getAxisLabels(), AxisLabels);
 	}
 	@Test
-	void testCoverageOfConstructor_getChartType_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetChartType_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
@@ -251,7 +251,7 @@ public class ScatterChartTest{
 	}
 	
 	@Test
-	void testCoverageOfConstructor_getXYChart_2NumberType1StringType() throws DataTableException, ChartException {
+	void testgetXYChart_2NumberType1StringType() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
 		dataTable.addCol("testNumColumn_1", testNumColumn_1);
