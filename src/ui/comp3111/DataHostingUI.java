@@ -44,7 +44,7 @@ public class DataHostingUI extends Application {
 		 * 
 		 * @param axis 
 		 *            the axis to be scan along (INNER or OUTER)
-		 * @param outerIndex
+		 * @param parent
 		 * 			  if scan along OUTER, put it to be -1
 		 * 			  if scan along INNER, provide the parentIndex
 		 * @return dataSet

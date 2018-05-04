@@ -215,16 +215,16 @@ public class DataTextFilterUI extends Application {
         public void handle(MouseEvent t) {
              String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
              try {
-				injectCurrentText(selectedColumn);
-				textTableView.getItems().setAll(Arrays.asList(currentText));
-				if(selectedRetainText.get(selectedColumn)!=null) {
-					for(Object previousSelectedText: selectedRetainText.get(selectedColumn)) {
-				        textTableView.getSelectionModel().select((String)previousSelectedText);
-					}
+			injectCurrentText(selectedColumn);
+			textTableView.getItems().setAll(Arrays.asList(currentText));
+			if(selectedRetainText.get(selectedColumn)!=null) {
+				for(Object previousSelectedText: selectedRetainText.get(selectedColumn)) {
+				textTableView.getSelectionModel().select((String)previousSelectedText);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         }
     }
     
@@ -234,14 +234,14 @@ public class DataTextFilterUI extends Application {
     private class SelectButtonEventHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent t) {
-        		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
-        		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
-        		Set<String> selectedTextSet = new HashSet<String>();
-        		for(String selectedText: selectedTextList) {
-        			selectedTextSet.add(selectedText);
-        		}
-        		selectedRetainText.put(selectedColumn, selectedTextSet);
-		}
+    		String selectedColumn = columnTableView.getSelectionModel().getSelectedItem();
+    		ObservableList<String> selectedTextList = textTableView.getSelectionModel().getSelectedItems();
+    		Set<String> selectedTextSet = new HashSet<String>();
+    		for(String selectedText: selectedTextList) {
+    			selectedTextSet.add(selectedText);
+    		}
+    		selectedRetainText.put(selectedColumn, selectedTextSet);
+	}
     }
     
 	/**
@@ -284,7 +284,7 @@ public class DataTextFilterUI extends Application {
             	textFilterText.setText("Table \""+ tableName +"\" successfully created");
 
         	}
-		}
+	}
     }
     
 
