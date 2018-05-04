@@ -578,8 +578,6 @@ public class GenerateChartUI extends Application {
 				updateShowChartScene();
 				if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC) ){
 					//show animation
-					//dChart.Animate((ScatterChart<Number, Number>)chartShowChart, true);
-					
 					dChart.initPointer();
 					// allSeries helper
 					HashMap<Object, XYChart.Series<Number, Number>> allSeries
@@ -598,9 +596,6 @@ public class GenerateChartUI extends Application {
 						// update every second
 						 future = service.scheduleWithFixedDelay(dataGetter, 0, 1, TimeUnit.SECONDS);
 					
-					if(future == null) {
-						System.out.println("whywhy tell me why?");
-					}
 				}
 				// and then show chart
 				putSceneOnStage(SCENE_SHOW_CHART);
@@ -821,6 +816,7 @@ public class GenerateChartUI extends Application {
 						cbDynamicXaxis.setValue(null);
 						cbDynamicYaxis.setValue(null);
 						cbDynamicCaxis.setValue(null);
+						//Show animation
 						//dc.Animate((ScatterChart<Number, Number>)chartShowChart, true);
 						if (ChartType.equals(ChartTypeValue.TYPE_DYNAMIC) ){
 							//show animation

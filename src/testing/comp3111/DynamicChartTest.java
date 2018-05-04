@@ -306,7 +306,7 @@ public class DynamicChartTest {
 				()->assertEquals(hm2.get("Dog")[0][1], allSeries.get(PosOfhm[1]).getData().get(0).getYValue())				
 				
 				);
-	}
+	}/*
 	@Test
 	void testgetPointer() throws DataTableException, ChartException {
 		DataTable dataTable = new DataTable("Chicken");
@@ -324,20 +324,8 @@ public class DynamicChartTest {
 				()->assertEquals(5, 	dc.getPointer()),
 				()->assertEquals(0, 	dc.getPointer())
 				);
-	}
-	@Test
-	void testinitPointer() throws DataTableException, ChartException {
-		DataTable dataTable = new DataTable("Chicken");
-		dataTable.addCol("testIntColumn_0", testIntColumn_0);
-		dataTable.addCol("testNumColumn_1", testNumColumn_1);
-		dataTable.addCol("testNumColumn_2", testNumColumn_2);
-		dataTable.addCol("testStrColumn_1", testStrColumn_1);
-		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
-		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
-		dc.getPointer();
-		dc.initPointer();
-		assertEquals(0, dc.getPointer());
-	}
+	}*/
+
 
 	
 	@Test
@@ -354,13 +342,40 @@ public class DynamicChartTest {
 		x.add(0);x.add(1);x.add(2);
 		ArrayList<Number> y = new ArrayList<Number>();
 		y.add(4);
+		ArrayList<Number> a = new ArrayList<Number>();
+		a.add(3);
+		ArrayList<Number> b = new ArrayList<Number>();
+		ArrayList<Number> c = new ArrayList<Number>();
+		c.add(5); c.add(6);
+
 		assertAll(()->assertEquals(x, dc.getIndex()),
-		()->assertEquals(y, dc.getIndex())
+				()->assertEquals(y, dc.getIndex()),
+		()->assertEquals(a, dc.getIndex()),
+		()->assertEquals(b, dc.getIndex()),
+		()->assertEquals(b, dc.getIndex()),
+		()->assertEquals(c, dc.getIndex()),
+		()->assertEquals(x, dc.getIndex())
 		);
 
 	}
 	
-	
+	@Test
+	void testinitPointer() throws DataTableException, ChartException {
+		DataTable dataTable = new DataTable("Chicken");
+		dataTable.addCol("testIntColumn_0", testIntColumn_0);
+		dataTable.addCol("testNumColumn_1", testNumColumn_1);
+		dataTable.addCol("testNumColumn_2", testNumColumn_2);
+		dataTable.addCol("testStrColumn_1", testStrColumn_1);
+		String[] AxisLabels = {"testIntColumn_0",  "testNumColumn_2", "testNumColumn_1", "testStrColumn_1"};
+		dynamicchart dc = new dynamicchart(dataTable, AxisLabels, "Wings");
+		dc.getIndex();
+		dc.initPointer();
+		//pointer = 0, should be equal to x
+		ArrayList<Number> x = new ArrayList<Number>();
+		x.add(0);x.add(1);x.add(2);
+		
+		assertEquals(x, dc.getIndex());
+	}
 	
 	
 	

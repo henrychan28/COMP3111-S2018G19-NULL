@@ -23,7 +23,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 /**
- * Test cases for linechart class and xychart class. 
+ * Test cases for linechart class
  * 
  * @author YuenTing
  *
@@ -130,7 +130,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getChartName_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetChartName_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable();
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -142,7 +142,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getDataTableName_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetDataTableName_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable("HiggsBoson");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -154,7 +154,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getAxisLabels_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetAxisLabels_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable("HiggsBoson");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -166,7 +166,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getChartType_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetChartType_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable("HiggsBoson");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -178,7 +178,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getXYChart_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetXYChart_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable("HiggsBoson");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -207,7 +207,7 @@ public class LineChartTest {
 	}
 
 	@Test
-	void testCoverageOfConstructor_getChartID_AllAxisLabelsNumberType() throws ChartException, Exception {
+	void testgetChartID_AllAxisLabelsNumberType() throws ChartException, Exception {
 
 		DataTable dataTable = new DataTable("HiggsBoson");
 		dataTable.addCol("testNumColumn_0", testNumColumn_0);
@@ -217,14 +217,6 @@ public class LineChartTest {
 		assertEquals("123_" + Long.toString(CoreData.checkchartid() - 1), x.getChartID());
 
 	}
-	@Test
-	void testgetXYChartForxychart() throws ChartException, DataTableException {
-		DataTable dataTable = new DataTable("Topology");
-		dataTable.addCol("testNumColumn_0", testNumColumn_0);
-		dataTable.addCol("testNumColumn_1", testNumColumn_1);
-		String[] AxisLabels = { "testNumColumn_0", "testNumColumn_1" };
-		xychart x = new xychart(dataTable, AxisLabels, "WeLoveMath", "No_Type");
-		assertNull(x.getXYChart());
-	}
+
 
 }
