@@ -15,7 +15,12 @@ import core.comp3111.DataColumn;
 import core.comp3111.DataTable;
 import core.comp3111.DataFilter;
 
-
+/**
+ * Tests for data hosting UI
+ * 
+ * @author Henry Chan
+ *
+ */
 public class DataFilterTest {
 	DataTable smallDataTable;
 	Object[] column1 = {"Hello", "Bye", "GoToSchool"};
