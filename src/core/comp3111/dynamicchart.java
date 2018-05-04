@@ -329,7 +329,7 @@ public class dynamicchart extends xychart implements Serializable {
 
 	/**
 	 * Get the max value of the TimeAxis.
-	 
+	 *
 	 * @return int - max value of time
 	 */
 	private int getMaxTime() {
